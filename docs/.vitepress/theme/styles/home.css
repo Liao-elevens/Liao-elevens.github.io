@@ -1,0 +1,178 @@
+.magazine-home .VPHome {
+  padding-bottom: 0;
+}
+
+.magazine-home .VPHomeHero {
+  position: relative;
+  min-height: calc(100vh - var(--vp-nav-height));
+  padding: 8rem 1.5rem 5rem;
+  overflow: hidden;
+}
+
+.magazine-home .VPHomeHero::before {
+  position: absolute;
+  top: 2.5rem;
+  right: max(1.5rem, calc((100vw - 1180px) / 2));
+  color: var(--mag-muted);
+  content: "ISSUE 001  /  JUL 2026";
+  font-family: var(--mag-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+}
+
+.magazine-home .VPHomeHero::after {
+  position: absolute;
+  top: 5rem;
+  right: -5rem;
+  width: min(34vw, 470px);
+  height: min(34vw, 470px);
+  border: 1px solid color-mix(in srgb, var(--mag-coral) 55%, transparent);
+  border-radius: 50%;
+  content: "";
+  animation: hero-shape 14s ease-in-out infinite alternate;
+}
+
+.magazine-home .VPHomeHero .container {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 1180px);
+  max-width: 1180px;
+  margin: auto;
+}
+
+.magazine-home .VPHomeHero .main {
+  max-width: 960px;
+}
+
+.magazine-home .VPHomeHero .name {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 1.4rem;
+  color: var(--mag-coral);
+  font-family: var(--mag-body);
+  font-size: 0.72rem;
+  font-weight: 780;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.magazine-home .VPHomeHero .name::before {
+  width: 34px;
+  height: 1px;
+  background: currentColor;
+  content: "";
+}
+
+.magazine-home .VPHomeHero .text {
+  max-width: 960px;
+  color: var(--mag-ink);
+  font-family: var(--mag-display);
+  font-size: clamp(4.25rem, 8.2vw, 8.6rem);
+  font-weight: 520;
+  letter-spacing: -0.075em;
+  line-height: 0.88;
+}
+
+.magazine-home .VPHomeHero .tagline {
+  max-width: 660px;
+  margin-top: 2.2rem;
+  color: var(--mag-muted);
+  font-size: clamp(1rem, 1.7vw, 1.22rem);
+  line-height: 1.85;
+}
+
+.magazine-home .VPHomeHero .actions {
+  padding-top: 2rem;
+}
+
+.magazine-home .VPFeatures {
+  padding: 0 1.5rem 5rem;
+}
+
+.magazine-home .VPFeatures .container {
+  max-width: 1180px;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--mag-line);
+}
+
+.magazine-home .VPFeature {
+  min-height: 210px;
+  border: 0;
+  border-right: 1px solid var(--mag-line);
+  border-radius: 0;
+  background: transparent;
+  transition: background 300ms ease;
+}
+
+.magazine-home .VPFeature:hover {
+  background: color-mix(in srgb, var(--mag-coral) 5%, transparent);
+}
+
+.magazine-home .VPFeature .icon {
+  width: auto;
+  height: auto;
+  margin-bottom: 2.7rem;
+  background: transparent;
+  font-family: var(--mag-display);
+  font-size: 2.2rem;
+  font-style: italic;
+}
+
+.magazine-home .VPFeature .title {
+  font-family: var(--mag-display);
+  font-size: 1.45rem;
+  font-weight: 580;
+}
+
+.magazine-home .VPFeature .details {
+  color: var(--mag-muted);
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+
+@keyframes hero-shape {
+  50% {
+    border-radius: 38% 62% 55% 45%;
+    transform: rotate(45deg) scale(0.88);
+  }
+
+  100% {
+    border-radius: 18%;
+    transform: rotate(90deg) scale(1.08);
+  }
+}
+
+@media (max-width: 760px) {
+  .magazine-home .VPHomeHero {
+    min-height: auto;
+    padding: 6.5rem 1rem 4rem;
+  }
+
+  .magazine-home .VPHomeHero::after {
+    top: 3rem;
+    right: -7rem;
+    width: 280px;
+    height: 280px;
+  }
+
+  .magazine-home .VPHomeHero .text {
+    font-size: clamp(3.6rem, 16.5vw, 6.5rem);
+  }
+
+  .magazine-home .VPFeatures {
+    padding-inline: 1rem;
+  }
+
+  .magazine-home .VPFeature {
+    min-height: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--mag-line);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .magazine-home .VPHomeHero::after {
+    animation: none;
+  }
+}
