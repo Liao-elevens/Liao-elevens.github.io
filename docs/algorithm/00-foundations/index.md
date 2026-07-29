@@ -7,6 +7,16 @@ description: 学习算法真正需要的编程、数学与计算机基础
 
 算法入门不要求先学完整个计算机专业，但需要一组共同语言。这里负责把四种编程语言不同的语法，映射到相同的计算概念。
 
+## 如果你是完全零基础
+
+按下面三个入口阅读，不需要先看数学目录：
+
+1. [算法到底是什么](/algorithm/00-foundations/zero-to-algorithms)：从泡茶、购物车和寻找最大值理解输入、输出、变量、条件与循环；
+2. [四语言算法基础](/algorithm/00-foundations/four-language-basics)：比较同一个算法在 Java、Python、JavaScript、C++ 中怎样表达；
+3. [从读题到调试](/algorithm/00-foundations/problem-solving-guide)：学习翻译题目、写暴力解、准备测试和定位错误。
+
+学完后再进入[数组](/algorithm/02-linear-structures/arrays)、[哈希表](/algorithm/02-linear-structures/hash-table)与[认识 Big O](/algorithm/01-complexity/big-o)。
+
 ## 编程基础目录
 
 | 模块 | 必须理解 | 典型任务 |
@@ -43,4 +53,8 @@ description: 学习算法真正需要的编程、数学与计算机基础
 读取输入 → 保存状态 → 判断条件 → 重复执行 → 返回结果
 ```
 
-语言只是给这五类动作提供不同的语法。先阅读：[四语言算法基础 →](./four-language-basics)
+语言只是给这五类动作提供不同的语法。
+
+[从零基础第一课开始 →](./zero-to-algorithms)
+
+需要额外动画、课程或语言文档时，查看[第三方学习资源](/resources/)。

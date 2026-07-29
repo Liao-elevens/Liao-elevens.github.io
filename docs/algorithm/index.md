@@ -11,6 +11,23 @@ description: 从零基础到算法理论与工程实践的完整知识地图
 每个正式知识点最终都会包含：通俗实例、手工模拟、伪代码、Java、Python、JavaScript、C++、复杂度、边界情况、常见错误、练习与解析。
 :::
 
+## 零基础请从这里开始
+
+不要直接从这张长目录中任选一个高级名词。沿着下面的短路径学习：
+
+| 顺序 | 内容 | 学完能够做什么 |
+| ---: | --- | --- |
+| 1 | [算法到底是什么](/algorithm/00-foundations/zero-to-algorithms) | 认识输入、输出、状态、条件与循环 |
+| 2 | [四语言算法基础](/algorithm/00-foundations/four-language-basics) | 看懂同一思想的四种语法表达 |
+| 3 | [从读题到调试](/algorithm/00-foundations/problem-solving-guide) | 把题目拆成示例、暴力解、优化和测试 |
+| 4 | [数组](/algorithm/02-linear-structures/arrays) | 掌握遍历、下标与边界 |
+| 5 | [哈希表与集合](/algorithm/02-linear-structures/hash-table) | 处理计数、去重和快速查找 |
+| 6 | [认识 Big O](/algorithm/01-complexity/big-o) | 比较解法随数据规模增长的速度 |
+| 7 | [基础排序](/algorithm/03-sorting-searching/basic-sorting) | 理解比较、移动和有序区间 |
+| 8 | [二分查找](/algorithm/03-sorting-searching/binary-search) | 利用有序与单调每次排除一半 |
+
+如果文字仍不够直观，可以打开[第三方学习资源](/resources/)，选择一种动画工具辅助，不需要同时学习所有推荐课程。
+
 ## 怎样理解“完整”
 
 | 维度 | 本知识库的标准 |
@@ -228,14 +245,9 @@ description: 从零基础到算法理论与工程实践的完整知识地图
 
 ## 每篇知识如何形成闭环
 
-```mermaid
-flowchart LR
-    A["生活化问题"] --> B["小数据模拟"]
-    B --> C["抽象出算法"]
-    C --> D["语言无关伪代码"]
-    D --> E["四语言实现"]
-    E --> F["复杂度与边界"]
-    F --> G["练习和复盘"]
-```
+<figure class="knowledge-diagram">
+  <img src="/diagrams/learning-loop.svg" alt="从生活问题到练习复盘的七步算法学习闭环">
+  <figcaption>每篇核心教程都会尽量沿用这七步，帮助你从“看懂”逐渐过渡到“能自己写”。</figcaption>
+</figure>
 
-下一步建议阅读：[不按时间表的学习路线 →](/roadmap/)
+下一步建议阅读：[零基础第一课 →](/algorithm/00-foundations/zero-to-algorithms) · [不按时间表的学习路线 →](/roadmap/) · [第三方学习资源 →](/resources/)

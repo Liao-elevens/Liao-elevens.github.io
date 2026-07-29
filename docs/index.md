@@ -3,7 +3,7 @@ layout: home
 pageClass: magazine-home
 
 hero:
-  name: "LIAO'S ALGORITHM MAGAZINE"
+  name: "LIAO'S LEARNING NOTES"
   text: "把复杂问题，拆成可以理解的步骤。"
   tagline: "为算法零基础学习者建立的完整知识地图。一个思想，四种语言；从通俗实例出发，抵达可靠实现。"
   actions:
@@ -11,8 +11,8 @@ hero:
       text: 开始学习算法
       link: /algorithm/
     - theme: alt
-      text: 打开知识地图
-      link: /roadmap/
+      text: 零基础第一课
+      link: /algorithm/00-foundations/zero-to-algorithms
 
 features:
   - icon: "01"

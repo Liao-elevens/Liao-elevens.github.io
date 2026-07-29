@@ -3,6 +3,7 @@ import MagazineLayout from './MagazineLayout.vue'
 import './styles/tokens.css'
 import './styles/global.css'
 import './styles/home.css'
+import './styles/diagrams.css'
 
 export default {
   extends: DefaultTheme,

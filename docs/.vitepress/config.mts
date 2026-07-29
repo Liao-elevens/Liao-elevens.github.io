@@ -6,6 +6,9 @@ const algorithmSidebar = [
     items: [
       { text: '知识库总览', link: '/algorithm/' },
       { text: '学习路线', link: '/roadmap/' },
+      { text: '零基础入门', link: '/algorithm/00-foundations/zero-to-algorithms' },
+      { text: '解题方法', link: '/algorithm/00-foundations/problem-solving-guide' },
+      { text: '学习资源', link: '/resources/' },
       { text: '完整度矩阵', link: '/coverage' },
       { text: '算法术语表', link: '/glossary' }
     ]
@@ -15,7 +18,9 @@ const algorithmSidebar = [
     collapsed: false,
     items: [
       { text: '编程与数学前置', link: '/algorithm/00-foundations/' },
+      { text: '算法到底是什么', link: '/algorithm/00-foundations/zero-to-algorithms' },
       { text: '四语言算法基础', link: '/algorithm/00-foundations/four-language-basics' },
+      { text: '从读题到调试', link: '/algorithm/00-foundations/problem-solving-guide' },
       { text: '复杂度与正确性', link: '/algorithm/01-complexity/' },
       { text: '认识 Big O', link: '/algorithm/01-complexity/big-o' }
     ]
@@ -27,6 +32,7 @@ const algorithmSidebar = [
       { text: '线性结构总览', link: '/algorithm/02-linear-structures/' },
       { text: '数组', link: '/algorithm/02-linear-structures/arrays' },
       { text: '链表、栈与队列', link: '/algorithm/02-linear-structures/linked-stack-queue' },
+      { text: '哈希表与集合', link: '/algorithm/02-linear-structures/hash-table' },
       { text: '树与堆', link: '/algorithm/06-trees-heaps/' },
       { text: '图', link: '/algorithm/07-graphs/' },
       { text: '高级数据结构', link: '/algorithm/12-advanced-structures/' }
@@ -37,8 +43,10 @@ const algorithmSidebar = [
     collapsed: false,
     items: [
       { text: '排序与查找', link: '/algorithm/03-sorting-searching/' },
+      { text: '基础排序', link: '/algorithm/03-sorting-searching/basic-sorting' },
       { text: '二分查找', link: '/algorithm/03-sorting-searching/binary-search' },
       { text: '常用技巧', link: '/algorithm/04-techniques/' },
+      { text: '前缀和', link: '/algorithm/04-techniques/prefix-sum' },
       { text: '双指针与滑动窗口', link: '/algorithm/04-techniques/two-pointers-window' },
       { text: '递归、搜索与回溯', link: '/algorithm/05-recursion-search/' },
       { text: '递归与回溯入门', link: '/algorithm/05-recursion-search/recursion-backtracking' },
@@ -65,8 +73,8 @@ const algorithmSidebar = [
 
 export default defineConfig({
   lang: 'zh-CN',
-  title: 'Liao · Algorithm Magazine',
-  titleTemplate: ':title · Liao 的算法杂志',
+  title: 'Liao · Learning Notes',
+  titleTemplate: ':title · Liao Learning Notes',
   description: '从零理解算法：Java、Python、JavaScript、C++ 四语言对照的完整算法知识库。',
   base: '/',
   cleanUrls: true,
@@ -91,12 +99,13 @@ export default defineConfig({
     logo: {
       light: '/brand-mark-light.svg',
       dark: '/brand-mark-dark.svg',
-      alt: 'Liao Algorithm Magazine'
+      alt: 'Liao Learning Notes'
     },
     nav: [
       { text: '首页', link: '/' },
       { text: '算法知识库', link: '/algorithm/', activeMatch: '^/algorithm/' },
       { text: '学习路线', link: '/roadmap/' },
+      { text: '学习资源', link: '/resources/' },
       { text: '前端', link: '/frontend/' },
       { text: '文章', link: '/blog/' },
       { text: '关于', link: '/about' }
@@ -104,6 +113,7 @@ export default defineConfig({
     sidebar: {
       '/algorithm/': algorithmSidebar,
       '/roadmap/': algorithmSidebar,
+      '/resources/': algorithmSidebar,
       '/frontend/': [
         {
           text: '前端学习',
@@ -160,7 +170,7 @@ export default defineConfig({
     },
     footer: {
       message: '用通俗的例子理解算法，用四种语言验证同一种思想。',
-      copyright: '© 2026 Liao · Algorithm Magazine'
+      copyright: '© 2026 Liao · Learning Notes'
     },
     returnToTopLabel: '返回顶部',
     sidebarMenuLabel: '目录',

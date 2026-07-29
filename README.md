@@ -1,4 +1,4 @@
-# Liao · Algorithm Magazine
+# Liao · Learning Notes
 
 一个面向算法零基础学习者的个人 GitHub Pages 博客：
 
@@ -28,6 +28,7 @@ npm run check
 | --- | --- |
 | `docs/algorithm/` | 算法知识库 |
 | `docs/roadmap/` | 依赖式学习路线 |
+| `docs/resources/` | 第三方课程、动画、题库与文档导航 |
 | `docs/blog/` | 学习文章与个人记录 |
 | `docs/frontend/` | 前端知识预留区 |
 | `docs/coverage.md` | 知识库完成度 |

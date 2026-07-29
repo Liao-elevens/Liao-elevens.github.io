@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="660" viewBox="0 0 1040 660" role="img" aria-labelledby="title desc">
+  <title id="title">基础数据结构选择流程</title>
+  <desc id="desc">根据按位置访问、按键查找和操作顺序三个问题，在数组、哈希表、栈、队列和链表之间选择。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#e67855"/></marker>
+    <style>.bg{fill:#151a22}.node{fill:#f5f2e9;stroke:#e67855;stroke-width:2}.decision{fill:#242b38;stroke:#8fa7ff;stroke-width:2}.edge{fill:none;stroke:#e67855;stroke-width:2;marker-end:url(#arrow)}.label{fill:#171c24;font:600 17px system-ui,-apple-system,"Segoe UI",sans-serif;text-anchor:middle}.light{fill:#f5f2e9;font:600 17px system-ui,-apple-system,"Segoe UI",sans-serif;text-anchor:middle}.hint{fill:#e67855;font:700 14px system-ui,-apple-system,"Segoe UI",sans-serif}</style>
+  </defs>
+  <rect class="bg" width="1040" height="660"/>
+  <path class="edge" d="M410 125H235V210"/>
+  <path class="edge" d="M630 125H805V210"/>
+  <path class="edge" d="M695 270H500V355"/>
+  <path class="edge" d="M805 330V355"/>
+  <path class="edge" d="M610 415H240V505"/>
+  <path class="edge" d="M805 475V505"/>
+  <path class="edge" d="M1000 415H970V505"/>
+  <text class="hint" x="290" y="108">是</text><text class="hint" x="740" y="108">否</text>
+  <text class="hint" x="575" y="253">是</text><text class="hint" x="820" y="344">否</text>
+  <text class="hint" x="380" y="398">后进先出</text><text class="hint" x="820" y="493">先进先出</text><text class="hint" x="900" y="398">频繁连接</text>
+  <polygon class="decision" points="520,55 630,125 520,195 410,125"/><text class="light" x="520" y="132">按位置访问？</text>
+  <rect class="node" x="105" y="210" width="260" height="60" rx="12"/><text class="label" x="235" y="247">数组 / 动态数组</text>
+  <polygon class="decision" points="805,210 915,270 805,330 695,270"/><text class="light" x="805" y="277">按键查找？</text>
+  <rect class="node" x="370" y="355" width="260" height="60" rx="12"/><text class="label" x="500" y="392">哈希表 / 集合</text>
+  <polygon class="decision" points="805,355 1000,415 805,475 610,415"/><text class="light" x="805" y="422">操作顺序重要？</text>
+  <rect class="node" x="120" y="505" width="240" height="60" rx="12"/><text class="label" x="240" y="542">栈</text>
+  <rect class="node" x="685" y="505" width="240" height="60" rx="12"/><text class="label" x="805" y="542">队列</text>
+  <rect class="node" x="850" y="585" width="160" height="60" rx="12"/><text class="label" x="930" y="622">链表</text>
+</svg>

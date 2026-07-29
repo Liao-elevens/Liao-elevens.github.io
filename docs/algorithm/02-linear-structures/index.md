@@ -22,15 +22,9 @@ description: 数组、链表、哈希、栈、队列及其工程变体
 
 ## 选择结构的思考顺序
 
-```mermaid
-flowchart TD
-    A["主要按位置访问？"] -->|是| B["数组 / 动态数组"]
-    A -->|否| C["主要按键查找？"]
-    C -->|是| D["哈希表 / 集合"]
-    C -->|否| E["操作顺序重要？"]
-    E -->|后进先出| F["栈"]
-    E -->|先进先出| G["队列"]
-    E -->|频繁连接和断开节点| H["链表"]
-```
+<figure class="knowledge-diagram">
+  <img src="/diagrams/data-structure-decision.svg" alt="根据访问方式和操作顺序选择基础数据结构的流程图">
+  <figcaption>这是初学阶段的启发式选择，不是绝对规则；真实问题常常会组合两种以上结构。</figcaption>
+</figure>
 
-[学习数组 →](./arrays) · [学习链表、栈与队列 →](./linked-stack-queue)
+[学习数组 →](./arrays) · [学习哈希表与集合 →](./hash-table) · [学习链表、栈与队列 →](./linked-stack-queue)

@@ -135,18 +135,10 @@ int main() {
 
 四段代码的外观不同，但控制流程完全一致：
 
-```mermaid
-flowchart TD
-    A["检查数组是否为空"] --> B["currentMax = 第一个元素"]
-    B --> C["查看下一个元素"]
-    C --> D{"它更大吗？"}
-    D -->|是| E["更新 currentMax"]
-    D -->|否| F["保持不变"]
-    E --> G{"还有元素吗？"}
-    F --> G
-    G -->|有| C
-    G -->|没有| H["返回 currentMax"]
-```
+<figure class="knowledge-diagram">
+  <img src="/diagrams/find-maximum-flow.svg" alt="遍历数组寻找最大值的流程图">
+  <figcaption>算法的关键状态只有两个：当前读到的位置，以及截至当前找到的最大值。</figcaption>
+</figure>
 
 ## 为什么不能把初始值写成 0
 

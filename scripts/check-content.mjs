@@ -74,8 +74,12 @@ for (const file of markdownFiles) {
 
 const fourLanguageArticles = [
   'docs/algorithm/00-foundations/four-language-basics.md',
+  'docs/algorithm/00-foundations/problem-solving-guide.md',
   'docs/algorithm/02-linear-structures/arrays.md',
+  'docs/algorithm/02-linear-structures/hash-table.md',
+  'docs/algorithm/03-sorting-searching/basic-sorting.md',
   'docs/algorithm/03-sorting-searching/binary-search.md',
+  'docs/algorithm/04-techniques/prefix-sum.md',
   'docs/algorithm/04-techniques/two-pointers-window.md',
   'docs/algorithm/05-recursion-search/recursion-backtracking.md',
   'docs/algorithm/06-trees-heaps/binary-tree-traversal.md',
@@ -84,6 +88,12 @@ const fourLanguageArticles = [
 ]
 
 const requiredCodeFences = ['```java', '```python', '```javascript', '```cpp']
+const diagramFiles = [
+  'docs/public/diagrams/learning-roadmap.svg',
+  'docs/public/diagrams/learning-loop.svg',
+  'docs/public/diagrams/find-maximum-flow.svg',
+  'docs/public/diagrams/data-structure-decision.svg'
+]
 
 for (const article of fourLanguageArticles) {
   const absolutePath = join(projectRoot, article)
@@ -97,6 +107,21 @@ for (const article of fourLanguageArticles) {
     if (!content.includes(codeFence)) {
       problems.push(`${article} 缺少 ${codeFence.slice(3)} 示例`)
     }
+  }
+}
+
+for (const diagram of diagramFiles) {
+  if (!existsSync(join(projectRoot, diagram))) {
+    problems.push(`${diagram} 不存在`)
+  }
+}
+
+for (const file of markdownFiles) {
+  const content = readFileSync(file, 'utf8')
+  if (content.includes('```mermaid')) {
+    problems.push(
+      `${relative(projectRoot, file)} 包含未转换的 Mermaid 代码块`
+    )
   }
 }
 

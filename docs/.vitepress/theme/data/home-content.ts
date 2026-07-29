@@ -64,10 +64,10 @@ export const algorithmCategories: AlgorithmCategory[] = [
 export const editorialFeatures: EditorialFeature[] = [
   {
     eyebrow: '本期主专题',
-    title: '从“猜数字”真正理解二分查找',
-    summary: '不背模板：先理解有序、单调和区间不变量，再比较四种语言的边界写法。',
-    route: '/algorithm/03-sorting-searching/binary-search',
-    meta: '入门 · 15 分钟阅读'
+    title: '算法到底是什么？从生活步骤开始',
+    summary: '不从术语和模板开始：先用泡茶、购物车和寻找最大值理解输入、输出、变量与循环。',
+    route: '/algorithm/00-foundations/zero-to-algorithms',
+    meta: '零基础 · 第一课'
   },
   {
     eyebrow: '方法论',
@@ -77,11 +77,11 @@ export const editorialFeatures: EditorialFeature[] = [
     meta: '语言对照 · 必读'
   },
   {
-    eyebrow: '知识地图',
-    title: '先修关系比时间表更重要',
-    summary: '按照知识依赖前进：数组之后学哈希，队列之后学 BFS，递归之后学树与回溯。',
-    route: '/roadmap/',
-    meta: '路线 · 持续更新'
+    eyebrow: '学习资源',
+    title: '动画、课程和题库应该怎么选',
+    summary: '按学习阶段筛选 Hello 算法、VisuAlgo、OI Wiki、MIT 课程与四语言官方文档。',
+    route: '/resources/',
+    meta: '精选链接 · 2026 核验'
   }
 ]
 
