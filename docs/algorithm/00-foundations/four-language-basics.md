@@ -1,11 +1,11 @@
 ---
-title: 四语言算法基础
-description: 用 Java、Python、JavaScript、C++ 表达同一个数组查找算法
+title: 五语言算法基础
+description: 用 Java、Python、JavaScript、C++、Go 表达同一个数组查找算法
 ---
 
-# 四语言算法基础
+# 五语言算法基础
 
-> 目标：理解算法思想只有一套，四种语言只是把相同步骤写成不同语法。
+> 目标：理解算法思想只有一套，五种语言只是把相同步骤写成不同语法。
 
 ## 通俗实例：在书架上找最厚的书
 
@@ -33,7 +33,7 @@ description: 用 Java、Python、JavaScript、C++ 表达同一个数组查找算
 返回当前最大值
 ```
 
-## 四种语言实现
+## 五种语言实现
 
 ::: code-group
 
@@ -120,20 +120,45 @@ int main() {
 }
 ```
 
+```go [Go]
+package main
+
+import "fmt"
+
+func findMax(numbers []int) int {
+	if len(numbers) == 0 {
+		panic("切片不能为空")
+	}
+
+	currentMax := numbers[0]
+	for index := 1; index < len(numbers); index++ {
+		if numbers[index] > currentMax {
+			currentMax = numbers[index]
+		}
+	}
+	return currentMax
+}
+
+func main() {
+	numbers := []int{12, 7, 25, 18, 10}
+	fmt.Println(findMax(numbers))
+}
+```
+
 :::
 
 ## 对照每一个共同动作
 
-| 算法动作 | Java | Python | JavaScript | C++ |
-| --- | --- | --- | --- | --- |
-| 定义函数 | `static int findMax` | `def find_max` | `function findMax` | `int findMax` |
-| 数组长度 | `numbers.length` | `len(numbers)` | `numbers.length` | `numbers.size()` |
-| 第一个元素 | `numbers[0]` | `numbers[0]` | `numbers[0]` | `numbers[0]` |
-| 循环下标 | `for` | `range` | `for` | `for` |
-| 更新变量 | `currentMax = ...` | 相同 | 相同 | 相同 |
-| 返回答案 | `return` | `return` | `return` | `return` |
+| 算法动作 | Java | Python | JavaScript | C++ | Go |
+| --- | --- | --- | --- | --- | --- |
+| 定义函数 | `static int findMax` | `def find_max` | `function findMax` | `int findMax` | `func findMax` |
+| 数组长度 | `numbers.length` | `len(numbers)` | `numbers.length` | `numbers.size()` | `len(numbers)` |
+| 第一个元素 | `numbers[0]` | `numbers[0]` | `numbers[0]` | `numbers[0]` | `numbers[0]` |
+| 循环下标 | `for` | `range` | `for` | `for` | `for` |
+| 更新变量 | `currentMax = ...` | 相同 | 相同 | 相同 | 相同 |
+| 返回答案 | `return` | `return` | `return` | `return` | `return` |
 
-四段代码的外观不同，但控制流程完全一致：
+五段代码的外观不同，但控制流程完全一致：
 
 <figure class="knowledge-diagram">
   <img src="/diagrams/find-maximum-flow.svg" alt="遍历数组寻找最大值的流程图">
@@ -154,7 +179,7 @@ int main() {
 
 > 初始状态应该来自问题允许的数据，除非你能证明自定义哨兵一定安全。
 
-## 四种语言需要特别注意的地方
+## 五种语言需要特别注意的地方
 
 ### Java
 
@@ -184,6 +209,14 @@ int main() {
 - `int` 可能溢出，需要时使用 `long long`；
 - STL 提供大量容器和算法，但仍需理解其复杂度。
 
+### Go
+
+- 算法题中动态序列通常使用切片 `[]int`；
+- `append` 可能分配新的底层数组，多个切片也可能共享数据；
+- `map` 读取不存在的 key 会得到零值，需要时使用 `value, exists := map[key]` 区分；
+- Go 只有 `for` 循环，队列常用切片配合头下标；
+- 更完整的算法常用语法见 [Go 算法语法入门](./go-basics)。
+
 ## 复杂度
 
 数组有 `n` 个元素：
@@ -204,6 +237,6 @@ int main() {
 - 基础：同时返回最大值和它的下标；
 - 变形：找出第二大的不同元素；
 - 综合：只遍历一次，同时求最小值、最大值和总和；
-- 四语言：分别实现以上练习，并对照共同伪代码。
+- 五语言：分别实现以上练习，并对照共同伪代码。
 
 下一篇：[认识 Big O →](/algorithm/01-complexity/big-o)

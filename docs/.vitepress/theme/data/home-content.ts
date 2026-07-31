@@ -71,8 +71,8 @@ export const editorialFeatures: EditorialFeature[] = [
   },
   {
     eyebrow: '方法论',
-    title: '一套算法，四种语言',
-    summary: '算法思想只有一套，Java、Python、JavaScript、C++ 只是不同的表达工具。',
+    title: '一套算法，五种语言',
+    summary: '算法思想只有一套，Java、Python、JavaScript、C++、Go 只是不同的表达工具。',
     route: '/algorithm/00-foundations/four-language-basics',
     meta: '语言对照 · 必读'
   },
@@ -106,7 +106,7 @@ export const learningStages: LearningStage[] = [
   },
   {
     marker: 'D',
-    title: '四语言验证',
+    title: '五语言验证',
     summary: '对照容器、类型和边界差异，确认思想保持一致。',
     route: '/coverage'
   }

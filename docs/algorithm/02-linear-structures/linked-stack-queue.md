@@ -5,6 +5,10 @@ description: 用火车车厢、叠盘子和排队理解三种基础结构
 
 # 链表、栈与队列
 
+::: tip 配套深化阅读
+本文先建立生活直觉，再配合 [链表基本原理](https://labuladong.online/zh/algo/data-structure-basic/linkedlist-basic/)和[队列/栈基本原理](https://labuladong.online/zh/algo/data-structure-basic/queue-stack-basic/)学习底层实现。
+:::
+
 这三种结构强调的不是元素是什么，而是元素怎样连接、按什么顺序被访问。
 
 ## 三个生活类比
@@ -73,14 +77,14 @@ description: 用火车车厢、叠盘子和排队理解三种基础结构
 - 树的层序遍历；
 - 生产者和消费者模型。
 
-## 四语言容器选择
+## 五语言容器选择
 
-| 结构 | Java | Python | JavaScript | C++ |
-| --- | --- | --- | --- | --- |
-| 链表节点 | 自定义类 | 自定义类 | 自定义类 | 自定义结构体 |
-| 栈 | `ArrayDeque` | `list` | `Array` | `std::stack` |
-| 队列 | `ArrayDeque` | `collections.deque` | 数组配合头下标 | `std::queue` |
-| 双端队列 | `ArrayDeque` | `deque` | 通常自定义或使用库 | `std::deque` |
+| 结构 | Java | Python | JavaScript | C++ | Go |
+| --- | --- | --- | --- | --- | --- |
+| 链表节点 | 自定义类 | 自定义类 | 自定义类 | 自定义结构体 | 自定义结构体 |
+| 栈 | `ArrayDeque` | `list` | `Array` | `std::stack` | 切片 `[]T` |
+| 队列 | `ArrayDeque` | `collections.deque` | 数组配合头下标 | `std::queue` | 切片配合头下标 |
+| 双端队列 | `ArrayDeque` | `deque` | 通常自定义或使用库 | `std::deque` | 通常自定义或使用库 |
 
 ### 为什么 JavaScript 队列不推荐频繁 `shift`
 

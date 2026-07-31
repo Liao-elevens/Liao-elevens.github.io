@@ -65,3 +65,9 @@ if (isAvailable('g++', ['--version'])) {
 } else {
   console.log('跳过 C++ 示例：当前环境没有可用的 g++ 编译器')
 }
+
+if (isAvailable('go', ['version'])) {
+  run('Go 示例', 'go', ['run', 'examples/go/binary_search.go'])
+} else {
+  console.log('跳过 Go 示例：当前环境没有可用的 Go 运行环境')
+}

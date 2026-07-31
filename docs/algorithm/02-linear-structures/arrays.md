@@ -5,6 +5,10 @@ description: 用一排带编号的储物柜理解数组、下标和原地修改
 
 # 数组：一排带编号的储物柜
 
+::: tip 配套深化阅读
+先完成本文的储物柜模拟，再阅读 [labuladong：数组基本原理](https://labuladong.online/zh/algo/data-structure-basic/array-basic/)理解连续存储和动态数组实现。
+:::
+
 数组可以想成一排储物柜：
 
 - 每个柜子有连续编号；
@@ -66,7 +70,7 @@ right = 数组长度 - 1
         交换左右元素
 ```
 
-## 四种语言实现
+## 五种语言实现
 
 ::: code-group
 
@@ -143,6 +147,25 @@ void moveNegativesLeft(std::vector<int>& numbers) {
 }
 ```
 
+```go [Go]
+func moveNegativesLeft(numbers []int) {
+	left := 0
+	right := len(numbers) - 1
+
+	for left < right {
+		for left < right && numbers[left] < 0 {
+			left++
+		}
+		for left < right && numbers[right] >= 0 {
+			right--
+		}
+		if left < right {
+			numbers[left], numbers[right] = numbers[right], numbers[left]
+		}
+	}
+}
+```
+
 :::
 
 ## 为什么空间是 O(1)
@@ -153,15 +176,15 @@ void moveNegativesLeft(std::vector<int>& numbers) {
 - 空间复杂度：`O(1)`；
 - 是否稳定：否，负数和非负数内部的相对顺序可能改变。
 
-## 四语言数组对应
+## 五语言数组对应
 
-| 需求 | Java | Python | JavaScript | C++ |
-| --- | --- | --- | --- | --- |
-| 固定类型数组 | `int[]` | 通常仍用 `list` | 通常仍用 `Array` | `std::array`、原生数组 |
-| 动态数组 | `ArrayList<Integer>` | `list` | `Array` | `std::vector<int>` |
-| 长度 | `.length` | `len()` | `.length` | `.size()` |
-| 末尾追加 | `.add()` | `.append()` | `.push()` | `.push_back()` |
-| 删除末尾 | `.remove(size-1)` | `.pop()` | `.pop()` | `.pop_back()` |
+| 需求 | Java | Python | JavaScript | C++ | Go |
+| --- | --- | --- | --- | --- | --- |
+| 固定类型数组 | `int[]` | 通常仍用 `list` | 通常仍用 `Array` | `std::array`、原生数组 | `[N]int` |
+| 动态数组 | `ArrayList<Integer>` | `list` | `Array` | `std::vector<int>` | `[]int` |
+| 长度 | `.length` | `len()` | `.length` | `.size()` | `len()` |
+| 末尾追加 | `.add()` | `.append()` | `.push()` | `.push_back()` | `append()` |
+| 删除末尾 | `.remove(size-1)` | `.pop()` | `.pop()` | `.pop_back()` | `slice[:len(slice)-1]` |
 
 ## 常见错误
 

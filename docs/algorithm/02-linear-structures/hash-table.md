@@ -1,11 +1,15 @@
 ---
 title: 哈希表与集合
-description: 从储物柜和通讯录理解 Map、Set、哈希函数、冲突与四语言常用写法
+description: 从储物柜和通讯录理解 Map、Set、哈希函数、冲突与五语言常用写法
 ---
 
 # 哈希表与集合：给数据贴上快速查找的标签
 
 > 前置知识：变量、数组、循环、函数。建议先读[算法到底是什么](/algorithm/00-foundations/zero-to-algorithms)。
+
+::: tip 配套深化阅读
+先理解本文的储物柜例子，再阅读 [labuladong：哈希表核心原理](https://labuladong.online/zh/algo/data-structure-basic/hashmap-basic/)了解哈希函数、桶和冲突处理。
+:::
 
 哈希表解决的是一个极常见的问题：
 
@@ -100,7 +104,7 @@ Set 只保存唯一的 key，不关心额外 value。
 返回 counts
 ```
 
-### 四语言实现
+### 五语言实现
 
 ::: code-group
 
@@ -154,17 +158,27 @@ std::unordered_map<int, int> countNumbers(
 }
 ```
 
+```go [Go]
+func countNumbers(numbers []int) map[int]int {
+	counts := make(map[int]int)
+	for _, number := range numbers {
+		counts[number]++
+	}
+	return counts
+}
+```
+
 :::
 
-## 四种语言的关键差异
+## 五种语言的关键差异
 
-| 动作 | Java | Python | JavaScript | C++ |
-| --- | --- | --- | --- | --- |
-| 创建 Map | `new HashMap<>()` | `{}` | `new Map()` | `std::unordered_map` |
-| 判断 key | `containsKey(k)` | `k in map` | `map.has(k)` | `map.find(k) != map.end()` |
-| 读取 value | `get(k)` | `map[k]` | `map.get(k)` | `map.at(k)` |
-| 写入 | `put(k, v)` | `map[k] = v` | `map.set(k, v)` | `map[k] = v` |
-| 缺省值 | `getOrDefault` | `get(k, default)` | `get(k) ?? default` | `operator[]` 可创建默认值 |
+| 动作 | Java | Python | JavaScript | C++ | Go |
+| --- | --- | --- | --- | --- | --- |
+| 创建 Map | `new HashMap<>()` | `{}` | `new Map()` | `std::unordered_map` | `make(map[K]V)` |
+| 判断 key | `containsKey(k)` | `k in map` | `map.has(k)` | `map.find(k) != map.end()` | `value, exists := map[k]` |
+| 读取 value | `get(k)` | `map[k]` | `map.get(k)` | `map.at(k)` | `map[k]` |
+| 写入 | `put(k, v)` | `map[k] = v` | `map.set(k, v)` | `map[k] = v` | `map[k] = v` |
+| 缺省值 | `getOrDefault` | `get(k, default)` | `get(k) ?? default` | `operator[]` 可创建默认值 | 不存在时返回 value 零值 |
 
 ::: warning JavaScript 初学坑
 普通对象 `{}` 也能保存键值，但键会受到字符串化、原型属性等规则影响。学习通用哈希表算法时，优先使用 `Map`；只有明确需要普通对象时再使用 `{}`。
@@ -172,6 +186,10 @@ std::unordered_map<int, int> countNumbers(
 
 ::: warning C++ 初学坑
 `map[key]` 在 key 不存在时会插入一个默认值。只想查询而不想修改时，使用 `find`；如果确定 key 存在，也可以用 `at`。
+:::
+
+::: warning Go 初学坑
+读取不存在的 key 会得到 value 类型的零值。需要区分“不存在”和“存在但值为零”时，使用 `value, exists := map[key]`。
 :::
 
 ## 第二个任务：判断是否有重复元素
@@ -244,6 +262,19 @@ bool containsDuplicate(const std::vector<int>& numbers) {
         seen.insert(number);
     }
     return false;
+}
+```
+
+```go [Go]
+func containsDuplicate(numbers []int) bool {
+	seen := make(map[int]bool)
+	for _, number := range numbers {
+		if seen[number] {
+			return true
+		}
+		seen[number] = true
+	}
+	return false
 }
 ```
 

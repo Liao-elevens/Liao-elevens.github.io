@@ -7,6 +7,10 @@ description: 从猜数字开始理解有序、单调、区间与边界
 
 > 前置知识：数组、循环、下标、`O(log n)`。
 
+::: tip 配套深化阅读
+掌握本文的闭区间和左闭右开区间后，再阅读 [labuladong：二分查找框架](https://labuladong.online/zh/algo/essential-technique/binary-search-framework/)扩展左右边界与二分答案。
+:::
+
 二分查找并不只是一个需要背诵的代码模板。它依赖一个更重要的事实：**搜索空间具有可以判断方向的单调规律。**
 
 ## 通俗实例：猜数字
@@ -71,7 +75,7 @@ right = 数组长度 - 1
 
 为什么不是简单写 `(left + right) / 2`？在固定宽度整数语言中，`left + right` 有溢出的可能。写成 `left + (right - left) / 2` 更稳妥。
 
-## 四语言实现
+## 五语言实现
 
 ::: code-group
 
@@ -154,6 +158,27 @@ int binarySearch(const std::vector<int>& numbers, int target) {
         }
     }
     return -1;
+}
+```
+
+```go [Go]
+func binarySearch(numbers []int, target int) int {
+	left := 0
+	right := len(numbers) - 1
+
+	for left <= right {
+		middle := left + (right-left)/2
+
+		if numbers[middle] == target {
+			return middle
+		}
+		if numbers[middle] < target {
+			left = middle + 1
+		} else {
+			right = middle - 1
+		}
+	}
+	return -1
 }
 ```
 
@@ -252,6 +277,26 @@ int firstPosition(const std::vector<int>& numbers, int target) {
                    numbers[left] == target
                ? left
                : -1;
+}
+```
+
+```go [Go]
+func firstPosition(numbers []int, target int) int {
+	left := 0
+	right := len(numbers)
+
+	for left < right {
+		middle := left + (right-left)/2
+		if numbers[middle] >= target {
+			right = middle
+		} else {
+			left = middle + 1
+		}
+	}
+	if left < len(numbers) && numbers[left] == target {
+		return left
+	}
+	return -1
 }
 ```
 

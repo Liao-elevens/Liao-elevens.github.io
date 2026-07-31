@@ -1,11 +1,15 @@
 ---
 title: 前缀和
-description: 从收银小票累计金额理解前缀和、区间查询、边界设计与四语言实现
+description: 从收银小票累计金额理解前缀和、区间查询、边界设计与五语言实现
 ---
 
 # 前缀和：提前算好累计结果
 
 > 前置知识：数组、循环、下标、加减法、复杂度基础。
+
+::: tip 配套深化阅读
+本文讲清“多留一个空前缀”的边界设计，之后可阅读 [labuladong：前缀和技巧](https://labuladong.online/zh/algo/data-structure/prefix-sum/)学习二维前缀和与哈希表组合。
+:::
 
 前缀和适合解决：
 
@@ -129,7 +133,7 @@ prefix[left]       = [要减掉的左边部分]
 返回 prefix[right + 1] - prefix[left]
 ```
 
-## 四语言实现
+## 五语言实现
 
 ::: code-group
 
@@ -197,6 +201,24 @@ private:
 };
 ```
 
+```go [Go]
+type PrefixSum struct {
+	prefix []int64
+}
+
+func newPrefixSum(numbers []int) PrefixSum {
+	prefix := make([]int64, len(numbers)+1)
+	for index, number := range numbers {
+		prefix[index+1] = prefix[index] + int64(number)
+	}
+	return PrefixSum{prefix: prefix}
+}
+
+func (sums PrefixSum) rangeSum(left, right int) int64 {
+	return sums.prefix[right+1] - sums.prefix[left]
+}
+```
+
 :::
 
 使用方式：
@@ -223,9 +245,14 @@ PrefixSum sums({12, 8, 20, 6, 14});
 std::cout << sums.rangeSum(1, 3) << '\n'; // 34
 ```
 
+```go [Go]
+sums := newPrefixSum([]int{12, 8, 20, 6, 14})
+fmt.Println(sums.rangeSum(1, 3)) // 34
+```
+
 :::
 
-## 为什么 Java 和 C++ 使用更大的整数
+## 为什么 Java、C++ 和 Go 使用更大的整数
 
 即使单个元素能放进 32 位整数，许多元素相加后也可能溢出。
 
@@ -236,7 +263,7 @@ std::cout << sums.rangeSum(1, 3) << '\n'; // 34
 总和 = 10000000000
 ```
 
-这超过 Java/C++ 普通 `int` 的范围，所以累计值使用 `long` / `long long`。
+这超过 Java/C++ 普通 `int` 的范围，所以累计值使用 `long` / `long long`；Go 示例使用明确的 `int64`。
 
 JavaScript 的 `Number` 对整数精确表示也有上限；更大整数问题可能需要 `BigInt`，但不能把 `Number` 和 `BigInt` 直接混算。
 

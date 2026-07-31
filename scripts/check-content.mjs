@@ -72,7 +72,7 @@ for (const file of markdownFiles) {
   }
 }
 
-const fourLanguageArticles = [
+const fiveLanguageArticles = [
   'docs/algorithm/00-foundations/four-language-basics.md',
   'docs/algorithm/00-foundations/problem-solving-guide.md',
   'docs/algorithm/02-linear-structures/arrays.md',
@@ -87,7 +87,13 @@ const fourLanguageArticles = [
   'docs/algorithm/10-dynamic-programming/dp-fundamentals.md'
 ]
 
-const requiredCodeFences = ['```java', '```python', '```javascript', '```cpp']
+const requiredCodeFences = [
+  '```java',
+  '```python',
+  '```javascript',
+  '```cpp',
+  '```go'
+]
 const diagramFiles = [
   'docs/public/diagrams/learning-roadmap.svg',
   'docs/public/diagrams/learning-loop.svg',
@@ -95,7 +101,7 @@ const diagramFiles = [
   'docs/public/diagrams/data-structure-decision.svg'
 ]
 
-for (const article of fourLanguageArticles) {
+for (const article of fiveLanguageArticles) {
   const absolutePath = join(projectRoot, article)
   if (!existsSync(absolutePath)) {
     problems.push(`${article} 不存在`)
@@ -106,6 +112,14 @@ for (const article of fourLanguageArticles) {
   for (const codeFence of requiredCodeFences) {
     if (!content.includes(codeFence)) {
       problems.push(`${article} 缺少 ${codeFence.slice(3)} 示例`)
+    }
+  }
+
+  const codeGroups = content.split('::: code-group').slice(1)
+  for (const [index, codeGroup] of codeGroups.entries()) {
+    const groupBody = codeGroup.split('\n:::')[0]
+    if (!groupBody.includes('```go')) {
+      problems.push(`${article} 的第 ${index + 1} 个语言切换组缺少 Go`)
     }
   }
 }
@@ -132,5 +146,5 @@ if (problems.length > 0) {
 }
 
 console.log(
-  `内容检查通过：${markdownFiles.length} 篇 Markdown，内部链接与四语言核心示例均有效。`
+  `内容检查通过：${markdownFiles.length} 篇 Markdown，内部链接与五语言核心示例均有效。`
 )

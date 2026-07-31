@@ -1,6 +1,6 @@
 ---
 title: 基础排序
-description: 从整理扑克牌理解冒泡、选择、插入排序，以及四语言的插入排序实现
+description: 从整理扑克牌理解冒泡、选择、插入排序，以及五语言的插入排序实现
 ---
 
 # 基础排序：像整理扑克牌一样安排数据
@@ -146,7 +146,7 @@ description: 从整理扑克牌理解冒泡、选择、插入排序，以及四�
 
 中间出现重复的 `7` 和 `5` 没关系，因为 `current` 已经单独保存。
 
-## 四语言实现
+## 五语言实现
 
 ::: code-group
 
@@ -209,9 +209,24 @@ void insertionSort(std::vector<int>& numbers) {
 }
 ```
 
+```go [Go]
+func insertionSort(numbers []int) {
+	for index := 1; index < len(numbers); index++ {
+		current := numbers[index]
+		position := index - 1
+
+		for position >= 0 && numbers[position] > current {
+			numbers[position+1] = numbers[position]
+			position--
+		}
+		numbers[position+1] = current
+	}
+}
+```
+
 :::
 
-四种语言都直接修改传入数组，没有额外返回一个新数组。调用时要注意原数据会改变。
+五种语言都直接修改传入数组，没有额外返回一个新数组。调用时要注意原数据会改变。
 
 ## 正确性直觉：有序区间不断扩大
 
@@ -287,6 +302,10 @@ numbers.sort((a, b) => a - b)
 
 ```cpp [C++]
 std::sort(numbers.begin(), numbers.end());
+```
+
+```go [Go]
+sort.Ints(numbers)
 ```
 
 :::

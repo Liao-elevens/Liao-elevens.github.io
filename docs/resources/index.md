@@ -1,6 +1,6 @@
 ---
 title: 第三方学习资源
-description: 为算法零基础学习者筛选的动画、课程、文档、题库和四语言参考资料
+description: 为算法零基础学习者筛选的动画、课程、文档、题库和五语言参考资料
 ---
 
 # 第三方学习资源：少而精地搭配本站
@@ -26,7 +26,23 @@ description: 为算法零基础学习者筛选的动画、课程、文档、题�
 | 动画观察 | [VisuAlgo](https://visualgo.net/zh) | 可以逐步播放数据结构和算法 | 自己输入一组很小的数据 |
 | 中文百科 | [OI Wiki](https://oi-wiki.org/) | 覆盖范围非常广 | 入门后作为专题字典，不必从头读 |
 | 入门练习 | [LeetCode Explore](https://leetcode.com/explore/learn/) | 按数据结构组织学习卡片 | 先做简单题，记录失败原因 |
-| 语言语法 | 四语言官方/权威文档 | 避免复制过时语法 | 只查询当前代码遇到的问题 |
+| 框架教程 | [labuladong](https://labuladong.online/zh/algo/home/) | 题型框架清晰，支持多语言 | 按本站路线阅读对应章节 |
+| 语言语法 | 五语言官方/权威文档 | 避免复制过时语法 | 只查询当前代码遇到的问题 |
+
+## labuladong 怎样和本站搭配
+
+本站先用生活实例解释概念，再提供五语言对照；labuladong 适合继续学习可复用的解题框架和同类练习。
+
+推荐顺序：
+
+1. 从本站的[完整学习路线](/roadmap/)进入当前知识点；
+2. 手工模拟本站的小例子；
+3. 阅读路线中对应的 labuladong 文章；
+4. 关掉答案，用最熟悉的语言独立写出；
+5. 回本站切换另外四种语言，比较容器和边界；
+6. 最后完成同类练习，不直接随机刷题。
+
+不要把第三方的完整题单当作第一课。labuladong 的[完整目录学习规划](https://labuladong.online/zh/algo/intro/beginner-learning-plan/)也建议先学习文章，再使用题单复习。
 
 ## 第一阶段：看懂动画与过程
 
@@ -38,14 +54,14 @@ description: 为算法零基础学习者筛选的动画、课程、文档、题�
 
 - 第一次接触数组、链表、栈、队列、哈希、树和图；
 - 需要动画建立直觉；
-- 希望对照 Java、Python、JavaScript、C++。
+- 希望对照 Java、Python、JavaScript、C++、Go。
 
 推荐方式：
 
 1. 先读本站同名专题；
 2. 在 Hello 算法观看对应动画；
 3. 暂停动画，预测下一步；
-4. 回本站完成手工模拟和四语言比较。
+4. 回本站完成手工模拟和五语言比较。
 
 ### VisuAlgo
 
@@ -141,7 +157,7 @@ description: 为算法零基础学习者筛选的动画、课程、文档、题�
 
 一道题真正复盘，通常比连续复制十道答案更有价值。
 
-## 四语言参考文档
+## 五语言参考文档
 
 ### Java
 
@@ -198,6 +214,22 @@ stack、queue、deque、priority_queue、set、map、algorithm
 ```
 
 cppreference 是广泛使用的语言参考资料，不是线性课程。遇到具体容器或函数时查阅即可。
+
+### Go
+
+- [Go 官方教程](https://go.dev/doc/tutorial/)。
+- [A Tour of Go](https://go.dev/tour/welcome/1)。
+- [Go 标准库](https://pkg.go.dev/std)。
+- [container/heap](https://pkg.go.dev/container/heap)：优先队列和堆接口。
+
+算法阶段优先熟悉：
+
+```text
+切片、map、struct、指针、range、
+sort、container/heap、递归函数、队列头下标
+```
+
+本站的[Go 算法语法入门](/algorithm/00-foundations/go-basics)只保留算法必需内容，适合先读；官方文档用于继续确认语言细节。
 
 ## 书籍怎么选
 

@@ -5,6 +5,10 @@ description: 用爬楼梯理解状态、转移、初始值和计算顺序
 
 # 动态规划：把重复答案保存下来
 
+::: tip 配套深化阅读
+先从本文的爬楼梯推导状态，再阅读 [labuladong：动态规划解题框架](https://labuladong.online/zh/algo/essential-technique/dynamic-programming-framework/)练习状态、选择和转移的统一思考方式。
+:::
+
 动态规划最难的不是写循环，而是给状态一个准确含义。
 
 ## 通俗实例：爬楼梯
@@ -42,7 +46,7 @@ dp[2] = dp[1] + dp[0] = 1 + 1 = 2
 
 正好对应 `1+1` 和 `2`。
 
-## 四语言实现：空间优化
+## 五语言实现：空间优化
 
 当前状态只依赖前两个状态，不必保存整个数组。
 
@@ -119,6 +123,24 @@ long long climbStairs(int steps) {
 }
 ```
 
+```go [Go]
+func climbStairs(steps int) int64 {
+	if steps < 0 {
+		panic("台阶数不能为负数")
+	}
+
+	var previousTwo int64 = 1
+	var previousOne int64 = 1
+
+	for current := 2; current <= steps; current++ {
+		ways := previousOne + previousTwo
+		previousTwo = previousOne
+		previousOne = ways
+	}
+	return previousOne
+}
+```
+
 :::
 
 ## 从暴力递归到动态规划
@@ -147,7 +169,7 @@ ways(5)
 - 本文滚动变量版本空间 `O(1)`。
 
 ::: warning 整数范围
-方法数增长很快。Java 和 C++ 的 `long`/`long long` 最终仍会溢出；JavaScript `Number` 也会失去整数精度。处理非常大的 `n` 时，需要大整数或按题目要求取模。
+方法数增长很快。Java、C++ 和 Go 的固定宽度整数最终仍会溢出；JavaScript `Number` 也会失去整数精度。处理非常大的 `n` 时，需要大整数或按题目要求取模。
 :::
 
 ## 练习

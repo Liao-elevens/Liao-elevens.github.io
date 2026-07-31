@@ -5,6 +5,10 @@ description: 用家族关系和文件夹理解树的节点、子树与遍历顺�
 
 # 二叉树遍历：先看谁，后看谁
 
+::: tip 配套深化阅读
+本文先建立遍历顺序，再使用 [labuladong：二叉树核心纲领](https://labuladong.online/zh/algo/essential-technique/binary-tree-summary/)深化“遍历一遍”和“分解子问题”两种思维。
+:::
+
 树可以表达文件夹、组织结构和家族关系。二叉树中的每个节点最多有左、右两个孩子。
 
 ## 示例
@@ -34,7 +38,7 @@ description: 用家族关系和文件夹理解树的节点、子树与遍历顺�
 
 子树仍然是树，所以可以用同一个函数处理。
 
-## 四语言实现：前序遍历
+## 五语言实现：前序遍历
 
 ::: code-group
 
@@ -138,6 +142,31 @@ std::vector<int> preorder(TreeNode* root) {
     std::vector<int> result;
     traverse(root, result);
     return result;
+}
+```
+
+```go [Go]
+type TreeNode struct {
+	Value int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+func preorder(root *TreeNode) []int {
+	result := []int{}
+
+	var traverse func(*TreeNode)
+	traverse = func(node *TreeNode) {
+		if node == nil {
+			return
+		}
+		result = append(result, node.Value)
+		traverse(node.Left)
+		traverse(node.Right)
+	}
+
+	traverse(root)
+	return result
 }
 ```
 

@@ -5,6 +5,10 @@ description: 用地铁站扩散理解广度优先搜索与无权最短路
 
 # 图的 BFS：一圈一圈向外探索
 
+::: tip 配套深化阅读
+先理解本文的地铁扩散，再阅读 [labuladong：图的 DFS/BFS 遍历](https://labuladong.online/zh/algo/data-structure-basic/graph-traverse-basic/)和[BFS 解题框架](https://labuladong.online/zh/algo/essential-technique/bfs-framework/)。
+:::
+
 广度优先搜索像从一个地铁站向外扩散：
 
 - 第 0 层是起点；
@@ -47,7 +51,7 @@ C —— E
             加入队尾
 ```
 
-## 四语言实现：计算无权图距离
+## 五语言实现：计算无权图距离
 
 图用邻接表表示，节点编号为 `0～n-1`。
 
@@ -146,6 +150,32 @@ std::vector<int> bfsDistances(
         }
     }
     return distance;
+}
+```
+
+```go [Go]
+func bfsDistances(graph [][]int, start int) []int {
+	distance := make([]int, len(graph))
+	for index := range distance {
+		distance[index] = -1
+	}
+
+	queue := []int{start}
+	head := 0
+	distance[start] = 0
+
+	for head < len(queue) {
+		node := queue[head]
+		head++
+
+		for _, neighbor := range graph[node] {
+			if distance[neighbor] == -1 {
+				distance[neighbor] = distance[node] + 1
+				queue = append(queue, neighbor)
+			}
+		}
+	}
+	return distance
 }
 ```
 

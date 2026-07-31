@@ -78,6 +78,13 @@ for (int number : numbers) {
 }
 ```
 
+```go [Go]
+sum := 0
+for _, number := range numbers {
+	sum += number
+}
+```
+
 :::
 
 数组长度是 `n`，循环执行 `n` 次，所以时间复杂度是 `O(n)`。

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1120" height="760" viewBox="0 0 1120 760" role="img" aria-labelledby="title desc">
   <title id="title">算法学习路线依赖图</title>
-  <desc id="desc">从四语言编程基础出发，依次学习基本数据组织、复杂度、搜索、树图、贪心和动态规划。</desc>
+  <desc id="desc">从五语言编程基础出发，依次学习基本数据组织、复杂度、搜索、树图、贪心和动态规划。</desc>
   <defs>
     <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
       <path d="M0 0L8 4L0 8Z" fill="#e67855"/>
@@ -32,7 +32,7 @@
   <path class="edge" d="M940 567V605H950V675"/>
 
   <rect class="node" x="390" y="66" rx="12" width="340" height="52"/>
-  <text class="label" x="560" y="98">四语言编程基础</text>
+  <text class="label" x="560" y="98">五语言编程基础</text>
 
   <rect class="node" x="185" y="202" rx="12" width="290" height="52"/>
   <text class="label" x="330" y="234">数组、字符串、哈希表</text>

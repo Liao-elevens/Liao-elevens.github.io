@@ -5,6 +5,10 @@ description: 用两名检查员和可伸缩相框理解双指针与窗口
 
 # 双指针与滑动窗口
 
+::: tip 配套深化阅读
+先手工移动本文的左右边界，再阅读 [数组双指针总结](https://labuladong.online/zh/algo/essential-technique/array-two-pointers-summary/)与[滑动窗口框架](https://labuladong.online/zh/algo/essential-technique/sliding-window-framework/)归纳适用信号。
+:::
+
 双指针的核心不是“代码里有两个变量”，而是利用问题规律，让两个位置协同移动，避免重复枚举。
 
 ## 左右双指针：寻找两数之和
@@ -28,7 +32,7 @@ description: 用两名检查员和可伸缩相框理解双指针与窗口
 和太小 → 左指针右移，增大总和
 ```
 
-### 四语言实现
+### 五语言实现
 
 ::: code-group
 
@@ -109,6 +113,26 @@ std::pair<int, int> twoSumSorted(
         }
     }
     return {-1, -1};
+}
+```
+
+```go [Go]
+func twoSumSorted(numbers []int, target int) [2]int {
+	left := 0
+	right := len(numbers) - 1
+
+	for left < right {
+		sum := int64(numbers[left]) + int64(numbers[right])
+		if sum == int64(target) {
+			return [2]int{left, right}
+		}
+		if sum < int64(target) {
+			left++
+		} else {
+			right--
+		}
+	}
+	return [2]int{-1, -1}
 }
 ```
 

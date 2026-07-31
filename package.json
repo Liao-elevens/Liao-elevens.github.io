@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "面向算法零基础学习者的四语言算法知识库与个人技术博客",
+  "description": "面向算法零基础学习者的五语言算法知识库与个人技术博客",
   "scripts": {
     "dev": "vitepress dev docs",
     "build": "vitepress build docs",

@@ -8,7 +8,7 @@ description: 从零基础到算法理论与工程实践的完整知识地图
 这里不是一张按日期执行的课程表，而是一张按**知识依赖**组织的地图。你可以从零开始沿主线前进，也可以把它当成长期扩展的算法百科。
 
 ::: tip 阅读约定
-每个正式知识点最终都会包含：通俗实例、手工模拟、伪代码、Java、Python、JavaScript、C++、复杂度、边界情况、常见错误、练习与解析。
+每个正式知识点最终都会包含：通俗实例、手工模拟、伪代码、Java、Python、JavaScript、C++、Go、复杂度、边界情况、常见错误、练习与解析。
 :::
 
 ## 零基础请从这里开始
@@ -18,7 +18,7 @@ description: 从零基础到算法理论与工程实践的完整知识地图
 | 顺序 | 内容 | 学完能够做什么 |
 | ---: | --- | --- |
 | 1 | [算法到底是什么](/algorithm/00-foundations/zero-to-algorithms) | 认识输入、输出、状态、条件与循环 |
-| 2 | [四语言算法基础](/algorithm/00-foundations/four-language-basics) | 看懂同一思想的四种语法表达 |
+| 2 | [五语言算法基础](/algorithm/00-foundations/four-language-basics) | 看懂同一思想的五种语法表达 |
 | 3 | [从读题到调试](/algorithm/00-foundations/problem-solving-guide) | 把题目拆成示例、暴力解、优化和测试 |
 | 4 | [数组](/algorithm/02-linear-structures/arrays) | 掌握遍历、下标与边界 |
 | 5 | [哈希表与集合](/algorithm/02-linear-structures/hash-table) | 处理计数、去重和快速查找 |
@@ -34,7 +34,7 @@ description: 从零基础到算法理论与工程实践的完整知识地图
 | --- | --- |
 | 知识范围 | 覆盖基础、面试、竞赛、数学、理论与工程算法 |
 | 学习顺序 | 每篇文章声明前置知识，而不是简单按难度堆叠 |
-| 语言实现 | 同一算法提供 Java、Python、JavaScript、C++ 对照 |
+| 语言实现 | 同一算法提供 Java、Python、JavaScript、C++、Go 对照 |
 | 理解方式 | 先实例和模拟，再进入术语、证明和代码 |
 | 质量 | 代码可运行、链接可访问、复杂度与边界经过检查 |
 | 可扩展性 | 新知识通过模板、标签和覆盖矩阵持续加入 |

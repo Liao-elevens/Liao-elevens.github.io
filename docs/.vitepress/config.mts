@@ -19,7 +19,8 @@ const algorithmSidebar = [
     items: [
       { text: '编程与数学前置', link: '/algorithm/00-foundations/' },
       { text: '算法到底是什么', link: '/algorithm/00-foundations/zero-to-algorithms' },
-      { text: '四语言算法基础', link: '/algorithm/00-foundations/four-language-basics' },
+      { text: '五语言算法基础', link: '/algorithm/00-foundations/four-language-basics' },
+      { text: 'Go 算法语法入门', link: '/algorithm/00-foundations/go-basics' },
       { text: '从读题到调试', link: '/algorithm/00-foundations/problem-solving-guide' },
       { text: '复杂度与正确性', link: '/algorithm/01-complexity/' },
       { text: '认识 Big O', link: '/algorithm/01-complexity/big-o' }
@@ -29,6 +30,7 @@ const algorithmSidebar = [
     text: '02 · 核心数据结构',
     collapsed: false,
     items: [
+      { text: '数据结构入门地图', link: '/algorithm/02-linear-structures/data-structure-guide' },
       { text: '线性结构总览', link: '/algorithm/02-linear-structures/' },
       { text: '数组', link: '/algorithm/02-linear-structures/arrays' },
       { text: '链表、栈与队列', link: '/algorithm/02-linear-structures/linked-stack-queue' },
@@ -75,7 +77,7 @@ export default defineConfig({
   lang: 'zh-CN',
   title: 'Liao · Learning Notes',
   titleTemplate: ':title · Liao Learning Notes',
-  description: '从零理解算法：Java、Python、JavaScript、C++ 四语言对照的完整算法知识库。',
+  description: '从零理解算法与数据结构：Java、Python、JavaScript、C++、Go 五语言对照的完整学习知识库。',
   base: '/',
   cleanUrls: true,
   lastUpdated: true,
@@ -169,7 +171,7 @@ export default defineConfig({
       text: '在 GitHub 上完善本页'
     },
     footer: {
-      message: '用通俗的例子理解算法，用四种语言验证同一种思想。',
+      message: '用通俗的例子理解算法与数据结构，用五种语言验证同一种思想。',
       copyright: '© 2026 Liao · Learning Notes'
     },
     returnToTopLabel: '返回顶部',

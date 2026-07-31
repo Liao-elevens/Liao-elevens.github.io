@@ -114,7 +114,7 @@ for i 从 0 到倒数第二个位置：
 
 如果无法用一句话解释变量，通常说明思路还没有完全清楚。
 
-## 第六步：四语言实现
+## 第六步：五语言实现
 
 ::: code-group
 
@@ -182,9 +182,24 @@ std::vector<int> twoSum(const std::vector<int>& numbers, int target) {
 }
 ```
 
+```go [Go]
+func twoSum(numbers []int, target int) []int {
+	seen := make(map[int]int)
+
+	for index, number := range numbers {
+		needed := target - number
+		if previousIndex, exists := seen[needed]; exists {
+			return []int{previousIndex, index}
+		}
+		seen[number] = index
+	}
+	return []int{}
+}
+```
+
 :::
 
-四份代码的共同骨架完全相同：
+五份代码的共同骨架完全相同：
 
 ```text
 准备哈希表 → 遍历 → 计算需要值 → 查询 → 保存当前值

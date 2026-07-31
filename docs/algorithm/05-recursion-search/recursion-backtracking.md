@@ -5,6 +5,10 @@ description: 用走迷宫和选择清单理解递归、状态、选择与撤销
 
 # 递归与回溯：选择之后，还能回来
 
+::: tip 配套深化阅读
+如果递归调用过程仍然抽象，先阅读 [labuladong：理解递归](https://labuladong.online/zh/algo/essential-technique/understand-recursion/)；能画出递归树后再进入[回溯框架](https://labuladong.online/zh/algo/essential-technique/backtrack-framework/)。
+:::
+
 递归是函数处理一个规模更小的同类问题；回溯是在递归树上尝试选择，并在返回时撤销选择。
 
 ## 通俗实例：搭配一份早餐
@@ -57,7 +61,7 @@ description: 用走迷宫和选择清单理解递归、状态、选择与撤销
 
 最后一步移除元素，就是“回溯”：恢复进入当前分支之前的状态。
 
-## 四语言实现：生成所有子集
+## 五语言实现：生成所有子集
 
 ::: code-group
 
@@ -166,6 +170,31 @@ std::vector<std::vector<int>> buildSubsets(
 }
 ```
 
+```go [Go]
+func buildSubsets(numbers []int) [][]int {
+	result := [][]int{}
+	path := []int{}
+
+	var search func(int)
+	search = func(index int) {
+		if index == len(numbers) {
+			snapshot := append([]int(nil), path...)
+			result = append(result, snapshot)
+			return
+		}
+
+		search(index + 1)
+
+		path = append(path, numbers[index])
+		search(index + 1)
+		path = path[:len(path)-1]
+	}
+
+	search(0)
+	return result
+}
+```
+
 :::
 
 ## 为什么记录答案时必须复制 path
@@ -178,6 +207,7 @@ std::vector<std::vector<int>> buildSubsets(
 | Python | `path.copy()` |
 | JavaScript | `[...path]` |
 | C++ | `result.push_back(path)` 按值复制 |
+| Go | `append([]int(nil), path...)` |
 
 ## 复杂度
 

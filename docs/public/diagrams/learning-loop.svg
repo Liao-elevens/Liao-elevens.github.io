@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1120" height="300" viewBox="0 0 1120 300" role="img" aria-labelledby="title desc">
   <title id="title">算法学习闭环</title>
-  <desc id="desc">从生活问题开始，经小数据模拟、抽象算法、伪代码、四语言实现、复杂度与边界，最后练习复盘。</desc>
+  <desc id="desc">从生活问题开始，经小数据模拟、抽象算法、伪代码、五语言实现、复杂度与边界，最后练习复盘。</desc>
   <defs>
     <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#e67855"/></marker>
     <style>.bg{fill:#151a22}.node{fill:#f5f2e9;stroke:#e67855;stroke-width:2}.edge{stroke:#e67855;stroke-width:2;marker-end:url(#arrow)}.label{fill:#171c24;font:600 16px system-ui,-apple-system,"Segoe UI",sans-serif;text-anchor:middle}.number{fill:#e67855;font:700 13px system-ui,-apple-system,"Segoe UI",sans-serif;text-anchor:middle}</style>
@@ -18,7 +18,7 @@
   <g transform="translate(205 112)"><rect class="node" width="120" height="76" rx="12"/><text class="number" x="60" y="25">02</text><text class="label" x="60" y="52">小数据模拟</text></g>
   <g transform="translate(360 112)"><rect class="node" width="120" height="76" rx="12"/><text class="number" x="60" y="25">03</text><text class="label" x="60" y="52">抽象算法</text></g>
   <g transform="translate(515 112)"><rect class="node" width="120" height="76" rx="12"/><text class="number" x="60" y="25">04</text><text class="label" x="60" y="52">统一伪代码</text></g>
-  <g transform="translate(670 112)"><rect class="node" width="120" height="76" rx="12"/><text class="number" x="60" y="25">05</text><text class="label" x="60" y="52">四语言实现</text></g>
+  <g transform="translate(670 112)"><rect class="node" width="120" height="76" rx="12"/><text class="number" x="60" y="25">05</text><text class="label" x="60" y="52">五语言实现</text></g>
   <g transform="translate(825 112)"><rect class="node" width="120" height="76" rx="12"/><text class="number" x="60" y="25">06</text><text class="label" x="60" y="52">复杂度边界</text></g>
   <g transform="translate(980 112)"><rect class="node" width="120" height="76" rx="12"/><text class="number" x="60" y="25">07</text><text class="label" x="60" y="52">练习复盘</text></g>
 </svg>
