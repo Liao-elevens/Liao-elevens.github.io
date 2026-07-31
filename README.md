@@ -24,16 +24,18 @@ npm run check
 
 ## 内容结构
 
-| 路径 | 用途 |
-| --- | --- |
-| `docs/algorithm/` | 算法知识库 |
-| `docs/roadmap/` | 依赖式学习路线 |
-| `docs/resources/` | 第三方课程、动画、题库与文档导航 |
-| `docs/blog/` | 学习文章与个人记录 |
-| `docs/frontend/` | 前端知识预留区 |
-| `docs/coverage.md` | 知识库完成度 |
-| `templates/` | 新内容模板 |
-| `scripts/` | 内容质量检查 |
+
+| 路径                 | 用途               |
+| ------------------ | ---------------- |
+| `docs/algorithm/`  | 算法知识库            |
+| `docs/roadmap/`    | 依赖式学习路线          |
+| `docs/resources/`  | 第三方课程、动画、题库与文档导航 |
+| `docs/blog/`       | 学习文章与个人记录        |
+| `docs/frontend/`   | 前端知识预留区          |
+| `docs/coverage.md` | 知识库完成度           |
+| `templates/`       | 新内容模板            |
+| `scripts/`         | 内容质量检查           |
+
 
 ## GitHub Pages
 
