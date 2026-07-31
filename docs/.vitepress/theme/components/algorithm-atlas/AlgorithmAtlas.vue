@@ -7,7 +7,7 @@ import { algorithmCategories } from '../../data/home-content'
     <div class="algorithm-atlas__inner magazine-section">
       <header class="algorithm-atlas__header">
         <p class="section-kicker">THE COMPLETE ATLAS · 完整知识图谱</p>
-        <h2>一张地图，<br><i>看见算法全貌。</i></h2>
+        <h2>一张地图，<i>看见算法全貌。</i></h2>
         <p>
           主线覆盖基础、面试、竞赛与工程算法；高级和专题内容不会阻挡初学主线，
           但始终在地图中保留位置。
@@ -69,6 +69,8 @@ import { algorithmCategories } from '../../data/home-content'
   font-weight: 520;
   letter-spacing: -0.06em;
   line-height: 0.9;
+  line-break: strict;
+  text-wrap: balance;
 }
 
 .algorithm-atlas__header h2 i {
@@ -82,6 +84,8 @@ import { algorithmCategories } from '../../data/home-content'
   margin: 0;
   color: color-mix(in srgb, var(--mag-paper) 66%, transparent);
   line-height: 1.9;
+  line-break: strict;
+  text-wrap: pretty;
 }
 
 .algorithm-atlas__list {
@@ -119,12 +123,16 @@ import { algorithmCategories } from '../../data/home-content'
   font-size: clamp(1.5rem, 3vw, 2.5rem);
   font-weight: 520;
   letter-spacing: -0.025em;
+  line-break: strict;
+  text-wrap: balance;
 }
 
 .atlas-row__main p {
   margin: 0;
   color: color-mix(in srgb, var(--mag-paper) 58%, transparent);
   font-size: 0.85rem;
+  line-break: strict;
+  text-wrap: pretty;
 }
 
 .atlas-row__meta {

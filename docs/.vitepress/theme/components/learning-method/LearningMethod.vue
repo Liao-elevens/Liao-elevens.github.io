@@ -6,11 +6,11 @@ import { learningStages } from '../../data/home-content'
   <section class="learning-method magazine-section">
     <header class="magazine-section__header">
       <div>
-        <p class="section-kicker">ONE IDEA, FOUR LANGUAGES · 统一方法</p>
-        <h2>不是四套算法。</h2>
+        <p class="section-kicker">ONE IDEA, FIVE LANGUAGES · 统一方法</p>
+        <h2>不是五套算法。</h2>
       </div>
       <p>
-        先建立语言无关的思维，再观察 Java、Python、JavaScript、C++
+        先建立语言无关的思维，再观察 Java、Python、JavaScript、C++、Go
         在类型、容器与边界表达上的差异。
       </p>
     </header>
@@ -75,6 +75,8 @@ import { learningStages } from '../../data/home-content'
   font-family: var(--mag-display);
   font-size: 1.8rem;
   font-weight: 560;
+  line-break: strict;
+  text-wrap: balance;
 }
 
 .method-step p {
@@ -82,6 +84,8 @@ import { learningStages } from '../../data/home-content'
   color: var(--mag-muted);
   font-size: 0.86rem;
   line-height: 1.7;
+  line-break: strict;
+  text-wrap: pretty;
 }
 
 .method-step i {

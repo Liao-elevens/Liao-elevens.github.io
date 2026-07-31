@@ -10,12 +10,12 @@ import LearningMethod from '../learning-method/LearningMethod.vue'
       <div class="home-sections__ticker-track">
         <span>算法思想</span><i>×</i>
         <span>通俗实例</span><i>×</i>
-        <span>四语言对照</span><i>×</i>
+        <span>五语言对照</span><i>×</i>
         <span>复杂度分析</span><i>×</i>
         <span>边界与错题</span><i>×</i>
         <span>算法思想</span><i>×</i>
         <span>通俗实例</span><i>×</i>
-        <span>四语言对照</span><i>×</i>
+        <span>五语言对照</span><i>×</i>
       </div>
     </div>
 
@@ -31,7 +31,7 @@ import LearningMethod from '../learning-method/LearningMethod.vue'
       </blockquote>
       <p>
         每篇内容都从生活化实例开始，经过手工模拟与伪代码，最后落到
-        Java、Python、JavaScript、C++ 的可验证实现。
+        Java、Python、JavaScript、C++、Go 的可验证实现。
       </p>
       <a class="magazine-link" href="/roadmap/">
         查看完整学习路线
@@ -89,6 +89,8 @@ import LearningMethod from '../learning-method/LearningMethod.vue'
   font-weight: 520;
   letter-spacing: -0.055em;
   line-height: 0.98;
+  line-break: strict;
+  text-wrap: balance;
 }
 
 .home-sections__manifesto blockquote em {
@@ -103,6 +105,8 @@ import LearningMethod from '../learning-method/LearningMethod.vue'
   color: var(--mag-muted);
   font-size: 1rem;
   line-height: 1.9;
+  line-break: strict;
+  text-wrap: pretty;
 }
 
 @keyframes ticker-shift {

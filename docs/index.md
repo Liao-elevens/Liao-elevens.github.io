@@ -5,7 +5,7 @@ pageClass: magazine-home
 hero:
   name: "LIAO'S LEARNING NOTES"
   text: "把复杂问题，拆成可以理解的步骤。"
-  tagline: "为算法零基础学习者建立的完整知识地图。一个思想，五种语言；从通俗实例出发，抵达可靠实现。"
+  tagline: "为算法零基础学习者建立的<span class=\"magazine-nowrap\">完整知识地图</span>。<span class=\"magazine-nowrap\">一个思想</span>，五种语言；从<span class=\"magazine-nowrap\">通俗实例</span>出发，抵达可靠实现。"
   actions:
     - theme: brand
       text: 开始学习算法

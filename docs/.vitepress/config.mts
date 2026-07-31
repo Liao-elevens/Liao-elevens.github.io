@@ -106,8 +106,6 @@ export default defineConfig({
     nav: [
       { text: '首页', link: '/' },
       { text: '算法知识库', link: '/algorithm/', activeMatch: '^/algorithm/' },
-      { text: '学习路线', link: '/roadmap/' },
-      { text: '学习资源', link: '/resources/' },
       { text: '前端', link: '/frontend/' },
       { text: '文章', link: '/blog/' },
       { text: '关于', link: '/about' }

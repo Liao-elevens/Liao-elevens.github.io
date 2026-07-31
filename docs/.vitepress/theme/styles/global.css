@@ -185,6 +185,8 @@ body {
   font-weight: 540;
   letter-spacing: -0.06em;
   line-height: 0.95;
+  line-break: strict;
+  text-wrap: balance;
 }
 
 .magazine-section__header > p {
@@ -192,6 +194,8 @@ body {
   margin: 0;
   color: var(--mag-muted);
   line-height: 1.8;
+  line-break: strict;
+  text-wrap: pretty;
 }
 
 .section-kicker {

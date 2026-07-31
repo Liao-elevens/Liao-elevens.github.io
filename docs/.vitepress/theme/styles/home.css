@@ -41,7 +41,7 @@
 }
 
 .magazine-home .VPHomeHero .main {
-  max-width: 960px;
+  max-width: 1040px;
 }
 
 .magazine-home .VPHomeHero .name {
@@ -65,21 +65,28 @@
 }
 
 .magazine-home .VPHomeHero .text {
-  max-width: 960px;
+  max-width: 1040px;
   color: var(--mag-ink);
   font-family: var(--mag-display);
-  font-size: clamp(4.25rem, 8.2vw, 8.6rem);
+  font-size: clamp(4rem, 7.4vw, 7.7rem);
   font-weight: 520;
-  letter-spacing: -0.075em;
-  line-height: 0.88;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+  text-wrap: balance;
 }
 
 .magazine-home .VPHomeHero .tagline {
-  max-width: 660px;
+  max-width: 760px;
   margin-top: 2.2rem;
   color: var(--mag-muted);
   font-size: clamp(1rem, 1.7vw, 1.22rem);
   line-height: 1.85;
+  line-break: strict;
+  text-wrap: balance;
+}
+
+.magazine-home .magazine-nowrap {
+  white-space: nowrap;
 }
 
 .magazine-home .VPHomeHero .actions {
@@ -123,12 +130,16 @@
   font-family: var(--mag-display);
   font-size: 1.45rem;
   font-weight: 580;
+  line-break: strict;
+  text-wrap: balance;
 }
 
 .magazine-home .VPFeature .details {
   color: var(--mag-muted);
   font-size: 0.85rem;
   line-height: 1.7;
+  line-break: strict;
+  text-wrap: pretty;
 }
 
 @keyframes hero-shape {
@@ -157,7 +168,8 @@
   }
 
   .magazine-home .VPHomeHero .text {
-    font-size: clamp(3.6rem, 16.5vw, 6.5rem);
+    font-size: clamp(3.1rem, 14vw, 5.4rem);
+    text-wrap: wrap;
   }
 
   .magazine-home .VPFeatures {

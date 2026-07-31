@@ -11,7 +11,7 @@ import { editorialFeatures } from '../../data/home-content'
       </div>
       <p>
         从最值得优先理解的文章开始。每个主题都包含直觉、模拟、伪代码、
-        四语言实现、复杂度与易错点。
+        五语言实现、复杂度与易错点。
       </p>
     </header>
 
@@ -131,12 +131,16 @@ import { editorialFeatures } from '../../data/home-content'
   font-weight: 580;
   letter-spacing: -0.035em;
   line-height: 1.08;
+  line-break: strict;
+  text-wrap: balance;
 }
 
 .editorial-card__copy span {
   color: var(--mag-muted);
   font-size: 0.9rem;
   line-height: 1.7;
+  line-break: strict;
+  text-wrap: pretty;
 }
 
 .editorial-card b {
@@ -155,6 +159,17 @@ import { editorialFeatures } from '../../data/home-content'
   }
 }
 
+@media (max-width: 1100px) {
+  .editorial-grid__issues {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .editorial-card--lead {
+    grid-column: 1 / -1;
+    min-height: 420px;
+  }
+}
+
 @media (max-width: 840px) {
   .editorial-grid__issues {
     grid-template-columns: 1fr;
@@ -162,6 +177,10 @@ import { editorialFeatures } from '../../data/home-content'
 
   .editorial-card {
     min-height: 420px;
+  }
+
+  .editorial-card--lead {
+    grid-column: auto;
   }
 }
 

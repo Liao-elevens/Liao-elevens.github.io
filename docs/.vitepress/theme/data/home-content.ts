@@ -79,7 +79,7 @@ export const editorialFeatures: EditorialFeature[] = [
   {
     eyebrow: '学习资源',
     title: '动画、课程和题库应该怎么选',
-    summary: '按学习阶段筛选 Hello 算法、VisuAlgo、OI Wiki、MIT 课程与四语言官方文档。',
+    summary: '按学习阶段筛选 Hello 算法、VisuAlgo、OI Wiki、MIT 课程与五语言官方文档。',
     route: '/resources/',
     meta: '精选链接 · 2026 核验'
   }
