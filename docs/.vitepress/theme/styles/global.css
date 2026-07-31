@@ -77,9 +77,9 @@ body {
 .vp-doc h1 {
   max-width: 760px;
   margin-bottom: 2rem;
-  font-size: clamp(2.7rem, 6vw, 4.7rem);
+  font-size: clamp(2.3rem, 4.4vw, 3.65rem);
   font-weight: 560;
-  line-height: 1.04;
+  line-height: 1.1;
 }
 
 .vp-doc h2 {
@@ -181,10 +181,10 @@ body {
   margin: 0.45rem 0 0;
   color: var(--mag-ink);
   font-family: var(--mag-display);
-  font-size: clamp(3rem, 6vw, 5.6rem);
+  font-size: clamp(2.5rem, 4.4vw, 4.35rem);
   font-weight: 540;
-  letter-spacing: -0.06em;
-  line-height: 0.95;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
   line-break: strict;
   text-wrap: balance;
 }

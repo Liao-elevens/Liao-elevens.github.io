@@ -68,7 +68,7 @@
   max-width: 1040px;
   color: var(--mag-ink);
   font-family: var(--mag-display);
-  font-size: clamp(4rem, 7.4vw, 7.7rem);
+  font-size: clamp(3.6rem, 6.4vw, 6.6rem);
   font-weight: 520;
   letter-spacing: -0.045em;
   line-height: 0.98;
@@ -168,7 +168,7 @@
   }
 
   .magazine-home .VPHomeHero .text {
-    font-size: clamp(3.1rem, 14vw, 5.4rem);
+    font-size: clamp(2.75rem, 12vw, 4.5rem);
     text-wrap: wrap;
   }
 

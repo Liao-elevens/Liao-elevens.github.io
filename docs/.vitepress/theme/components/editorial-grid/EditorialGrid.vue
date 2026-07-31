@@ -7,7 +7,10 @@ import { editorialFeatures } from '../../data/home-content'
     <header class="magazine-section__header">
       <div>
         <p class="section-kicker">CURATED FOR BEGINNERS · 本期精选</p>
-        <h2>先读懂，再写出。</h2>
+        <h2>
+          <span>先读懂，</span>
+          <span>再写出。</span>
+        </h2>
       </div>
       <p>
         从最值得优先理解的文章开始。每个主题都包含直觉、模拟、伪代码、
@@ -47,6 +50,11 @@ import { editorialFeatures } from '../../data/home-content'
   display: grid;
   grid-template-columns: 1.45fr 1fr 1fr;
   gap: 1rem;
+}
+
+.editorial-grid .magazine-section__header h2 span {
+  display: inline-block;
+  white-space: nowrap;
 }
 
 .editorial-card {

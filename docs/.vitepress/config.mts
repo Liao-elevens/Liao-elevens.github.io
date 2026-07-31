@@ -114,6 +114,8 @@ export default defineConfig({
       '/algorithm/': algorithmSidebar,
       '/roadmap/': algorithmSidebar,
       '/resources/': algorithmSidebar,
+      '/coverage': algorithmSidebar,
+      '/glossary': algorithmSidebar,
       '/frontend/': [
         {
           text: '前端学习',

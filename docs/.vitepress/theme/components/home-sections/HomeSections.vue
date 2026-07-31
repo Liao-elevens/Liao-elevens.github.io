@@ -26,7 +26,7 @@ import LearningMethod from '../learning-method/LearningMethod.vue'
     <section class="home-sections__manifesto">
       <p class="section-kicker">THE MANIFESTO · 学习宣言</p>
       <blockquote>
-        不把答案背进脑中，
+        <span>不把答案背进脑中，</span>
         <em>把解决问题的方法留下来。</em>
       </blockquote>
       <p>
@@ -85,28 +85,43 @@ import LearningMethod from '../learning-method/LearningMethod.vue'
   border: 0;
   color: var(--mag-ink);
   font-family: var(--mag-display);
-  font-size: clamp(2.4rem, 6vw, 5.7rem);
+  font-size: clamp(2.3rem, 4.3vw, 4.4rem);
   font-weight: 520;
-  letter-spacing: -0.055em;
-  line-height: 0.98;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
   line-break: strict;
   text-wrap: balance;
 }
 
+.home-sections__manifesto blockquote span,
 .home-sections__manifesto blockquote em {
   display: block;
+  white-space: nowrap;
+}
+
+.home-sections__manifesto blockquote em {
   color: var(--mag-coral);
   font-style: italic;
 }
 
 .home-sections__manifesto > p:not(.section-kicker) {
-  max-width: 620px;
+  max-width: 960px;
   margin: 0 auto 2rem;
   color: var(--mag-muted);
   font-size: 1rem;
   line-height: 1.9;
   line-break: strict;
   text-wrap: pretty;
+}
+
+@media (max-width: 760px) {
+  .home-sections__manifesto {
+    padding-inline: 1rem;
+  }
+
+  .home-sections__manifesto blockquote {
+    font-size: clamp(1.9rem, 7.5vw, 2.2rem);
+  }
 }
 
 @keyframes ticker-shift {
