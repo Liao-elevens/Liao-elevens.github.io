@@ -1,0 +1,40 @@
+.knowledge-diagram {
+  margin: 2rem 0;
+  border: 1px solid var(--mag-line);
+  background: #151a22;
+  box-shadow: 10px 10px 0 color-mix(in srgb, var(--mag-ink) 8%, transparent);
+  overflow-x: auto;
+}
+
+.knowledge-diagram img {
+  display: block;
+  min-width: 680px;
+  width: 100%;
+  height: auto;
+  margin: 0;
+}
+
+.knowledge-diagram figcaption {
+  border-top: 1px solid rgb(255 255 255 / 12%);
+  padding: 0.8rem 1rem;
+  color: rgb(255 255 255 / 68%);
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+
+.resource-level {
+  display: inline-block;
+  min-width: 3.6rem;
+  border: 1px solid var(--mag-line);
+  padding: 0.12rem 0.4rem;
+  color: var(--mag-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+@media (max-width: 760px) {
+  .knowledge-diagram {
+    margin-inline: -0.75rem;
+  }
+}

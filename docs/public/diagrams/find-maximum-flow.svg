@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="760" viewBox="0 0 900 760" role="img" aria-labelledby="title desc">
+  <title id="title">寻找数组最大值流程图</title>
+  <desc id="desc">先检查空数组，把首个元素设为最大值，然后逐个比较并更新，最后返回最大值。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#e67855"/></marker>
+    <style>.bg{fill:#151a22}.node{fill:#f5f2e9;stroke:#e67855;stroke-width:2}.decision{fill:#242b38;stroke:#8fa7ff;stroke-width:2}.edge{fill:none;stroke:#e67855;stroke-width:2;marker-end:url(#arrow)}.label{fill:#171c24;font:600 17px system-ui,-apple-system,"Segoe UI",sans-serif;text-anchor:middle}.light{fill:#f5f2e9;font:600 17px system-ui,-apple-system,"Segoe UI",sans-serif;text-anchor:middle}.hint{fill:#e67855;font:700 14px system-ui,-apple-system,"Segoe UI",sans-serif}</style>
+  </defs>
+  <rect class="bg" width="900" height="760"/>
+  <path class="edge" d="M450 110V155"/>
+  <path class="edge" d="M450 215V260"/>
+  <path class="edge" d="M450 320V365"/>
+  <path class="edge" d="M340 425H230V490"/>
+  <path class="edge" d="M560 425H670V490"/>
+  <path class="edge" d="M230 550V600H450V635"/>
+  <path class="edge" d="M670 550V600H450"/>
+  <path class="edge" d="M560 665H790V290H600"/>
+  <path class="edge" d="M450 695V725"/>
+  <text class="hint" x="260" y="407">更大</text>
+  <text class="hint" x="620" y="407">不更大</text>
+  <text class="hint" x="705" y="646">还有元素</text>
+  <text class="hint" x="465" y="718">没有</text>
+  <rect class="node" x="300" y="50" width="300" height="60" rx="12"/><text class="label" x="450" y="87">检查数组是否为空</text>
+  <rect class="node" x="280" y="155" width="340" height="60" rx="12"/><text class="label" x="450" y="192">首元素设为 currentMax</text>
+  <rect class="node" x="300" y="260" width="300" height="60" rx="12"/><text class="label" x="450" y="297">读取下一个元素</text>
+  <polygon class="decision" points="450,365 560,425 450,485 340,425"/><text class="light" x="450" y="431">它更大吗？</text>
+  <rect class="node" x="100" y="490" width="260" height="60" rx="12"/><text class="label" x="230" y="527">更新 currentMax</text>
+  <rect class="node" x="540" y="490" width="260" height="60" rx="12"/><text class="label" x="670" y="527">保持 currentMax</text>
+  <polygon class="decision" points="450,605 560,665 450,725 340,665"/><text class="light" x="450" y="671">还有元素吗？</text>
+  <rect class="node" x="330" y="725" width="240" height="30" rx="12"/><text class="label" x="450" y="747">返回 currentMax</text>
+</svg>
