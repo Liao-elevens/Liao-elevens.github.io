@@ -189,6 +189,65 @@ dp[i] = min(dp[i-1] + cost[i-1], dp[i-2] + cost[i-2])
 
 答案是 `dp[n]`。时间 `O(n)`，使用两个变量可把空间从 `O(n)` 优化到 `O(1)`。例如 `[10,15,20]` 的答案是直接从第 1 级开始再到顶部，花费 `15`。
 
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static int minCost(int[] cost) {
+    int previous2 = 0, previous1 = 0;
+    for (int i = 2; i <= cost.length; i++) {
+        int current = Math.min(previous1 + cost[i - 1], previous2 + cost[i - 2]);
+        previous2 = previous1; previous1 = current;
+    }
+    return previous1;
+}
+```
+
+```python [Python]
+def min_cost(cost):
+    previous2 = previous1 = 0
+    for i in range(2, len(cost) + 1):
+        current = min(previous1 + cost[i - 1], previous2 + cost[i - 2])
+        previous2, previous1 = previous1, current
+    return previous1
+```
+
+```javascript [JavaScript]
+function minCost(cost) {
+  let previous2 = 0, previous1 = 0
+  for (let i = 2; i <= cost.length; i++) {
+    const current = Math.min(previous1 + cost[i - 1], previous2 + cost[i - 2])
+    previous2 = previous1; previous1 = current
+  }
+  return previous1
+}
+```
+
+```cpp [C++]
+int minCost(const std::vector<int>& cost) {
+    int previous2 = 0, previous1 = 0;
+    for (int i = 2; i <= static_cast<int>(cost.size()); ++i) {
+        int current = std::min(previous1 + cost[i - 1], previous2 + cost[i - 2]);
+        previous2 = previous1; previous1 = current;
+    }
+    return previous1;
+}
+```
+
+```go [Go]
+func minCost(cost []int) int {
+	previous2, previous1 := 0, 0
+	for i := 2; i <= len(cost); i++ {
+		current := min(previous1+cost[i-1], previous2+cost[i-2])
+		previous2, previous1 = previous1, current
+	}
+	return previous1
+}
+```
+
+:::
+
 </ExerciseSolution>
 
 ### 2. 打家劫舍
@@ -203,6 +262,64 @@ dp[i] = max(dp[i-1], dp[i-2] + nums[i-1])
 
 时间 `O(n)`、可优化为空间 `O(1)`。`[2,7,9,3,1]` 的最优选择是 `2+9+1=12`。不要用“每次选当前最大房子”的贪心，它可能阻塞两个更优的邻近选择。
 
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static int rob(int[] houses) {
+    int skip = 0, take = 0;
+    for (int money : houses) {
+        int nextTake = skip + money;
+        skip = Math.max(skip, take); take = nextTake;
+    }
+    return Math.max(skip, take);
+}
+```
+
+```python [Python]
+def rob(houses):
+    skip = take = 0
+    for money in houses:
+        skip, take = max(skip, take), skip + money
+    return max(skip, take)
+```
+
+```javascript [JavaScript]
+function rob(houses) {
+  let skip = 0, take = 0
+  for (const money of houses) {
+    const nextTake = skip + money
+    skip = Math.max(skip, take); take = nextTake
+  }
+  return Math.max(skip, take)
+}
+```
+
+```cpp [C++]
+int rob(const std::vector<int>& houses) {
+    int skip = 0, take = 0;
+    for (int money : houses) {
+        int nextTake = skip + money;
+        skip = std::max(skip, take); take = nextTake;
+    }
+    return std::max(skip, take);
+}
+```
+
+```go [Go]
+func rob(houses []int) int {
+	skip, take := 0, 0
+	for _, money := range houses {
+		nextTake := skip + money
+		skip, take = max(skip, take), nextTake
+	}
+	return max(skip, take)
+}
+```
+
+:::
+
 </ExerciseSolution>
 
 ### 3. 不同路径
@@ -212,6 +329,60 @@ dp[i] = max(dp[i-1], dp[i-2] + nums[i-1])
 机器人只能从上方或左方进入当前格，因此 `dp[row][col] = dp[row-1][col] + dp[row][col-1]`。第一行和第一列都只有一种走法，初始化为 `1`。
 
 `m × n` 网格时间 `O(mn)`；逐行计算时只保留一维数组，空间可降为 `O(n)`。如果有障碍，障碍格的路径数设为 `0`。
+
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static int uniquePaths(int rows, int columns) {
+    int[] dp = new int[columns];
+    Arrays.fill(dp, 1);
+    for (int row = 1; row < rows; row++)
+        for (int column = 1; column < columns; column++) dp[column] += dp[column - 1];
+    return dp[columns - 1];
+}
+```
+
+```python [Python]
+def unique_paths(rows, columns):
+    dp = [1] * columns
+    for _ in range(1, rows):
+        for column in range(1, columns):
+            dp[column] += dp[column - 1]
+    return dp[-1]
+```
+
+```javascript [JavaScript]
+function uniquePaths(rows, columns) {
+  const dp = Array(columns).fill(1)
+  for (let row = 1; row < rows; row++)
+    for (let column = 1; column < columns; column++) dp[column] += dp[column - 1]
+  return dp[columns - 1]
+}
+```
+
+```cpp [C++]
+int uniquePaths(int rows, int columns) {
+    std::vector<int> dp(columns, 1);
+    for (int row = 1; row < rows; ++row)
+        for (int column = 1; column < columns; ++column) dp[column] += dp[column - 1];
+    return dp.back();
+}
+```
+
+```go [Go]
+func uniquePaths(rows, columns int) int {
+	dp := make([]int, columns)
+	for i := range dp { dp[i] = 1 }
+	for row := 1; row < rows; row++ {
+		for column := 1; column < columns; column++ { dp[column] += dp[column-1] }
+	}
+	return dp[columns-1]
+}
+```
+
+:::
 
 </ExerciseSolution>
 
@@ -227,6 +398,62 @@ dp[x] = min(dp[x], dp[x-coin] + 1)，前提是 x >= coin 且 x-coin 可达
 
 硬币种类数为 `c`、目标金额为 `A` 时，时间 `O(cA)`、空间 `O(A)`。最终仍不可达时返回 `-1`。这题允许每种硬币使用多次，是完全背包模型。
 
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static int coinChange(int[] coins, int amount) {
+    int[] dp = new int[amount + 1];
+    Arrays.fill(dp, amount + 1); dp[0] = 0;
+    for (int value = 1; value <= amount; value++)
+        for (int coin : coins) if (coin <= value) dp[value] = Math.min(dp[value], dp[value - coin] + 1);
+    return dp[amount] > amount ? -1 : dp[amount];
+}
+```
+
+```python [Python]
+def coin_change(coins, amount):
+    dp = [amount + 1] * (amount + 1)
+    dp[0] = 0
+    for value in range(1, amount + 1):
+        for coin in coins:
+            if coin <= value:
+                dp[value] = min(dp[value], dp[value - coin] + 1)
+    return -1 if dp[amount] > amount else dp[amount]
+```
+
+```javascript [JavaScript]
+function coinChange(coins, amount) {
+  const dp = Array(amount + 1).fill(amount + 1); dp[0] = 0
+  for (let value = 1; value <= amount; value++)
+    for (const coin of coins) if (coin <= value) dp[value] = Math.min(dp[value], dp[value - coin] + 1)
+  return dp[amount] > amount ? -1 : dp[amount]
+}
+```
+
+```cpp [C++]
+int coinChange(const std::vector<int>& coins, int amount) {
+    std::vector<int> dp(amount + 1, amount + 1); dp[0] = 0;
+    for (int value = 1; value <= amount; ++value)
+        for (int coin : coins) if (coin <= value) dp[value] = std::min(dp[value], dp[value - coin] + 1);
+    return dp[amount] > amount ? -1 : dp[amount];
+}
+```
+
+```go [Go]
+func coinChange(coins []int, amount int) int {
+	dp := make([]int, amount+1)
+	for value := 1; value <= amount; value++ { dp[value] = amount+1 }
+	for value := 1; value <= amount; value++ {
+		for _, coin := range coins { if coin <= value { dp[value] = min(dp[value], dp[value-coin]+1) } }
+	}
+	if dp[amount] > amount { return -1 }; return dp[amount]
+}
+```
+
+:::
+
 </ExerciseSolution>
 
 ### 5. 0/1 背包
@@ -241,6 +468,61 @@ dp[x] = min(dp[x], dp[x-coin] + 1)，前提是 x >= coin 且 x-coin 可达
 ```
 
 容量必须倒序，否则本轮刚更新的状态会再次使用同一件物品，错误地变成“可以无限取”。`n` 件物品、容量 `C` 时，时间 `O(nC)`、空间 `O(C)`。
+
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static int knapsack(int capacity, int[] weights, int[] values) {
+    int[] dp = new int[capacity + 1];
+    for (int item = 0; item < weights.length; item++)
+        for (int room = capacity; room >= weights[item]; room--)
+            dp[room] = Math.max(dp[room], dp[room - weights[item]] + values[item]);
+    return dp[capacity];
+}
+```
+
+```python [Python]
+def knapsack(capacity, weights, values):
+    dp = [0] * (capacity + 1)
+    for weight, value in zip(weights, values):
+        for room in range(capacity, weight - 1, -1):
+            dp[room] = max(dp[room], dp[room - weight] + value)
+    return dp[capacity]
+```
+
+```javascript [JavaScript]
+function knapsack(capacity, weights, values) {
+  const dp = Array(capacity + 1).fill(0)
+  for (let item = 0; item < weights.length; item++)
+    for (let room = capacity; room >= weights[item]; room--)
+      dp[room] = Math.max(dp[room], dp[room - weights[item]] + values[item])
+  return dp[capacity]
+}
+```
+
+```cpp [C++]
+int knapsack(int capacity, const std::vector<int>& weights, const std::vector<int>& values) {
+    std::vector<int> dp(capacity + 1);
+    for (int item = 0; item < static_cast<int>(weights.size()); ++item)
+        for (int room = capacity; room >= weights[item]; --room)
+            dp[room] = std::max(dp[room], dp[room - weights[item]] + values[item]);
+    return dp[capacity];
+}
+```
+
+```go [Go]
+func knapsack(capacity int, weights, values []int) int {
+	dp := make([]int, capacity+1)
+	for item, weight := range weights {
+		for room := capacity; room >= weight; room-- { dp[room] = max(dp[room], dp[room-weight]+values[item]) }
+	}
+	return dp[capacity]
+}
+```
+
+:::
 
 </ExerciseSolution>
 
@@ -260,16 +542,66 @@ dp[i] = 1
 
 时间 `O(n²)`、空间 `O(n)`。进一步可以用“维护不同长度子序列的最小结尾值 + 二分查找”优化到 `O(n log n)`；严格递增应查找第一个 `>= 当前值` 的位置。
 
-</ExerciseSolution>
+#### 五语言实现
 
-### 五语言迁移提示
+::: code-group
 
-<ExerciseSolution title="展开动态规划练习的五语言对应" eyebrow="CODE">
+```java [Java]
+static int lengthOfLIS(int[] numbers) {
+    int[] dp = new int[numbers.length]; Arrays.fill(dp, 1);
+    int answer = 0;
+    for (int i = 0; i < numbers.length; i++) {
+        for (int j = 0; j < i; j++) if (numbers[j] < numbers[i]) dp[i] = Math.max(dp[i], dp[j] + 1);
+        answer = Math.max(answer, dp[i]);
+    }
+    return answer;
+}
+```
 
-这些转移式在五种语言中完全相同，差别主要是数组初始化：Java `new int[n]`、Python `[0] * n`、JavaScript `Array(n).fill(0)`、C++ `vector<int>(n)`、Go `make([]int, n)`。
+```python [Python]
+def length_of_lis(numbers):
+    dp = [1] * len(numbers)
+    for i in range(len(numbers)):
+        for j in range(i):
+            if numbers[j] < numbers[i]:
+                dp[i] = max(dp[i], dp[j] + 1)
+    return max(dp, default=0)
+```
 
-最小值问题的“不可达”状态不要随便使用 `0`：可以用 `amount + 1`、一个足够大的整数或语言提供的无穷值。涉及路径数量、金额总和时要检查整数范围，Java 使用 `long`、C++ 使用 `long long`、Go 使用 `int64`。
+```javascript [JavaScript]
+function lengthOfLIS(numbers) {
+  const dp = Array(numbers.length).fill(1); let answer = 0
+  for (let i = 0; i < numbers.length; i++) {
+    for (let j = 0; j < i; j++) if (numbers[j] < numbers[i]) dp[i] = Math.max(dp[i], dp[j] + 1)
+    answer = Math.max(answer, dp[i])
+  }
+  return answer
+}
+```
 
-0/1 背包的容量倒序、完全背包的容量正序，是五种语言都必须保持的算法顺序，不是语法差异。
+```cpp [C++]
+int lengthOfLIS(const std::vector<int>& numbers) {
+    std::vector<int> dp(numbers.size(), 1); int answer = 0;
+    for (int i = 0; i < static_cast<int>(numbers.size()); ++i) {
+        for (int j = 0; j < i; ++j) if (numbers[j] < numbers[i]) dp[i] = std::max(dp[i], dp[j] + 1);
+        answer = std::max(answer, dp[i]);
+    }
+    return answer;
+}
+```
+
+```go [Go]
+func lengthOfLIS(numbers []int) int {
+	dp, answer := make([]int, len(numbers)), 0
+	for i := range numbers {
+		dp[i] = 1
+		for j := 0; j < i; j++ { if numbers[j] < numbers[i] { dp[i] = max(dp[i], dp[j]+1) } }
+		answer = max(answer, dp[i])
+	}
+	return answer
+}
+```
+
+:::
 
 </ExerciseSolution>

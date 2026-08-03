@@ -248,6 +248,42 @@ backtrack(path, used):
 
 共有 `n!` 个答案，复制答案后时间 `O(n · n!)`，递归路径和标记空间 `O(n)`。输入含重复元素时先排序，并跳过“同层前一个相同但未使用”的选择，避免重复排列。
 
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static List<List<Integer>> permutations(int[] numbers){List<List<Integer>>answer=new ArrayList<>();permute(numbers,new boolean[numbers.length],new ArrayList<>(),answer);return answer;}
+static void permute(int[] numbers,boolean[] used,List<Integer> path,List<List<Integer>> answer){if(path.size()==numbers.length){answer.add(new ArrayList<>(path));return;}for(int i=0;i<numbers.length;i++){if(used[i])continue;used[i]=true;path.add(numbers[i]);permute(numbers,used,path,answer);path.remove(path.size()-1);used[i]=false;}}
+```
+
+```python [Python]
+def permutations(numbers):
+    answer, used = [], [False] * len(numbers)
+    def search(path):
+        if len(path) == len(numbers): answer.append(path.copy()); return
+        for index, value in enumerate(numbers):
+            if used[index]: continue
+            used[index] = True; path.append(value); search(path); path.pop(); used[index] = False
+    search([])
+    return answer
+```
+
+```javascript [JavaScript]
+function permutations(numbers){const answer=[],used=Array(numbers.length).fill(false);function search(path){if(path.length===numbers.length){answer.push([...path]);return}for(let i=0;i<numbers.length;i++){if(used[i])continue;used[i]=true;path.push(numbers[i]);search(path);path.pop();used[i]=false}}search([]);return answer}
+```
+
+```cpp [C++]
+void permute(const std::vector<int>&numbers,std::vector<bool>&used,std::vector<int>&path,std::vector<std::vector<int>>&answer){if(path.size()==numbers.size()){answer.push_back(path);return;}for(int i=0;i<(int)numbers.size();i++){if(used[i])continue;used[i]=true;path.push_back(numbers[i]);permute(numbers,used,path,answer);path.pop_back();used[i]=false;}}
+std::vector<std::vector<int>> permutations(const std::vector<int>&numbers){std::vector<std::vector<int>>answer;std::vector<int>path;std::vector<bool>used(numbers.size());permute(numbers,used,path,answer);return answer;}
+```
+
+```go [Go]
+func permutations(numbers []int) [][]int {answer:=[][]int{};used:=make([]bool,len(numbers));path:=[]int{};var search func();search=func(){if len(path)==len(numbers){copyPath:=append([]int(nil),path...);answer=append(answer,copyPath);return};for i,value:=range numbers{if used[i]{continue};used[i]=true;path=append(path,value);search();path=path[:len(path)-1];used[i]=false}};search();return answer}
+```
+
+:::
+
 </ExerciseSolution>
 
 ### 2. 组合总和
@@ -268,6 +304,43 @@ backtrack(start, remain):
 
 排序后的提前停止就是剪枝。复杂度取决于候选数和目标值，最坏为指数级；路径深度最多约为 `target / minCandidate`。
 
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static List<List<Integer>> combinationSum(int[] candidates,int target){Arrays.sort(candidates);List<List<Integer>>answer=new ArrayList<>();combine(candidates,target,0,new ArrayList<>(),answer);return answer;}
+static void combine(int[] candidates,int remain,int start,List<Integer>path,List<List<Integer>>answer){if(remain==0){answer.add(new ArrayList<>(path));return;}for(int i=start;i<candidates.length&&candidates[i]<=remain;i++){path.add(candidates[i]);combine(candidates,remain-candidates[i],i,path,answer);path.remove(path.size()-1);}}
+```
+
+```python [Python]
+def combination_sum(candidates, target):
+    candidates.sort(); answer = []
+    def search(remain, start, path):
+        if remain == 0: answer.append(path.copy()); return
+        for index in range(start, len(candidates)):
+            value = candidates[index]
+            if value > remain: break
+            path.append(value); search(remain - value, index, path); path.pop()
+    search(target, 0, [])
+    return answer
+```
+
+```javascript [JavaScript]
+function combinationSum(candidates,target){candidates.sort((a,b)=>a-b);const answer=[];function search(remain,start,path){if(remain===0){answer.push([...path]);return}for(let i=start;i<candidates.length&&candidates[i]<=remain;i++){path.push(candidates[i]);search(remain-candidates[i],i,path);path.pop()}}search(target,0,[]);return answer}
+```
+
+```cpp [C++]
+void combine(const std::vector<int>&candidates,int remain,int start,std::vector<int>&path,std::vector<std::vector<int>>&answer){if(remain==0){answer.push_back(path);return;}for(int i=start;i<(int)candidates.size()&&candidates[i]<=remain;i++){path.push_back(candidates[i]);combine(candidates,remain-candidates[i],i,path,answer);path.pop_back();}}
+std::vector<std::vector<int>> combinationSum(std::vector<int>candidates,int target){std::sort(candidates.begin(),candidates.end());std::vector<std::vector<int>>answer;std::vector<int>path;combine(candidates,target,0,path,answer);return answer;}
+```
+
+```go [Go]
+func combinationSum(candidates []int,target int)[][]int{sort.Ints(candidates);answer:=[][]int{};path:=[]int{};var search func(int,int);search=func(remain,start int){if remain==0{answer=append(answer,append([]int(nil),path...));return};for i:=start;i<len(candidates)&&candidates[i]<=remain;i++{path=append(path,candidates[i]);search(remain-candidates[i],i);path=path[:len(path)-1]}};search(target,0);return answer}
+```
+
+:::
+
 </ExerciseSolution>
 
 ### 3. 电话号码字母组合
@@ -286,6 +359,40 @@ backtrack(index):
 ```
 
 若每个数字最多对应 4 个字母，长度为 `n` 时最多产生 `4ⁿ` 个结果，生成结果的时间为 `O(n · 4ⁿ)`。空输入返回空列表，而不是包含空字符串的列表。
+
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static List<String> letterCombinations(String digits){if(digits.isEmpty())return List.of();String[]map={"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};List<String>answer=new ArrayList<>();letters(digits,0,new StringBuilder(),map,answer);return answer;}
+static void letters(String digits,int index,StringBuilder path,String[]map,List<String>answer){if(index==digits.length()){answer.add(path.toString());return;}for(char letter:map[digits.charAt(index)-'0'].toCharArray()){path.append(letter);letters(digits,index+1,path,map,answer);path.deleteCharAt(path.length()-1);}}
+```
+
+```python [Python]
+def letter_combinations(digits):
+    if not digits: return []
+    mapping = {"2":"abc","3":"def","4":"ghi","5":"jkl","6":"mno","7":"pqrs","8":"tuv","9":"wxyz"}; answer=[]
+    def search(index, path):
+        if index == len(digits): answer.append("".join(path)); return
+        for letter in mapping[digits[index]]: path.append(letter); search(index+1,path); path.pop()
+    search(0,[]); return answer
+```
+
+```javascript [JavaScript]
+function letterCombinations(digits){if(!digits)return[];const map={2:'abc',3:'def',4:'ghi',5:'jkl',6:'mno',7:'pqrs',8:'tuv',9:'wxyz'},answer=[];function search(index,path){if(index===digits.length){answer.push(path.join(''));return}for(const letter of map[digits[index]]){path.push(letter);search(index+1,path);path.pop()}}search(0,[]);return answer}
+```
+
+```cpp [C++]
+void letters(const std::string&digits,int index,std::string&path,const std::vector<std::string>&map,std::vector<std::string>&answer){if(index==(int)digits.size()){answer.push_back(path);return;}for(char letter:map[digits[index]-'0']){path.push_back(letter);letters(digits,index+1,path,map,answer);path.pop_back();}}
+std::vector<std::string> letterCombinations(const std::string&digits){if(digits.empty())return{};std::vector<std::string>map{"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"},answer;std::string path;letters(digits,0,path,map,answer);return answer;}
+```
+
+```go [Go]
+func letterCombinations(digits string)[]string{if digits==""{return nil};mapping:=[]string{"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};answer:=[]string{};path:=[]byte{};var search func(int);search=func(index int){if index==len(digits){answer=append(answer,string(path));return};for _,letter:=range[]byte(mapping[digits[index]-'0']){path=append(path,letter);search(index+1);path=path[:len(path)-1]}};search(0);return answer}
+```
+
+:::
 
 </ExerciseSolution>
 
@@ -307,6 +414,40 @@ backtrack(row):
 
 搜索上界约为 `O(n!)`，三个集合把冲突检查从扫描棋盘降为平均 `O(1)`。`n=2`、`n=3` 无解，`n=1` 有一个解。
 
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static List<List<String>> solveNQueens(int n){List<List<String>>answer=new ArrayList<>();placeQueens(0,n,new HashSet<>(),new HashSet<>(),new HashSet<>(),new int[n],answer);return answer;}
+static void placeQueens(int row,int n,Set<Integer>columns,Set<Integer>diagonal1,Set<Integer>diagonal2,int[]queens,List<List<String>>answer){if(row==n){List<String>board=new ArrayList<>();for(int column:queens)board.add(".".repeat(column)+"Q"+".".repeat(n-column-1));answer.add(board);return;}for(int column=0;column<n;column++){if(columns.contains(column)||diagonal1.contains(row-column)||diagonal2.contains(row+column))continue;columns.add(column);diagonal1.add(row-column);diagonal2.add(row+column);queens[row]=column;placeQueens(row+1,n,columns,diagonal1,diagonal2,queens,answer);columns.remove(column);diagonal1.remove(row-column);diagonal2.remove(row+column);}}
+```
+
+```python [Python]
+def solve_n_queens(n):
+    answer, columns, diagonal1, diagonal2, queens = [], set(), set(), set(), [-1] * n
+    def search(row):
+        if row == n: answer.append(["."*column+"Q"+"."*(n-column-1) for column in queens]); return
+        for column in range(n):
+            if column in columns or row-column in diagonal1 or row+column in diagonal2: continue
+            columns.add(column); diagonal1.add(row-column); diagonal2.add(row+column); queens[row]=column; search(row+1); columns.remove(column); diagonal1.remove(row-column); diagonal2.remove(row+column)
+    search(0); return answer
+```
+
+```javascript [JavaScript]
+function solveNQueens(n){const answer=[],columns=new Set(),d1=new Set(),d2=new Set(),queens=Array(n);function search(row){if(row===n){answer.push(queens.map(c=>'.'.repeat(c)+'Q'+'.'.repeat(n-c-1)));return}for(let c=0;c<n;c++){if(columns.has(c)||d1.has(row-c)||d2.has(row+c))continue;columns.add(c);d1.add(row-c);d2.add(row+c);queens[row]=c;search(row+1);columns.delete(c);d1.delete(row-c);d2.delete(row+c)}}search(0);return answer}
+```
+
+```cpp [C++]
+void queens(int row,int n,std::unordered_set<int>&columns,std::unordered_set<int>&d1,std::unordered_set<int>&d2,std::vector<int>&placed,std::vector<std::vector<std::string>>&answer){if(row==n){std::vector<std::string>board(n,std::string(n,'.'));for(int r=0;r<n;r++)board[r][placed[r]]='Q';answer.push_back(board);return;}for(int c=0;c<n;c++){if(columns.count(c)||d1.count(row-c)||d2.count(row+c))continue;columns.insert(c);d1.insert(row-c);d2.insert(row+c);placed[row]=c;queens(row+1,n,columns,d1,d2,placed,answer);columns.erase(c);d1.erase(row-c);d2.erase(row+c);}}
+```
+
+```go [Go]
+func solveNQueens(n int)[][]string{answer:=[][]string{};columns,d1,d2:=map[int]bool{},map[int]bool{},map[int]bool{};placed:=make([]int,n);var search func(int);search=func(row int){if row==n{board:=make([]string,n);for r,c:=range placed{line:=make([]byte,n);for i:=range line{line[i]='.'};line[c]='Q';board[r]=string(line)};answer=append(answer,board);return};for c:=0;c<n;c++{if columns[c]||d1[row-c]||d2[row+c]{continue};columns[c],d1[row-c],d2[row+c]=true,true,true;placed[row]=c;search(row+1);delete(columns,c);delete(d1,row-c);delete(d2,row+c)}};search(0);return answer}
+```
+
+:::
+
 </ExerciseSolution>
 
 ### 5. 数独求解
@@ -326,6 +467,46 @@ solve():
 ```
 
 最坏复杂度是指数级，粗略上界 `O(9^e)`，`e` 为空格数；约束传播和选择最少候选格是关键剪枝。输入本身冲突时应直接判定无解。
+
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static boolean solveSudoku(char[][] board){for(int row=0;row<9;row++)for(int column=0;column<9;column++)if(board[row][column]=='.'){for(char value='1';value<='9';value++){if(!valid(board,row,column,value))continue;board[row][column]=value;if(solveSudoku(board))return true;board[row][column]='.';}return false;}return true;}
+static boolean valid(char[][]board,int row,int column,char value){for(int i=0;i<9;i++)if(board[row][i]==value||board[i][column]==value||board[row/3*3+i/3][column/3*3+i%3]==value)return false;return true;}
+```
+
+```python [Python]
+def solve_sudoku(board):
+    def valid(row,column,value):
+        return all(board[row][i]!=value and board[i][column]!=value and board[row//3*3+i//3][column//3*3+i%3]!=value for i in range(9))
+    for row in range(9):
+        for column in range(9):
+            if board[row][column] != ".": continue
+            for value in "123456789":
+                if valid(row,column,value):
+                    board[row][column]=value
+                    if solve_sudoku(board): return True
+                    board[row][column]="."
+            return False
+    return True
+```
+
+```javascript [JavaScript]
+function solveSudoku(board){function valid(r,c,v){for(let i=0;i<9;i++)if(board[r][i]===v||board[i][c]===v||board[Math.floor(r/3)*3+Math.floor(i/3)][Math.floor(c/3)*3+i%3]===v)return false;return true}for(let r=0;r<9;r++)for(let c=0;c<9;c++)if(board[r][c]==='.'){for(let v=1;v<=9;v++){const value=String(v);if(valid(r,c,value)){board[r][c]=value;if(solveSudoku(board))return true;board[r][c]='.'}}return false}return true}
+```
+
+```cpp [C++]
+bool valid(const std::vector<std::vector<char>>&board,int row,int column,char value){for(int i=0;i<9;i++)if(board[row][i]==value||board[i][column]==value||board[row/3*3+i/3][column/3*3+i%3]==value)return false;return true;}
+bool solveSudoku(std::vector<std::vector<char>>&board){for(int row=0;row<9;row++)for(int column=0;column<9;column++)if(board[row][column]=='.'){for(char value='1';value<='9';value++)if(valid(board,row,column,value)){board[row][column]=value;if(solveSudoku(board))return true;board[row][column]='.';}return false;}return true;}
+```
+
+```go [Go]
+func solveSudoku(board [][]byte)bool{valid:=func(row,column int,value byte)bool{for i:=0;i<9;i++{if board[row][i]==value||board[i][column]==value||board[row/3*3+i/3][column/3*3+i%3]==value{return false}};return true};for row:=0;row<9;row++{for column:=0;column<9;column++{if board[row][column]!='.'{continue};for value:=byte('1');value<='9';value++{if valid(row,column,value){board[row][column]=value;if solveSudoku(board){return true};board[row][column]='.'}};return false}};return true}
+```
+
+:::
 
 </ExerciseSolution>
 
@@ -347,22 +528,38 @@ dfs(row, col, index):
 
 棋盘 `m × n`、单词长度 `L` 时，最坏时间 `O(mn · 3ᴸ)`：第一步后通常不能立刻走回原格，所以后续最多约三个方向；递归空间 `O(L)`。
 
-</ExerciseSolution>
+#### 五语言实现
 
-### 五语言迁移提示
+::: code-group
 
-<ExerciseSolution title="展开六道回溯题的五语言写法差异" eyebrow="CODE">
+```java [Java]
+static boolean wordSearch(char[][]board,String word){for(int row=0;row<board.length;row++)for(int column=0;column<board[0].length;column++)if(find(board,word,row,column,0))return true;return false;}
+static boolean find(char[][]board,String word,int row,int column,int index){if(index==word.length())return true;if(row<0||row>=board.length||column<0||column>=board[0].length||board[row][column]!=word.charAt(index))return false;char saved=board[row][column];board[row][column]='#';boolean found=find(board,word,row+1,column,index+1)||find(board,word,row-1,column,index+1)||find(board,word,row,column+1,index+1)||find(board,word,row,column-1,index+1);board[row][column]=saved;return found;}
+```
 
-六道题都直接复用本文已经给出的五语言回溯骨架，变化的只是“选择列表、终止条件和冲突判断”：
+```python [Python]
+def word_search(board, word):
+    def find(row,column,index):
+        if index == len(word): return True
+        if not (0<=row<len(board) and 0<=column<len(board[0])) or board[row][column] != word[index]: return False
+        saved=board[row][column];board[row][column]="#"
+        found=any(find(row+dr,column+dc,index+1) for dr,dc in ((1,0),(-1,0),(0,1),(0,-1)))
+        board[row][column]=saved;return found
+    return any(find(row,column,0) for row in range(len(board)) for column in range(len(board[0])))
+```
 
-| 语言 | 路径 | 已使用标记 | 撤销方式 |
-| --- | --- | --- | --- |
-| Java | `ArrayList<T>` | `boolean[]` / `HashSet` | `remove(size - 1)` |
-| Python | `list` | `list[bool]` / `set` | `pop()` |
-| JavaScript | `Array` | `Array<boolean>` / `Set` | `pop()` |
-| C++ | `vector<T>` | `vector<bool>` / `unordered_set` | `pop_back()` |
-| Go | `[]T` | `[]bool` / `map[T]bool` | `path = path[:len(path)-1]` |
+```javascript [JavaScript]
+function wordSearch(board,word){function find(row,column,index){if(index===word.length)return true;if(row<0||row>=board.length||column<0||column>=board[0].length||board[row][column]!==word[index])return false;const saved=board[row][column];board[row][column]='#';const found=find(row+1,column,index+1)||find(row-1,column,index+1)||find(row,column+1,index+1)||find(row,column-1,index+1);board[row][column]=saved;return found}return board.some((line,row)=>line.some((_,column)=>find(row,column,0)))}
+```
 
-实现时必须保证每一次“选择”都有一一对应的“撤销”；记录答案时复制路径。N 皇后和数独再增加列、对角线、行、宫等冲突集合，单词搜索则临时修改棋盘或使用二维 `visited`。
+```cpp [C++]
+bool find(std::vector<std::vector<char>>&board,const std::string&word,int row,int column,int index){if(index==(int)word.size())return true;if(row<0||row>=(int)board.size()||column<0||column>=(int)board[0].size()||board[row][column]!=word[index])return false;char saved=board[row][column];board[row][column]='#';bool found=find(board,word,row+1,column,index+1)||find(board,word,row-1,column,index+1)||find(board,word,row,column+1,index+1)||find(board,word,row,column-1,index+1);board[row][column]=saved;return found;}
+```
+
+```go [Go]
+func wordSearch(board [][]byte,word string)bool{var find func(int,int,int)bool;find=func(row,column,index int)bool{if index==len(word){return true};if row<0||row>=len(board)||column<0||column>=len(board[0])||board[row][column]!=word[index]{return false};saved:=board[row][column];board[row][column]='#';found:=find(row+1,column,index+1)||find(row-1,column,index+1)||find(row,column+1,index+1)||find(row,column-1,index+1);board[row][column]=saved;return found};for row:=range board{for column:=range board[0]{if find(row,column,0){return true}}};return false}
+```
+
+:::
 
 </ExerciseSolution>

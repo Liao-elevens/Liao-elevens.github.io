@@ -213,6 +213,60 @@ left = 0，right = n - 1
 
 时间 `O(n)`，额外空间 `O(1)`。例如 `[1, 2, 3, 4]` 依次交换 `1/4`、`2/3`，得到 `[4, 3, 2, 1]`。
 
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static void reverseArray(int[] numbers) {
+    int left = 0, right = numbers.length - 1;
+    while (left < right) {
+        int temporary = numbers[left];
+        numbers[left++] = numbers[right];
+        numbers[right--] = temporary;
+    }
+}
+```
+
+```python [Python]
+def reverse_array(numbers):
+    left, right = 0, len(numbers) - 1
+    while left < right:
+        numbers[left], numbers[right] = numbers[right], numbers[left]
+        left, right = left + 1, right - 1
+```
+
+```javascript [JavaScript]
+function reverseArray(numbers) {
+  let left = 0, right = numbers.length - 1
+  while (left < right) {
+    ;[numbers[left], numbers[right]] = [numbers[right], numbers[left]]
+    left++
+    right--
+  }
+}
+```
+
+```cpp [C++]
+void reverseArray(std::vector<int>& numbers) {
+    int left = 0, right = static_cast<int>(numbers.size()) - 1;
+    while (left < right) std::swap(numbers[left++], numbers[right--]);
+}
+```
+
+```go [Go]
+func reverseArray(numbers []int) {
+	left, right := 0, len(numbers)-1
+	for left < right {
+		numbers[left], numbers[right] = numbers[right], numbers[left]
+		left++
+		right--
+	}
+}
+```
+
+:::
+
 </ExerciseSolution>
 
 ### 2. 删除有序数组中的重复项
@@ -233,6 +287,71 @@ read 从 1 到末尾：
 
 时间 `O(n)`，空间 `O(1)`；不要要求尾部旧数据也被清空，因为题目只承诺前 `write` 项有效。
 
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static int removeDuplicates(int[] numbers) {
+    if (numbers.length == 0) return 0;
+    int write = 1;
+    for (int read = 1; read < numbers.length; read++) {
+        if (numbers[read] != numbers[write - 1]) numbers[write++] = numbers[read];
+    }
+    return write;
+}
+```
+
+```python [Python]
+def remove_duplicates(numbers):
+    if not numbers:
+        return 0
+    write = 1
+    for read in range(1, len(numbers)):
+        if numbers[read] != numbers[write - 1]:
+            numbers[write] = numbers[read]
+            write += 1
+    return write
+```
+
+```javascript [JavaScript]
+function removeDuplicates(numbers) {
+  if (numbers.length === 0) return 0
+  let write = 1
+  for (let read = 1; read < numbers.length; read++) {
+    if (numbers[read] !== numbers[write - 1]) numbers[write++] = numbers[read]
+  }
+  return write
+}
+```
+
+```cpp [C++]
+int removeDuplicates(std::vector<int>& numbers) {
+    if (numbers.empty()) return 0;
+    int write = 1;
+    for (int read = 1; read < static_cast<int>(numbers.size()); ++read) {
+        if (numbers[read] != numbers[write - 1]) numbers[write++] = numbers[read];
+    }
+    return write;
+}
+```
+
+```go [Go]
+func removeDuplicates(numbers []int) int {
+	if len(numbers) == 0 { return 0 }
+	write := 1
+	for read := 1; read < len(numbers); read++ {
+		if numbers[read] != numbers[write-1] {
+			numbers[write] = numbers[read]
+			write++
+		}
+	}
+	return write
+}
+```
+
+:::
+
 </ExerciseSolution>
 
 ### 3. 把所有 0 移到末尾
@@ -242,6 +361,58 @@ read 从 1 到末尾：
 先把非零元素按原顺序写到前面，再把剩余位置填成 `0`。因为只在读到非零值时推进写指针，所以其他元素的相对顺序不会改变。
 
 时间 `O(n)`，空间 `O(1)`。`[0, 1, 0, 3, 12]` 写完非零值后前缀为 `[1, 3, 12]`，再补两个零。
+
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static void moveZeroes(int[] numbers) {
+    int write = 0;
+    for (int value : numbers) if (value != 0) numbers[write++] = value;
+    while (write < numbers.length) numbers[write++] = 0;
+}
+```
+
+```python [Python]
+def move_zeroes(numbers):
+    write = 0
+    for value in numbers:
+        if value != 0:
+            numbers[write] = value
+            write += 1
+    while write < len(numbers):
+        numbers[write] = 0
+        write += 1
+```
+
+```javascript [JavaScript]
+function moveZeroes(numbers) {
+  let write = 0
+  for (const value of numbers) if (value !== 0) numbers[write++] = value
+  while (write < numbers.length) numbers[write++] = 0
+}
+```
+
+```cpp [C++]
+void moveZeroes(std::vector<int>& numbers) {
+    int write = 0;
+    for (int value : numbers) if (value != 0) numbers[write++] = value;
+    while (write < static_cast<int>(numbers.size())) numbers[write++] = 0;
+}
+```
+
+```go [Go]
+func moveZeroes(numbers []int) {
+	write := 0
+	for _, value := range numbers {
+		if value != 0 { numbers[write] = value; write++ }
+	}
+	for write < len(numbers) { numbers[write] = 0; write++ }
+}
+```
+
+:::
 
 </ExerciseSolution>
 
@@ -255,6 +426,83 @@ read 从 1 到末尾：
 
 时间 `O(n)`，空间 `O(1)`；空数组要直接返回，避免对 `0` 取模。
 
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static void reverse(int[] numbers, int left, int right) {
+    while (left < right) {
+        int temporary = numbers[left];
+        numbers[left++] = numbers[right];
+        numbers[right--] = temporary;
+    }
+}
+static void rotateRight(int[] numbers, int k) {
+    if (numbers.length == 0) return;
+    k %= numbers.length;
+    reverse(numbers, 0, numbers.length - 1);
+    reverse(numbers, 0, k - 1);
+    reverse(numbers, k, numbers.length - 1);
+}
+```
+
+```python [Python]
+def rotate_right(numbers, k):
+    if not numbers:
+        return
+    k %= len(numbers)
+    numbers.reverse()
+    numbers[:k] = reversed(numbers[:k])
+    numbers[k:] = reversed(numbers[k:])
+```
+
+```javascript [JavaScript]
+function reverseRange(numbers, left, right) {
+  while (left < right) {
+    ;[numbers[left], numbers[right]] = [numbers[right], numbers[left]]
+    left++
+    right--
+  }
+}
+function rotateRight(numbers, k) {
+  if (numbers.length === 0) return
+  k %= numbers.length
+  reverseRange(numbers, 0, numbers.length - 1)
+  reverseRange(numbers, 0, k - 1)
+  reverseRange(numbers, k, numbers.length - 1)
+}
+```
+
+```cpp [C++]
+void rotateRight(std::vector<int>& numbers, int k) {
+    if (numbers.empty()) return;
+    k %= numbers.size();
+    std::reverse(numbers.begin(), numbers.end());
+    std::reverse(numbers.begin(), numbers.begin() + k);
+    std::reverse(numbers.begin() + k, numbers.end());
+}
+```
+
+```go [Go]
+func reverseRange(numbers []int, left, right int) {
+	for left < right {
+		numbers[left], numbers[right] = numbers[right], numbers[left]
+		left++
+		right--
+	}
+}
+func rotateRight(numbers []int, k int) {
+	if len(numbers) == 0 { return }
+	k %= len(numbers)
+	reverseRange(numbers, 0, len(numbers)-1)
+	reverseRange(numbers, 0, k-1)
+	reverseRange(numbers, k, len(numbers)-1)
+}
+```
+
+:::
+
 </ExerciseSolution>
 
 ### 5. 合并两个有序数组
@@ -265,197 +513,69 @@ read 从 1 到末尾：
 
 时间 `O(m+n)`，结果数组需要 `O(m+n)` 空间。若题目要求把第二个数组原地合入第一个数组尾部，应从后向前写，避免覆盖尚未读取的元素。
 
-</ExerciseSolution>
-
-### 五语言完整实现
-
-<ExerciseSolution title="展开五道数组练习的五语言代码" eyebrow="CODE">
+#### 五语言实现
 
 ::: code-group
 
 ```java [Java]
-import java.util.Arrays;
-
-static void reverse(int[] a, int left, int right) {
-    while (left < right) {
-        int temp = a[left]; a[left++] = a[right]; a[right--] = temp;
-    }
-}
-static void reverseArray(int[] a) { reverse(a, 0, a.length - 1); }
-static int removeDuplicates(int[] a) {
-    if (a.length == 0) return 0;
-    int write = 1;
-    for (int read = 1; read < a.length; read++)
-        if (a[read] != a[write - 1]) a[write++] = a[read];
-    return write;
-}
-static void moveZeroes(int[] a) {
-    int write = 0;
-    for (int value : a) if (value != 0) a[write++] = value;
-    while (write < a.length) a[write++] = 0;
-}
-static void rotateRight(int[] a, int k) {
-    if (a.length == 0) return;
-    k %= a.length;
-    reverse(a, 0, a.length - 1);
-    reverse(a, 0, k - 1);
-    reverse(a, k, a.length - 1);
-}
-static int[] mergeSorted(int[] a, int[] b) {
-    int[] result = new int[a.length + b.length];
+static int[] mergeSorted(int[] first, int[] second) {
+    int[] result = new int[first.length + second.length];
     int i = 0, j = 0, k = 0;
-    while (i < a.length && j < b.length)
-        result[k++] = a[i] <= b[j] ? a[i++] : b[j++];
-    while (i < a.length) result[k++] = a[i++];
-    while (j < b.length) result[k++] = b[j++];
+    while (i < first.length && j < second.length)
+        result[k++] = first[i] <= second[j] ? first[i++] : second[j++];
+    while (i < first.length) result[k++] = first[i++];
+    while (j < second.length) result[k++] = second[j++];
     return result;
 }
 ```
 
 ```python [Python]
-def reverse_range(a, left, right):
-    while left < right:
-        a[left], a[right] = a[right], a[left]
-        left, right = left + 1, right - 1
-
-def reverse_array(a):
-    reverse_range(a, 0, len(a) - 1)
-
-def remove_duplicates(a):
-    if not a:
-        return 0
-    write = 1
-    for read in range(1, len(a)):
-        if a[read] != a[write - 1]:
-            a[write] = a[read]
-            write += 1
-    return write
-
-def move_zeroes(a):
-    write = 0
-    for value in a:
-        if value != 0:
-            a[write] = value
-            write += 1
-    a[write:] = [0] * (len(a) - write)
-
-def rotate_right(a, k):
-    if not a:
-        return
-    k %= len(a)
-    reverse_range(a, 0, len(a) - 1)
-    reverse_range(a, 0, k - 1)
-    reverse_range(a, k, len(a) - 1)
-
-def merge_sorted(a, b):
+def merge_sorted(first, second):
     result, i, j = [], 0, 0
-    while i < len(a) and j < len(b):
-        if a[i] <= b[j]: result.append(a[i]); i += 1
-        else: result.append(b[j]); j += 1
-    return result + a[i:] + b[j:]
+    while i < len(first) and j < len(second):
+        if first[i] <= second[j]:
+            result.append(first[i]); i += 1
+        else:
+            result.append(second[j]); j += 1
+    return result + first[i:] + second[j:]
 ```
 
 ```javascript [JavaScript]
-function reverseRange(a, left, right) {
-  while (left < right) {
-    const temporary = a[left]
-    a[left] = a[right]
-    a[right] = temporary
-    left++
-    right--
-  }
-}
-function reverseArray(a) { reverseRange(a, 0, a.length - 1) }
-function removeDuplicates(a) {
-  if (a.length === 0) return 0
-  let write = 1
-  for (let read = 1; read < a.length; read++)
-    if (a[read] !== a[write - 1]) a[write++] = a[read]
-  return write
-}
-function moveZeroes(a) {
-  let write = 0
-  for (const value of a) if (value !== 0) a[write++] = value
-  while (write < a.length) a[write++] = 0
-}
-function rotateRight(a, k) {
-  if (a.length === 0) return
-  k %= a.length
-  reverseRange(a, 0, a.length - 1)
-  reverseRange(a, 0, k - 1)
-  reverseRange(a, k, a.length - 1)
-}
-function mergeSorted(a, b) {
+function mergeSorted(first, second) {
   const result = []; let i = 0, j = 0
-  while (i < a.length && j < b.length)
-    result.push(a[i] <= b[j] ? a[i++] : b[j++])
-  return result.concat(a.slice(i), b.slice(j))
+  while (i < first.length && j < second.length) {
+    result.push(first[i] <= second[j] ? first[i++] : second[j++])
+  }
+  return result.concat(first.slice(i), second.slice(j))
 }
 ```
 
 ```cpp [C++]
-#include <algorithm>
-#include <vector>
-void reverseArray(std::vector<int>& a) { std::reverse(a.begin(), a.end()); }
-int removeDuplicates(std::vector<int>& a) {
-    if (a.empty()) return 0;
-    int write = 1;
-    for (int read = 1; read < static_cast<int>(a.size()); ++read)
-        if (a[read] != a[write - 1]) a[write++] = a[read];
-    return write;
-}
-void moveZeroes(std::vector<int>& a) {
-    int write = 0;
-    for (int value : a) if (value != 0) a[write++] = value;
-    while (write < static_cast<int>(a.size())) a[write++] = 0;
-}
-void rotateRight(std::vector<int>& a, int k) {
-    if (a.empty()) return;
-    k %= a.size();
-    std::reverse(a.begin(), a.end());
-    std::reverse(a.begin(), a.begin() + k);
-    std::reverse(a.begin() + k, a.end());
-}
-std::vector<int> mergeSorted(const std::vector<int>& a, const std::vector<int>& b) {
-    std::vector<int> result; result.reserve(a.size() + b.size());
+std::vector<int> mergeSorted(const std::vector<int>& first, const std::vector<int>& second) {
+    std::vector<int> result;
+    result.reserve(first.size() + second.size());
     int i = 0, j = 0;
-    while (i < static_cast<int>(a.size()) && j < static_cast<int>(b.size()))
-        result.push_back(a[i] <= b[j] ? a[i++] : b[j++]);
-    result.insert(result.end(), a.begin() + i, a.end());
-    result.insert(result.end(), b.begin() + j, b.end());
+    while (i < static_cast<int>(first.size()) && j < static_cast<int>(second.size()))
+        result.push_back(first[i] <= second[j] ? first[i++] : second[j++]);
+    result.insert(result.end(), first.begin() + i, first.end());
+    result.insert(result.end(), second.begin() + j, second.end());
     return result;
 }
 ```
 
 ```go [Go]
-func reverseRange(a []int, left, right int) {
-	for left < right { a[left], a[right] = a[right], a[left]; left++; right-- }
-}
-func reverseArray(a []int) { reverseRange(a, 0, len(a)-1) }
-func removeDuplicates(a []int) int {
-	if len(a) == 0 { return 0 }
-	write := 1
-	for read := 1; read < len(a); read++ {
-		if a[read] != a[write-1] { a[write] = a[read]; write++ }
+func mergeSorted(first, second []int) []int {
+	result := make([]int, 0, len(first)+len(second))
+	i, j := 0, 0
+	for i < len(first) && j < len(second) {
+		if first[i] <= second[j] {
+			result = append(result, first[i]); i++
+		} else {
+			result = append(result, second[j]); j++
+		}
 	}
-	return write
-}
-func moveZeroes(a []int) {
-	write := 0
-	for _, value := range a { if value != 0 { a[write] = value; write++ } }
-	for write < len(a) { a[write] = 0; write++ }
-}
-func rotateRight(a []int, k int) {
-	if len(a) == 0 { return }
-	k %= len(a)
-	reverseRange(a, 0, len(a)-1); reverseRange(a, 0, k-1); reverseRange(a, k, len(a)-1)
-}
-func mergeSorted(a, b []int) []int {
-	result := make([]int, 0, len(a)+len(b)); i, j := 0, 0
-	for i < len(a) && j < len(b) {
-		if a[i] <= b[j] { result = append(result, a[i]); i++ } else { result = append(result, b[j]); j++ }
-	}
-	result = append(result, a[i:]...); result = append(result, b[j:]...)
+	result = append(result, first[i:]...)
+	result = append(result, second[j:]...)
 	return result
 }
 ```

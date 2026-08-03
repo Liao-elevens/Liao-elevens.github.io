@@ -287,6 +287,67 @@ func main() {
 
 时间复杂度 `O(n)`，额外空间 `O(1)`。
 
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static int[] maxWithIndex(int[] a) {
+    if (a.length == 0) throw new IllegalArgumentException("数组不能为空");
+    int value = a[0], index = 0;
+    for (int i = 1; i < a.length; i++) {
+        if (a[i] > value) { value = a[i]; index = i; }
+    }
+    return new int[]{value, index};
+}
+```
+
+```python [Python]
+def max_with_index(a):
+    if not a:
+        raise ValueError("数组不能为空")
+    value, index = a[0], 0
+    for i in range(1, len(a)):
+        if a[i] > value:
+            value, index = a[i], i
+    return value, index
+```
+
+```javascript [JavaScript]
+function maxWithIndex(a) {
+  if (a.length === 0) throw new Error('数组不能为空')
+  let value = a[0], index = 0
+  for (let i = 1; i < a.length; i++) {
+    if (a[i] > value) [value, index] = [a[i], i]
+  }
+  return { value, index }
+}
+```
+
+```cpp [C++]
+std::pair<int, int> maxWithIndex(const std::vector<int>& a) {
+    if (a.empty()) throw std::invalid_argument("数组不能为空");
+    int value = a[0], index = 0;
+    for (int i = 1; i < static_cast<int>(a.size()); ++i) {
+        if (a[i] > value) { value = a[i]; index = i; }
+    }
+    return {value, index};
+}
+```
+
+```go [Go]
+func maxWithIndex(a []int) (int, int) {
+	if len(a) == 0 { panic("数组不能为空") }
+	value, index := a[0], 0
+	for i := 1; i < len(a); i++ {
+		if a[i] > value { value, index = a[i], i }
+	}
+	return value, index
+}
+```
+
+:::
+
 </ExerciseSolution>
 
 ### 2. 找出第二大的不同元素
@@ -309,6 +370,82 @@ func main() {
 
 时间复杂度 `O(n)`，额外空间 `O(1)`。
 
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static Integer secondDistinctMax(int[] a) {
+    Integer first = null, second = null;
+    for (int value : a) {
+        if (first == null || value > first) {
+            second = first;
+            first = value;
+        } else if (value != first && (second == null || value > second)) {
+            second = value;
+        }
+    }
+    return second;
+}
+```
+
+```python [Python]
+def second_distinct_max(a):
+    first = second = None
+    for value in a:
+        if first is None or value > first:
+            second, first = first, value
+        elif value != first and (second is None or value > second):
+            second = value
+    return second
+```
+
+```javascript [JavaScript]
+function secondDistinctMax(a) {
+  let first = null, second = null
+  for (const value of a) {
+    if (first === null || value > first) {
+      second = first; first = value
+    } else if (value !== first && (second === null || value > second)) {
+      second = value
+    }
+  }
+  return second
+}
+```
+
+```cpp [C++]
+std::optional<int> secondDistinctMax(const std::vector<int>& a) {
+    std::optional<int> first, second;
+    for (int value : a) {
+        if (!first || value > *first) {
+            second = first; first = value;
+        } else if (value != *first && (!second || value > *second)) {
+            second = value;
+        }
+    }
+    return second;
+}
+```
+
+```go [Go]
+func secondDistinctMax(a []int) (int, bool) {
+	var first, second int
+	hasFirst, hasSecond := false, false
+	for _, value := range a {
+		if !hasFirst || value > first {
+			second, hasSecond = first, hasFirst
+			first, hasFirst = value, true
+		} else if value != first && (!hasSecond || value > second) {
+			second, hasSecond = value, true
+		}
+	}
+	return second, hasSecond
+}
+```
+
+:::
+
 </ExerciseSolution>
 
 ### 3. 一次遍历求最小值、最大值和总和
@@ -330,37 +467,11 @@ func main() {
 
 时间复杂度 `O(n)`，额外空间 `O(1)`。
 
-</ExerciseSolution>
-
-### 五语言完整实现
-
-<ExerciseSolution title="展开三道练习的五语言代码" eyebrow="CODE">
+#### 五语言实现
 
 ::: code-group
 
 ```java [Java]
-static int[] maxWithIndex(int[] a) {
-    if (a.length == 0) throw new IllegalArgumentException("数组不能为空");
-    int value = a[0], index = 0;
-    for (int i = 1; i < a.length; i++) {
-        if (a[i] > value) { value = a[i]; index = i; }
-    }
-    return new int[]{value, index};
-}
-
-static Integer secondDistinctMax(int[] a) {
-    Integer first = null, second = null;
-    for (int value : a) {
-        if (first == null || value > first) {
-            second = first;
-            first = value;
-        } else if (value != first && (second == null || value > second)) {
-            second = value;
-        }
-    }
-    return second;
-}
-
 static long[] minMaxSum(int[] a) {
     if (a.length == 0) throw new IllegalArgumentException("数组不能为空");
     int min = a[0], max = a[0];
@@ -375,24 +486,6 @@ static long[] minMaxSum(int[] a) {
 ```
 
 ```python [Python]
-def max_with_index(a):
-    if not a:
-        raise ValueError("数组不能为空")
-    value, index = a[0], 0
-    for i in range(1, len(a)):
-        if a[i] > value:
-            value, index = a[i], i
-    return value, index
-
-def second_distinct_max(a):
-    first = second = None
-    for value in a:
-        if first is None or value > first:
-            second, first = first, value
-        elif value != first and (second is None or value > second):
-            second = value
-    return second
-
 def min_max_sum(a):
     if not a:
         raise ValueError("数组不能为空")
@@ -406,27 +499,6 @@ def min_max_sum(a):
 ```
 
 ```javascript [JavaScript]
-function maxWithIndex(a) {
-  if (a.length === 0) throw new Error('数组不能为空')
-  let value = a[0], index = 0
-  for (let i = 1; i < a.length; i++) {
-    if (a[i] > value) [value, index] = [a[i], i]
-  }
-  return { value, index }
-}
-
-function secondDistinctMax(a) {
-  let first = null, second = null
-  for (const value of a) {
-    if (first === null || value > first) {
-      second = first; first = value
-    } else if (value !== first && (second === null || value > second)) {
-      second = value
-    }
-  }
-  return second
-}
-
 function minMaxSum(a) {
   if (a.length === 0) throw new Error('数组不能为空')
   let minimum = a[0], maximum = a[0], sum = 0
@@ -440,34 +512,6 @@ function minMaxSum(a) {
 ```
 
 ```cpp [C++]
-#include <algorithm>
-#include <optional>
-#include <stdexcept>
-#include <tuple>
-#include <utility>
-#include <vector>
-
-std::pair<int, int> maxWithIndex(const std::vector<int>& a) {
-    if (a.empty()) throw std::invalid_argument("数组不能为空");
-    int value = a[0], index = 0;
-    for (int i = 1; i < static_cast<int>(a.size()); ++i) {
-        if (a[i] > value) { value = a[i]; index = i; }
-    }
-    return {value, index};
-}
-
-std::optional<int> secondDistinctMax(const std::vector<int>& a) {
-    std::optional<int> first, second;
-    for (int value : a) {
-        if (!first || value > *first) {
-            second = first; first = value;
-        } else if (value != *first && (!second || value > *second)) {
-            second = value;
-        }
-    }
-    return second;
-}
-
 std::tuple<int, int, long long> minMaxSum(const std::vector<int>& a) {
     if (a.empty()) throw std::invalid_argument("数组不能为空");
     int minimum = a[0], maximum = a[0];
@@ -482,29 +526,6 @@ std::tuple<int, int, long long> minMaxSum(const std::vector<int>& a) {
 ```
 
 ```go [Go]
-func maxWithIndex(a []int) (int, int) {
-	if len(a) == 0 { panic("数组不能为空") }
-	value, index := a[0], 0
-	for i := 1; i < len(a); i++ {
-		if a[i] > value { value, index = a[i], i }
-	}
-	return value, index
-}
-
-func secondDistinctMax(a []int) (int, bool) {
-	var first, second int
-	hasFirst, hasSecond := false, false
-	for _, value := range a {
-		if !hasFirst || value > first {
-			second, hasSecond = first, hasFirst
-			first, hasFirst = value, true
-		} else if value != first && (!hasSecond || value > second) {
-			second, hasSecond = value, true
-		}
-	}
-	return second, hasSecond
-}
-
 func minMaxSum(a []int) (int, int, int64) {
 	if len(a) == 0 { panic("数组不能为空") }
 	minimum, maximum := a[0], a[0]
@@ -519,8 +540,6 @@ func minMaxSum(a []int) (int, int, int64) {
 ```
 
 :::
-
-建议至少测试：全负数、只有一个元素、最大值重复、所有元素相同，以及总和可能很大的数组。
 
 </ExerciseSolution>
 

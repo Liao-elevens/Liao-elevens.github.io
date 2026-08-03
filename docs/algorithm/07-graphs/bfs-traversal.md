@@ -212,6 +212,94 @@ func bfsDistances(graph [][]int, start int) []int {
 
 根节点入队，每轮先记录队列当前长度，只处理这一批节点并把它们的孩子加入队尾。这样每批正好是一层。完整推演见[二叉树遍历练习](/algorithm/06-trees-heaps/binary-tree-traversal#_2-使用队列实现层序遍历)。时间 `O(n)`，空间 `O(w)`。
 
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static List<List<Integer>> levelOrder(TreeNode root) {
+    List<List<Integer>> answer = new ArrayList<>();
+    if (root == null) return answer;
+    Queue<TreeNode> queue = new ArrayDeque<>(); queue.offer(root);
+    while (!queue.isEmpty()) {
+        List<Integer> level = new ArrayList<>();
+        for (int count = queue.size(); count > 0; count--) {
+            TreeNode node = queue.poll(); level.add(node.value);
+            if (node.left != null) queue.offer(node.left); if (node.right != null) queue.offer(node.right);
+        }
+        answer.add(level);
+    }
+    return answer;
+}
+```
+
+```python [Python]
+from collections import deque
+def level_order(root):
+    if root is None: return []
+    queue, answer = deque([root]), []
+    while queue:
+        level = []
+        for _ in range(len(queue)):
+            node = queue.popleft(); level.append(node.value)
+            if node.left: queue.append(node.left)
+            if node.right: queue.append(node.right)
+        answer.append(level)
+    return answer
+```
+
+```javascript [JavaScript]
+function levelOrder(root) {
+  if (!root) return []
+  const queue = [root], answer = []
+  for (let head = 0; head < queue.length;) {
+    const end = queue.length, level = []
+    while (head < end) {
+      const node = queue[head++]; level.push(node.value)
+      if (node.left) queue.push(node.left); if (node.right) queue.push(node.right)
+    }
+    answer.push(level)
+  }
+  return answer
+}
+```
+
+```cpp [C++]
+std::vector<std::vector<int>> levelOrder(TreeNode* root) {
+    if (!root) return {};
+    std::queue<TreeNode*> queue; queue.push(root);
+    std::vector<std::vector<int>> answer;
+    while (!queue.empty()) {
+        std::vector<int> level;
+        for (int count = queue.size(); count > 0; --count) {
+            TreeNode* node = queue.front(); queue.pop(); level.push_back(node->value);
+            if (node->left) queue.push(node->left); if (node->right) queue.push(node->right);
+        }
+        answer.push_back(level);
+    }
+    return answer;
+}
+```
+
+```go [Go]
+func levelOrder(root *TreeNode) [][]int {
+	if root == nil { return nil }
+	queue, answer := []*TreeNode{root}, [][]int{}
+	for len(queue) > 0 {
+		size, level := len(queue), []int{}
+		for i := 0; i < size; i++ {
+			node := queue[0]; queue = queue[1:]; level = append(level, node.Value)
+			if node.Left != nil { queue = append(queue, node.Left) }; if node.Right != nil { queue = append(queue, node.Right) }
+		}
+		answer = append(answer, level)
+	}
+	return answer
+}
+```
+
+:::
+
+
 </ExerciseSolution>
 
 ### 2. 岛屿数量
@@ -230,6 +318,105 @@ count = 0
 
 `m × n` 网格中每格最多入队一次，时间 `O(mn)`、空间最坏 `O(mn)`。可以原地把陆地改成水，也可以使用独立 `visited`。
 
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static int islands(char[][] grid) {
+    int answer = 0;
+    for (int row = 0; row < grid.length; row++) for (int column = 0; column < grid[0].length; column++) {
+        if (grid[row][column] != '1') continue;
+        answer++; Queue<int[]> queue = new ArrayDeque<>(); queue.offer(new int[]{row, column}); grid[row][column] = '0';
+        while (!queue.isEmpty()) {
+            int[] cell = queue.poll();
+            for (int[] direction : new int[][]{{1,0},{-1,0},{0,1},{0,-1}}) {
+                int nextRow = cell[0] + direction[0], nextColumn = cell[1] + direction[1];
+                if (nextRow >= 0 && nextRow < grid.length && nextColumn >= 0 && nextColumn < grid[0].length && grid[nextRow][nextColumn] == '1') {
+                    grid[nextRow][nextColumn] = '0'; queue.offer(new int[]{nextRow, nextColumn});
+                }
+            }
+        }
+    }
+    return answer;
+}
+```
+
+```python [Python]
+from collections import deque
+def islands(grid):
+    answer = 0
+    for row in range(len(grid)):
+        for column in range(len(grid[0])):
+            if grid[row][column] != "1": continue
+            answer += 1; grid[row][column] = "0"; queue = deque([(row, column)])
+            while queue:
+                current_row, current_column = queue.popleft()
+                for dr, dc in ((1,0),(-1,0),(0,1),(0,-1)):
+                    nr, nc = current_row + dr, current_column + dc
+                    if 0 <= nr < len(grid) and 0 <= nc < len(grid[0]) and grid[nr][nc] == "1":
+                        grid[nr][nc] = "0"; queue.append((nr, nc))
+    return answer
+```
+
+```javascript [JavaScript]
+function islands(grid) {
+  let answer = 0
+  for (let row = 0; row < grid.length; row++) for (let column = 0; column < grid[0].length; column++) {
+    if (grid[row][column] !== '1') continue
+    answer++; grid[row][column] = '0'; const queue = [[row, column]]
+    for (let head = 0; head < queue.length; head++) {
+      const [currentRow, currentColumn] = queue[head]
+      for (const [dr, dc] of [[1,0],[-1,0],[0,1],[0,-1]]) {
+        const nr = currentRow + dr, nc = currentColumn + dc
+        if (nr >= 0 && nr < grid.length && nc >= 0 && nc < grid[0].length && grid[nr][nc] === '1') {
+          grid[nr][nc] = '0'; queue.push([nr, nc])
+        }
+      }
+    }
+  }
+  return answer
+}
+```
+
+```cpp [C++]
+int islands(std::vector<std::vector<char>>& grid) {
+    int answer = 0, rows = grid.size(), columns = grid[0].size();
+    for (int row = 0; row < rows; ++row) for (int column = 0; column < columns; ++column) {
+        if (grid[row][column] != '1') continue;
+        ++answer; grid[row][column] = '0'; std::queue<std::pair<int,int>> queue; queue.push({row, column});
+        while (!queue.empty()) {
+            auto [r, c] = queue.front(); queue.pop();
+            for (auto [dr, dc] : std::vector<std::pair<int,int>>{{1,0},{-1,0},{0,1},{0,-1}}) {
+                int nr = r + dr, nc = c + dc;
+                if (nr >= 0 && nr < rows && nc >= 0 && nc < columns && grid[nr][nc] == '1') {
+                    grid[nr][nc] = '0'; queue.push({nr, nc});
+                }
+            }
+        }
+    }
+    return answer;
+}
+```
+
+```go [Go]
+func islands(grid [][]byte) int {
+	answer, directions := 0, [][2]int{{1,0},{-1,0},{0,1},{0,-1}}
+	for row := range grid { for column := range grid[0] {
+		if grid[row][column] != '1' { continue }
+		answer++; grid[row][column] = '0'; queue := [][2]int{{row, column}}
+		for len(queue) > 0 { cell := queue[0]; queue = queue[1:]
+			for _, d := range directions { nr, nc := cell[0]+d[0], cell[1]+d[1]
+				if nr >= 0 && nr < len(grid) && nc >= 0 && nc < len(grid[0]) && grid[nr][nc] == '1' { grid[nr][nc] = '0'; queue = append(queue, [2]int{nr,nc}) }
+			}
+		}
+	} }
+	return answer
+}
+```
+
+:::
+
 </ExerciseSolution>
 
 ### 3. 网格最短路
@@ -239,6 +426,93 @@ count = 0
 把每个可走格子看作节点，上下左右移动看作权重相同的边。起点入队并令距离为 `0`；首次到达邻居时设置 `distance + 1`。BFS 的逐层性质保证第一次到达终点就是最少步数。
 
 时间 `O(mn)`、空间 `O(mn)`。若不同移动代价不相同，普通 BFS 不再适用，应考虑 Dijkstra 或 0-1 BFS。
+
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static int shortestPath(int[][] grid) {
+    if (grid[0][0] == 1) return -1;
+    Queue<int[]> queue = new ArrayDeque<>(); queue.offer(new int[]{0, 0, 0}); grid[0][0] = 1;
+    while (!queue.isEmpty()) {
+        int[] cell = queue.poll();
+        if (cell[0] == grid.length - 1 && cell[1] == grid[0].length - 1) return cell[2];
+        for (int[] d : new int[][]{{1,0},{-1,0},{0,1},{0,-1}}) {
+            int row = cell[0] + d[0], column = cell[1] + d[1];
+            if (row >= 0 && row < grid.length && column >= 0 && column < grid[0].length && grid[row][column] == 0) {
+                grid[row][column] = 1; queue.offer(new int[]{row, column, cell[2] + 1});
+            }
+        }
+    }
+    return -1;
+}
+```
+
+```python [Python]
+from collections import deque
+def shortest_path(grid):
+    if grid[0][0] == 1: return -1
+    queue = deque([(0, 0, 0)]); grid[0][0] = 1
+    while queue:
+        row, column, distance = queue.popleft()
+        if (row, column) == (len(grid)-1, len(grid[0])-1): return distance
+        for dr, dc in ((1,0),(-1,0),(0,1),(0,-1)):
+            nr, nc = row + dr, column + dc
+            if 0 <= nr < len(grid) and 0 <= nc < len(grid[0]) and grid[nr][nc] == 0:
+                grid[nr][nc] = 1; queue.append((nr, nc, distance + 1))
+    return -1
+```
+
+```javascript [JavaScript]
+function shortestPath(grid) {
+  if (grid[0][0] === 1) return -1
+  const queue = [[0, 0, 0]]; grid[0][0] = 1
+  for (let head = 0; head < queue.length; head++) {
+    const [row, column, distance] = queue[head]
+    if (row === grid.length - 1 && column === grid[0].length - 1) return distance
+    for (const [dr, dc] of [[1,0],[-1,0],[0,1],[0,-1]]) {
+      const nr = row + dr, nc = column + dc
+      if (nr >= 0 && nr < grid.length && nc >= 0 && nc < grid[0].length && grid[nr][nc] === 0) {
+        grid[nr][nc] = 1; queue.push([nr, nc, distance + 1])
+      }
+    }
+  }
+  return -1
+}
+```
+
+```cpp [C++]
+int shortestPath(std::vector<std::vector<int>>& grid) {
+    if (grid[0][0] == 1) return -1;
+    std::queue<std::tuple<int,int,int>> queue; queue.push({0,0,0}); grid[0][0] = 1;
+    while (!queue.empty()) {
+        auto [row, column, distance] = queue.front(); queue.pop();
+        if (row == static_cast<int>(grid.size())-1 && column == static_cast<int>(grid[0].size())-1) return distance;
+        for (auto [dr, dc] : std::vector<std::pair<int,int>>{{1,0},{-1,0},{0,1},{0,-1}}) {
+            int nr=row+dr,nc=column+dc;
+            if(nr>=0&&nr<(int)grid.size()&&nc>=0&&nc<(int)grid[0].size()&&grid[nr][nc]==0){grid[nr][nc]=1;queue.push({nr,nc,distance+1});}
+        }
+    }
+    return -1;
+}
+```
+
+```go [Go]
+func shortestPath(grid [][]int) int {
+	if grid[0][0] == 1 { return -1 }
+	queue := [][3]int{{0,0,0}}; grid[0][0] = 1
+	for len(queue) > 0 { cell := queue[0]; queue = queue[1:]
+		if cell[0] == len(grid)-1 && cell[1] == len(grid[0])-1 { return cell[2] }
+		for _, d := range [][2]int{{1,0},{-1,0},{0,1},{0,-1}} { nr,nc:=cell[0]+d[0],cell[1]+d[1]
+			if nr>=0&&nr<len(grid)&&nc>=0&&nc<len(grid[0])&&grid[nr][nc]==0 { grid[nr][nc]=1; queue=append(queue,[3]int{nr,nc,cell[2]+1}) }
+		}
+	}
+	return -1
+}
+```
+
+:::
 
 </ExerciseSolution>
 
@@ -250,6 +524,50 @@ count = 0
 
 典型问题包括“每个房间到最近出口”“腐烂橘子”和“每个格子到最近的 0”。不要从每个源点分别做 BFS，那通常会重复扫描整个图。
 
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static int[][] nearestSource(int[][] grid) {
+    Queue<int[]> queue = new ArrayDeque<>();
+    for (int row=0;row<grid.length;row++) for(int column=0;column<grid[0].length;column++) if(grid[row][column]==1) queue.offer(new int[]{row,column}); else grid[row][column]=-1;
+    while(!queue.isEmpty()){int[] cell=queue.poll();for(int[] d:new int[][]{{1,0},{-1,0},{0,1},{0,-1}}){int row=cell[0]+d[0],column=cell[1]+d[1];if(row>=0&&row<grid.length&&column>=0&&column<grid[0].length&&grid[row][column]==-1){grid[row][column]=grid[cell[0]][cell[1]]+1;queue.offer(new int[]{row,column});}}}
+    return grid;
+}
+```
+
+```python [Python]
+from collections import deque
+def nearest_source(grid):
+    queue = deque()
+    for row in range(len(grid)):
+        for column in range(len(grid[0])):
+            if grid[row][column] == 1: grid[row][column] = 0; queue.append((row,column))
+            else: grid[row][column] = -1
+    while queue:
+        row,column=queue.popleft()
+        for dr,dc in ((1,0),(-1,0),(0,1),(0,-1)):
+            nr,nc=row+dr,column+dc
+            if 0<=nr<len(grid) and 0<=nc<len(grid[0]) and grid[nr][nc]==-1:
+                grid[nr][nc]=grid[row][column]+1;queue.append((nr,nc))
+    return grid
+```
+
+```javascript [JavaScript]
+function nearestSource(grid){const queue=[];for(let r=0;r<grid.length;r++)for(let c=0;c<grid[0].length;c++){if(grid[r][c]===1){grid[r][c]=0;queue.push([r,c])}else grid[r][c]=-1}for(let h=0;h<queue.length;h++){const[r,c]=queue[h];for(const[dr,dc]of[[1,0],[-1,0],[0,1],[0,-1]]){const nr=r+dr,nc=c+dc;if(nr>=0&&nr<grid.length&&nc>=0&&nc<grid[0].length&&grid[nr][nc]===-1){grid[nr][nc]=grid[r][c]+1;queue.push([nr,nc])}}}return grid}
+```
+
+```cpp [C++]
+std::vector<std::vector<int>> nearestSource(std::vector<std::vector<int>> grid){std::queue<std::pair<int,int>>q;for(int r=0;r<(int)grid.size();r++)for(int c=0;c<(int)grid[0].size();c++){if(grid[r][c]==1){grid[r][c]=0;q.push({r,c});}else grid[r][c]=-1;}while(!q.empty()){auto[r,c]=q.front();q.pop();for(auto[dr,dc]:std::vector<std::pair<int,int>>{{1,0},{-1,0},{0,1},{0,-1}}){int nr=r+dr,nc=c+dc;if(nr>=0&&nr<(int)grid.size()&&nc>=0&&nc<(int)grid[0].size()&&grid[nr][nc]==-1){grid[nr][nc]=grid[r][c]+1;q.push({nr,nc});}}}return grid;}
+```
+
+```go [Go]
+func nearestSource(grid [][]int) [][]int {queue:=[][2]int{};for r:=range grid{for c:=range grid[0]{if grid[r][c]==1{grid[r][c]=0;queue=append(queue,[2]int{r,c})}else{grid[r][c]=-1}}};for len(queue)>0{cell:=queue[0];queue=queue[1:];for _,d:=range[][2]int{{1,0},{-1,0},{0,1},{0,-1}}{nr,nc:=cell[0]+d[0],cell[1]+d[1];if nr>=0&&nr<len(grid)&&nc>=0&&nc<len(grid[0])&&grid[nr][nc]==-1{grid[nr][nc]=grid[cell[0]][cell[1]]+1;queue=append(queue,[2]int{nr,nc})}}};return grid}
+```
+
+:::
+
 </ExerciseSolution>
 
 ### 5. 单词接龙
@@ -259,6 +577,48 @@ count = 0
 单词是节点；一次只改变一个字母且新单词在词典中，就存在一条边。从起始词 BFS，第一次到达目标词时的层数就是最短转换长度。
 
 生成邻居时逐位置尝试 `a..z`，命中词典后立即从未访问集合移除，防止重复入队。设单词数 `N`、长度 `L`、字母表大小 26，朴素时间约 `O(N · L · 26)`，空间 `O(N)`。
+
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static int ladderLength(String begin, String end, Set<String> words) {
+    Queue<String> queue=new ArrayDeque<>();queue.offer(begin);int steps=1;
+    while(!queue.isEmpty()){for(int size=queue.size();size>0;size--){String word=queue.poll();if(word.equals(end))return steps;char[] chars=word.toCharArray();for(int i=0;i<chars.length;i++){char old=chars[i];for(char c='a';c<='z';c++){chars[i]=c;String next=new String(chars);if(words.remove(next))queue.offer(next);}chars[i]=old;}}steps++;}
+    return 0;
+}
+```
+
+```python [Python]
+from collections import deque
+def ladder_length(begin, end, words):
+    words, queue, steps = set(words), deque([begin]), 1
+    while queue:
+        for _ in range(len(queue)):
+            word = queue.popleft()
+            if word == end: return steps
+            for index in range(len(word)):
+                for char in "abcdefghijklmnopqrstuvwxyz":
+                    next_word = word[:index] + char + word[index+1:]
+                    if next_word in words: words.remove(next_word); queue.append(next_word)
+        steps += 1
+    return 0
+```
+
+```javascript [JavaScript]
+function ladderLength(begin,end,words){words=new Set(words);const queue=[begin];let head=0,steps=1;while(head<queue.length){const endOfLevel=queue.length;while(head<endOfLevel){const word=queue[head++];if(word===end)return steps;for(let i=0;i<word.length;i++)for(let code=97;code<=122;code++){const next=word.slice(0,i)+String.fromCharCode(code)+word.slice(i+1);if(words.delete(next))queue.push(next)}}steps++}return 0}
+```
+
+```cpp [C++]
+int ladderLength(std::string begin,std::string end,std::unordered_set<std::string> words){std::queue<std::string>q;q.push(begin);int steps=1;while(!q.empty()){for(int size=q.size();size>0;--size){auto word=q.front();q.pop();if(word==end)return steps;for(int i=0;i<(int)word.size();i++){char old=word[i];for(char c='a';c<='z';c++){word[i]=c;if(words.erase(word))q.push(word);}word[i]=old;}}++steps;}return 0;}
+```
+
+```go [Go]
+func ladderLength(begin,end string,words map[string]bool) int {queue,steps:=[]string{begin},1;for len(queue)>0{size:=len(queue);for i:=0;i<size;i++{word:=queue[0];queue=queue[1:];if word==end{return steps};bytes:=[]byte(word);for p:=range bytes{old:=bytes[p];for c:=byte('a');c<='z';c++{bytes[p]=c;next:=string(bytes);if words[next]{delete(words,next);queue=append(queue,next)}};bytes[p]=old}};steps++};return 0}
+```
+
+:::
 
 </ExerciseSolution>
 
@@ -280,20 +640,43 @@ deque = [start]
 
 时间 `O(V+E)`、空间 `O(V)`。边权出现 `2` 或更大时，应使用 Dijkstra，而不能继续套用 0-1 BFS。
 
-</ExerciseSolution>
+#### 五语言实现
 
-### 五语言迁移提示
+::: code-group
 
-<ExerciseSolution title="展开 BFS 练习的五语言实现要点" eyebrow="CODE">
+```java [Java]
+static int zeroOneBfs(List<int[]>[] graph, int start, int target) {
+    int[] distance=new int[graph.length];Arrays.fill(distance,Integer.MAX_VALUE);distance[start]=0;Deque<Integer> deque=new ArrayDeque<>();deque.offer(start);
+    while(!deque.isEmpty()){int node=deque.pollFirst();for(int[] edge:graph[node]){int next=edge[0],weight=edge[1];if(distance[node]+weight<distance[next]){distance[next]=distance[node]+weight;if(weight==0)deque.offerFirst(next);else deque.offerLast(next);}}}
+    return distance[target];
+}
+```
 
-六道题都复用本文已经给出的五语言 BFS 主循环。差别只在于“邻居如何生成”和“距离如何更新”：
+```python [Python]
+from collections import deque
+def zero_one_bfs(graph, start, target):
+    distance=[float("inf")]*len(graph);distance[start]=0;queue=deque([start])
+    while queue:
+        node=queue.popleft()
+        for next_node,weight in graph[node]:
+            if distance[node]+weight<distance[next_node]:
+                distance[next_node]=distance[node]+weight
+                queue.appendleft(next_node) if weight==0 else queue.append(next_node)
+    return distance[target]
+```
 
-- Java 使用 `ArrayDeque`，0-1 BFS 使用 `addFirst/addLast`；
-- Python 使用 `collections.deque`，对应 `appendleft/append`；
-- JavaScript 使用数组加头下标处理普通 BFS，0-1 BFS 建议实现真正的双端队列，避免频繁 `shift/unshift`；
-- C++ 使用 `std::queue`，0-1 BFS 使用 `std::deque`；
-- Go 普通 BFS 使用切片加头下标，0-1 BFS 可用 `container/list` 或自建环形双端队列。
+```javascript [JavaScript]
+function zeroOneBfs(graph,start,target){const distance=Array(graph.length).fill(Infinity);distance[start]=0;const deque=[start];while(deque.length){const node=deque.shift();for(const[next,weight]of graph[node])if(distance[node]+weight<distance[next]){distance[next]=distance[node]+weight;weight===0?deque.unshift(next):deque.push(next)}}return distance[target]}
+```
 
-岛屿和网格题把坐标编码为二元组，单词接龙把字符串作为节点，多源 BFS 只是在初始化时一次加入多个起点；“入队即标记”的原则完全相同。
+```cpp [C++]
+int zeroOneBfs(const std::vector<std::vector<std::pair<int,int>>>&graph,int start,int target){std::vector<int>distance(graph.size(),INT_MAX);distance[start]=0;std::deque<int>deque{start};while(!deque.empty()){int node=deque.front();deque.pop_front();for(auto[next,weight]:graph[node])if(distance[node]+weight<distance[next]){distance[next]=distance[node]+weight;if(weight==0)deque.push_front(next);else deque.push_back(next);}}return distance[target];}
+```
+
+```go [Go]
+func zeroOneBfs(graph [][][2]int,start,target int) int {distance:=make([]int,len(graph));for i:=range distance{distance[i]=int(^uint(0)>>1)};distance[start]=0;deque:=[]int{start};for len(deque)>0{node:=deque[0];deque=deque[1:];for _,edge:=range graph[node]{next,weight:=edge[0],edge[1];if distance[node]+weight<distance[next]{distance[next]=distance[node]+weight;if weight==0{deque=append([]int{next},deque...)}else{deque=append(deque,next)}}}};return distance[target]}
+```
+
+:::
 
 </ExerciseSolution>

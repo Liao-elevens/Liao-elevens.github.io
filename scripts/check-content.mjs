@@ -10,6 +10,7 @@ const problems = []
 const commentIds = new Map()
 let exerciseCount = 0
 let solutionCount = 0
+let fiveLanguageExerciseCount = 0
 
 function collectMarkdown(directory) {
   for (const entry of readdirSync(directory)) {
@@ -107,6 +108,12 @@ for (const file of markdownFiles) {
     problems.push(`${relative(projectRoot, file)} 存在默认展开的练习答案`)
   }
 
+  if (/^### 五语言(?:完整实现|关键修改|迁移提示)$/mu.test(content)) {
+    problems.push(
+      `${relative(projectRoot, file)} 仍把多道练习的五语言代码集中在独立章节中`
+    )
+  }
+
   const lines = content.split('\n')
   for (let index = 0; index < lines.length; index++) {
     if (!/^## (练习|自测|自测练习)$/u.test(lines[index])) continue
@@ -128,7 +135,8 @@ for (const file of markdownFiles) {
       const heading = sectionLines[start].replace(/^###\s+/u, '')
       const answerBlock = sectionLines.slice(start + 1, end).join('\n')
 
-      if (/^\d+\./u.test(heading)) exerciseCount++
+      const isNumberedExercise = /^\d+\./u.test(heading)
+      if (isNumberedExercise) exerciseCount++
 
       if (!answerBlock.includes('<ExerciseSolution')) {
         problems.push(
@@ -146,12 +154,36 @@ for (const file of markdownFiles) {
           `${relative(projectRoot, file)} 的“${heading}”解答内容过少`
         )
       }
+
+      if (isNumberedExercise && answerBlock.includes('#### 五语言实现')) {
+        fiveLanguageExerciseCount++
+
+        if (!answerBlock.includes('::: code-group')) {
+          problems.push(
+            `${relative(projectRoot, file)} 的“${heading}”五语言实现缺少语言切换组`
+          )
+        }
+
+        for (const codeFence of ['```java', '```python', '```javascript', '```cpp', '```go']) {
+          if (!answerBlock.includes(codeFence)) {
+            problems.push(
+              `${relative(projectRoot, file)} 的“${heading}”缺少 ${codeFence.slice(3)} 实现`
+            )
+          }
+        }
+      }
     }
   }
 }
 
 if (exerciseCount < 84) {
   problems.push(`练习完整度下降：当前只识别到 ${exerciseCount} 道，基线为 84 道`)
+}
+
+if (fiveLanguageExerciseCount < 54) {
+  problems.push(
+    `逐题五语言完整度下降：当前只识别到 ${fiveLanguageExerciseCount} 道，基线为 54 道编程练习`
+  )
 }
 
 const fiveLanguageArticles = [
@@ -228,5 +260,5 @@ if (problems.length > 0) {
 }
 
 console.log(
-  `内容检查通过：${markdownFiles.length} 篇 Markdown，${exerciseCount} 道练习、${solutionCount} 个折叠解答，内部链接与五语言核心示例均有效。`
+  `内容检查通过：${markdownFiles.length} 篇 Markdown，${exerciseCount} 道练习、${solutionCount} 个折叠解答，其中 ${fiveLanguageExerciseCount} 道编程练习在题内提供五语言实现；内部链接与五语言核心示例均有效。`
 )

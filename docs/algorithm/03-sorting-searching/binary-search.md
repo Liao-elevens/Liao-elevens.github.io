@@ -350,6 +350,72 @@ func firstPosition(numbers []int, target int) int {
 
 本文前面的五语言 `binarySearch` 已是完整答案，时间 `O(log n)`、空间 `O(1)`。重点测试空数组、一个元素、目标在两端以及目标不存在。
 
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static int binarySearch(int[] numbers, int target) {
+    int left = 0, right = numbers.length - 1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (numbers[mid] == target) return mid;
+        if (numbers[mid] < target) left = mid + 1; else right = mid - 1;
+    }
+    return -1;
+}
+```
+
+```python [Python]
+def binary_search(numbers, target):
+    left, right = 0, len(numbers) - 1
+    while left <= right:
+        mid = left + (right - left) // 2
+        if numbers[mid] == target: return mid
+        if numbers[mid] < target: left = mid + 1
+        else: right = mid - 1
+    return -1
+```
+
+```javascript [JavaScript]
+function binarySearch(numbers, target) {
+  let left = 0, right = numbers.length - 1
+  while (left <= right) {
+    const mid = left + Math.floor((right - left) / 2)
+    if (numbers[mid] === target) return mid
+    if (numbers[mid] < target) left = mid + 1
+    else right = mid - 1
+  }
+  return -1
+}
+```
+
+```cpp [C++]
+int binarySearch(const std::vector<int>& numbers, int target) {
+    int left = 0, right = static_cast<int>(numbers.size()) - 1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (numbers[mid] == target) return mid;
+        if (numbers[mid] < target) left = mid + 1; else right = mid - 1;
+    }
+    return -1;
+}
+```
+
+```go [Go]
+func binarySearch(numbers []int, target int) int {
+	left, right := 0, len(numbers)-1
+	for left <= right {
+		mid := left + (right-left)/2
+		if numbers[mid] == target { return mid }
+		if numbers[mid] < target { left = mid+1 } else { right = mid-1 }
+	}
+	return -1
+}
+```
+
+:::
+
 </ExerciseSolution>
 
 ### 2. 查找第一个和最后一个目标
@@ -360,49 +426,7 @@ func firstPosition(numbers []int, target int) int {
 
 每次边界查找都是 `O(log n)`，总时间仍为 `O(log n)`。
 
-</ExerciseSolution>
-
-### 3. 查找插入位置
-
-<ExerciseSolution>
-
-插入后仍有序的位置，正是“第一个大于等于目标的位置”，因此直接返回 `lowerBound(target)`。目标比所有元素大时返回 `n`，比所有元素小时返回 `0`。
-
-</ExerciseSolution>
-
-### 4. 在旋转有序数组中查找
-
-<ExerciseSolution>
-
-只要数组没有重复值，每次比较中点时，左右两半至少有一半仍然有序。先判断哪一半有序，再判断目标是否落在这一半；如果不在，就去另一半。
-
-例如 `[4,5,6,7,0,1,2]` 查找 `0`：中点 `7` 左半有序，但目标不在 `[4,7)`，所以进入右半。时间 `O(log n)`；大量重复值会破坏这个明确判断，需要额外缩边，最坏退化为 `O(n)`。
-
-</ExerciseSolution>
-
-### 5. 求平方根的整数部分
-
-<ExerciseSolution>
-
-寻找最大的整数 `x`，使 `x² <= n`。这个判断从“可行”到“不可行”具有单调性，可以二分答案。为了避免 `mid * mid` 溢出，使用 `mid <= n / mid` 判断。
-
-`n=8` 时 `2²<=8` 而 `3²>8`，答案为 `2`。时间 `O(log n)`，空间 `O(1)`。
-
-</ExerciseSolution>
-
-### 6. 二分最小可行运输能力
-
-<ExerciseSolution>
-
-容量下界是最重包裹，上界是所有包裹重量之和。给定容量后按顺序装货，可以在线性时间算出需要多少天；容量越大，需要的天数不会增加，因此存在单调性。
-
-寻找第一个能在规定天数内完成运输的容量。若有 `n` 个包裹、重量总和为 `S`，时间是 `O(n log S)`，空间 `O(1)`。
-
-</ExerciseSolution>
-
-### 五语言完整实现
-
-<ExerciseSolution title="展开边界、旋转数组、平方根和运输能力代码" eyebrow="CODE">
+#### 五语言实现
 
 ::: code-group
 
@@ -425,41 +449,6 @@ static int[] searchRange(int[] a, int target) {
     }
     return new int[]{first, left - 1};
 }
-static int searchRotated(int[] a, int target) {
-    int left = 0, right = a.length - 1;
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (a[mid] == target) return mid;
-        if (a[left] <= a[mid]) {
-            if (a[left] <= target && target < a[mid]) right = mid - 1; else left = mid + 1;
-        } else {
-            if (a[mid] < target && target <= a[right]) left = mid + 1; else right = mid - 1;
-        }
-    }
-    return -1;
-}
-static int integerSqrt(int n) {
-    if (n < 2) return n;
-    int left = 1, right = n / 2, answer = 1;
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (mid <= n / mid) { answer = mid; left = mid + 1; } else right = mid - 1;
-    }
-    return answer;
-}
-static int minShipCapacity(int[] weights, int days) {
-    int left = 0, right = 0;
-    for (int w : weights) { left = Math.max(left, w); right += w; }
-    while (left < right) {
-        int capacity = left + (right - left) / 2, usedDays = 1, load = 0;
-        for (int w : weights) {
-            if (load + w > capacity) { usedDays++; load = 0; }
-            load += w;
-        }
-        if (usedDays <= days) right = capacity; else left = capacity + 1;
-    }
-    return left;
-}
 ```
 
 ```python [Python]
@@ -480,39 +469,6 @@ def search_range(a, target):
         if a[mid] <= target: left = mid + 1
         else: right = mid
     return [first, left - 1]
-
-def search_rotated(a, target):
-    left, right = 0, len(a) - 1
-    while left <= right:
-        mid = left + (right - left) // 2
-        if a[mid] == target: return mid
-        if a[left] <= a[mid]:
-            if a[left] <= target < a[mid]: right = mid - 1
-            else: left = mid + 1
-        else:
-            if a[mid] < target <= a[right]: left = mid + 1
-            else: right = mid - 1
-    return -1
-
-def integer_sqrt(n):
-    if n < 2: return n
-    left, right, answer = 1, n // 2, 1
-    while left <= right:
-        mid = left + (right - left) // 2
-        if mid <= n // mid: answer, left = mid, mid + 1
-        else: right = mid - 1
-    return answer
-
-def min_ship_capacity(weights, days):
-    left, right = max(weights), sum(weights)
-    while left < right:
-        capacity, used_days, load = (left + right) // 2, 1, 0
-        for weight in weights:
-            if load + weight > capacity: used_days, load = used_days + 1, 0
-            load += weight
-        if used_days <= days: right = capacity
-        else: left = capacity + 1
-    return left
 ```
 
 ```javascript [JavaScript]
@@ -534,6 +490,146 @@ function searchRange(a, target) {
   }
   return [first, left - 1]
 }
+```
+
+```cpp [C++]
+int lowerBound(const std::vector<int>& a, int target) {
+    int left = 0, right = a.size();
+    while (left < right) { int mid = left + (right-left)/2; if (a[mid] < target) left = mid+1; else right = mid; }
+    return left;
+}
+std::vector<int> searchRange(const std::vector<int>& a, int target) {
+    int first = lowerBound(a, target);
+    if (first == static_cast<int>(a.size()) || a[first] != target) return {-1, -1};
+    int left = first, right = a.size();
+    while (left < right) { int mid = left+(right-left)/2; if (a[mid] <= target) left=mid+1; else right=mid; }
+    return {first, left-1};
+}
+```
+
+```go [Go]
+func lowerBound(a []int, target int) int {
+	left, right := 0, len(a)
+	for left < right { mid := left+(right-left)/2; if a[mid] < target { left=mid+1 } else { right=mid } }
+	return left
+}
+func searchRange(a []int, target int) []int {
+	first := lowerBound(a,target); if first==len(a)||a[first]!=target{return []int{-1,-1}}
+	left,right:=first,len(a);for left<right{mid:=left+(right-left)/2;if a[mid]<=target{left=mid+1}else{right=mid}}
+	return []int{first,left-1}
+}
+```
+
+:::
+
+</ExerciseSolution>
+
+### 3. 查找插入位置
+
+<ExerciseSolution>
+
+插入后仍有序的位置，正是“第一个大于等于目标的位置”，因此直接返回 `lowerBound(target)`。目标比所有元素大时返回 `n`，比所有元素小时返回 `0`。
+
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static int lowerBound(int[] a, int target) {
+    int left = 0, right = a.length;
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+        if (a[mid] < target) left = mid + 1; else right = mid;
+    }
+    return left;
+}
+```
+
+```python [Python]
+def lower_bound(a, target):
+    left, right = 0, len(a)
+    while left < right:
+        mid = left + (right - left) // 2
+        if a[mid] < target: left = mid + 1
+        else: right = mid
+    return left
+```
+
+```javascript [JavaScript]
+function lowerBound(a, target) {
+  let left = 0, right = a.length
+  while (left < right) {
+    const mid = left + Math.floor((right - left) / 2)
+    if (a[mid] < target) left = mid + 1; else right = mid
+  }
+  return left
+}
+```
+
+```cpp [C++]
+int lowerBound(const std::vector<int>& a, int target) {
+    int left = 0, right = a.size();
+    while (left < right) { int mid = left + (right-left)/2; if (a[mid] < target) left = mid+1; else right = mid; }
+    return left;
+}
+```
+
+```go [Go]
+func lowerBound(a []int, target int) int {
+	left, right := 0, len(a)
+	for left < right { mid := left+(right-left)/2; if a[mid] < target { left=mid+1 } else { right=mid } }
+	return left
+}
+```
+
+:::
+
+</ExerciseSolution>
+
+### 4. 在旋转有序数组中查找
+
+<ExerciseSolution>
+
+只要数组没有重复值，每次比较中点时，左右两半至少有一半仍然有序。先判断哪一半有序，再判断目标是否落在这一半；如果不在，就去另一半。
+
+例如 `[4,5,6,7,0,1,2]` 查找 `0`：中点 `7` 左半有序，但目标不在 `[4,7)`，所以进入右半。时间 `O(log n)`；大量重复值会破坏这个明确判断，需要额外缩边，最坏退化为 `O(n)`。
+
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static int searchRotated(int[] a, int target) {
+    int left = 0, right = a.length - 1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (a[mid] == target) return mid;
+        if (a[left] <= a[mid]) {
+            if (a[left] <= target && target < a[mid]) right = mid - 1; else left = mid + 1;
+        } else {
+            if (a[mid] < target && target <= a[right]) left = mid + 1; else right = mid - 1;
+        }
+    }
+    return -1;
+}
+```
+
+```python [Python]
+def search_rotated(a, target):
+    left, right = 0, len(a) - 1
+    while left <= right:
+        mid = left + (right - left) // 2
+        if a[mid] == target: return mid
+        if a[left] <= a[mid]:
+            if a[left] <= target < a[mid]: right = mid - 1
+            else: left = mid + 1
+        else:
+            if a[mid] < target <= a[right]: left = mid + 1
+            else: right = mid - 1
+    return -1
+```
+
+```javascript [JavaScript]
 function searchRotated(a, target) {
   let left = 0, right = a.length - 1
   while (left <= right) {
@@ -545,6 +641,64 @@ function searchRotated(a, target) {
   }
   return -1
 }
+```
+
+```cpp [C++]
+int searchRotated(const std::vector<int>& a, int target) {
+    int left=0, right=static_cast<int>(a.size())-1;
+    while (left<=right) { int mid=left+(right-left)/2; if(a[mid]==target)return mid;
+        if(a[left]<=a[mid]) { if(a[left]<=target&&target<a[mid])right=mid-1;else left=mid+1; }
+        else { if(a[mid]<target&&target<=a[right])left=mid+1;else right=mid-1; }
+    } return -1;
+}
+```
+
+```go [Go]
+func searchRotated(a []int,target int) int {
+	left,right:=0,len(a)-1;for left<=right{mid:=left+(right-left)/2;if a[mid]==target{return mid};if a[left]<=a[mid]{if a[left]<=target&&target<a[mid]{right=mid-1}else{left=mid+1}}else{if a[mid]<target&&target<=a[right]{left=mid+1}else{right=mid-1}}};return -1
+}
+```
+
+:::
+
+</ExerciseSolution>
+
+### 5. 求平方根的整数部分
+
+<ExerciseSolution>
+
+寻找最大的整数 `x`，使 `x² <= n`。这个判断从“可行”到“不可行”具有单调性，可以二分答案。为了避免 `mid * mid` 溢出，使用 `mid <= n / mid` 判断。
+
+`n=8` 时 `2²<=8` 而 `3²>8`，答案为 `2`。时间 `O(log n)`，空间 `O(1)`。
+
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static int integerSqrt(int n) {
+    if (n < 2) return n;
+    int left = 1, right = n / 2, answer = 1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (mid <= n / mid) { answer = mid; left = mid + 1; } else right = mid - 1;
+    }
+    return answer;
+}
+```
+
+```python [Python]
+def integer_sqrt(n):
+    if n < 2: return n
+    left, right, answer = 1, n // 2, 1
+    while left <= right:
+        mid = left + (right - left) // 2
+        if mid <= n // mid: answer, left = mid, mid + 1
+        else: right = mid - 1
+    return answer
+```
+
+```javascript [JavaScript]
 function integerSqrt(n) {
   if (n < 2) return n
   let left = 1, right = Math.floor(n / 2), answer = 1
@@ -554,6 +708,67 @@ function integerSqrt(n) {
   }
   return answer
 }
+```
+
+```cpp [C++]
+int integerSqrt(int n) {
+    if(n<2)return n; int left=1,right=n/2,answer=1;
+    while(left<=right){int mid=left+(right-left)/2;if(mid<=n/mid){answer=mid;left=mid+1;}else right=mid-1;} return answer;
+}
+```
+
+```go [Go]
+func integerSqrt(n int) int {
+	if n<2{return n};left,right,answer:=1,n/2,1;for left<=right{mid:=left+(right-left)/2;if mid<=n/mid{answer=mid;left=mid+1}else{right=mid-1}};return answer
+}
+```
+
+:::
+
+</ExerciseSolution>
+
+### 6. 二分最小可行运输能力
+
+<ExerciseSolution>
+
+容量下界是最重包裹，上界是所有包裹重量之和。给定容量后按顺序装货，可以在线性时间算出需要多少天；容量越大，需要的天数不会增加，因此存在单调性。
+
+寻找第一个能在规定天数内完成运输的容量。若有 `n` 个包裹、重量总和为 `S`，时间是 `O(n log S)`，空间 `O(1)`。
+
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static int minShipCapacity(int[] weights, int days) {
+    int left = 0, right = 0;
+    for (int w : weights) { left = Math.max(left, w); right += w; }
+    while (left < right) {
+        int capacity = left + (right - left) / 2, usedDays = 1, load = 0;
+        for (int w : weights) {
+            if (load + w > capacity) { usedDays++; load = 0; }
+            load += w;
+        }
+        if (usedDays <= days) right = capacity; else left = capacity + 1;
+    }
+    return left;
+}
+```
+
+```python [Python]
+def min_ship_capacity(weights, days):
+    left, right = max(weights), sum(weights)
+    while left < right:
+        capacity, used_days, load = (left + right) // 2, 1, 0
+        for weight in weights:
+            if load + weight > capacity: used_days, load = used_days + 1, 0
+            load += weight
+        if used_days <= days: right = capacity
+        else: left = capacity + 1
+    return left
+```
+
+```javascript [JavaScript]
 function minShipCapacity(weights, days) {
   let left = Math.max(...weights), right = weights.reduce((sum, w) => sum + w, 0)
   while (left < right) {
@@ -569,32 +784,6 @@ function minShipCapacity(weights, days) {
 ```
 
 ```cpp [C++]
-#include <algorithm>
-#include <numeric>
-#include <vector>
-int lowerBound(const std::vector<int>& a, int target) {
-    int left = 0, right = a.size();
-    while (left < right) { int mid = left + (right-left)/2; if (a[mid] < target) left = mid+1; else right = mid; }
-    return left;
-}
-std::vector<int> searchRange(const std::vector<int>& a, int target) {
-    int first = lowerBound(a, target);
-    if (first == static_cast<int>(a.size()) || a[first] != target) return {-1, -1};
-    int left = first, right = a.size();
-    while (left < right) { int mid = left+(right-left)/2; if (a[mid] <= target) left=mid+1; else right=mid; }
-    return {first, left-1};
-}
-int searchRotated(const std::vector<int>& a, int target) {
-    int left=0, right=static_cast<int>(a.size())-1;
-    while (left<=right) { int mid=left+(right-left)/2; if(a[mid]==target)return mid;
-        if(a[left]<=a[mid]) { if(a[left]<=target&&target<a[mid])right=mid-1;else left=mid+1; }
-        else { if(a[mid]<target&&target<=a[right])left=mid+1;else right=mid-1; }
-    } return -1;
-}
-int integerSqrt(int n) {
-    if(n<2)return n; int left=1,right=n/2,answer=1;
-    while(left<=right){int mid=left+(right-left)/2;if(mid<=n/mid){answer=mid;left=mid+1;}else right=mid-1;} return answer;
-}
 int minShipCapacity(const std::vector<int>& weights, int days) {
     int left=*std::max_element(weights.begin(),weights.end()), right=std::accumulate(weights.begin(),weights.end(),0);
     while(left<right){int cap=left+(right-left)/2,used=1,load=0;for(int w:weights){if(load+w>cap){++used;load=0;}load+=w;}if(used<=days)right=cap;else left=cap+1;}return left;
@@ -602,22 +791,6 @@ int minShipCapacity(const std::vector<int>& weights, int days) {
 ```
 
 ```go [Go]
-func lowerBound(a []int, target int) int {
-	left, right := 0, len(a)
-	for left < right { mid := left+(right-left)/2; if a[mid] < target { left=mid+1 } else { right=mid } }
-	return left
-}
-func searchRange(a []int, target int) []int {
-	first := lowerBound(a,target); if first==len(a)||a[first]!=target{return []int{-1,-1}}
-	left,right:=first,len(a);for left<right{mid:=left+(right-left)/2;if a[mid]<=target{left=mid+1}else{right=mid}}
-	return []int{first,left-1}
-}
-func searchRotated(a []int,target int) int {
-	left,right:=0,len(a)-1;for left<=right{mid:=left+(right-left)/2;if a[mid]==target{return mid};if a[left]<=a[mid]{if a[left]<=target&&target<a[mid]{right=mid-1}else{left=mid+1}}else{if a[mid]<target&&target<=a[right]{left=mid+1}else{right=mid-1}}};return -1
-}
-func integerSqrt(n int) int {
-	if n<2{return n};left,right,answer:=1,n/2,1;for left<=right{mid:=left+(right-left)/2;if mid<=n/mid{answer=mid;left=mid+1}else{right=mid-1}};return answer
-}
 func minShipCapacity(weights []int,days int) int {
 	left,right:=0,0;for _,w:=range weights{if w>left{left=w};right+=w};for left<right{cap,used,load:=left+(right-left)/2,1,0;for _,w:=range weights{if load+w>cap{used++;load=0};load+=w};if used<=days{right=cap}else{left=cap+1}};return left
 }

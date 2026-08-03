@@ -206,6 +206,66 @@ func preorder(root *TreeNode) []int {
 
 每个节点访问一次，时间 `O(n)`；递归栈空间 `O(h)`。中序遍历二叉搜索树会得到升序序列，后序适合在处理父节点前先完成两个子树，例如删除整棵树。
 
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static void inorder(TreeNode node, List<Integer> answer) {
+    if (node == null) return;
+    inorder(node.left, answer); answer.add(node.value); inorder(node.right, answer);
+}
+static void postorder(TreeNode node, List<Integer> answer) {
+    if (node == null) return;
+    postorder(node.left, answer); postorder(node.right, answer); answer.add(node.value);
+}
+```
+
+```python [Python]
+def inorder(node, answer):
+    if node is None: return
+    inorder(node.left, answer); answer.append(node.value); inorder(node.right, answer)
+
+def postorder(node, answer):
+    if node is None: return
+    postorder(node.left, answer); postorder(node.right, answer); answer.append(node.value)
+```
+
+```javascript [JavaScript]
+function inorder(node, answer) {
+  if (!node) return
+  inorder(node.left, answer); answer.push(node.value); inorder(node.right, answer)
+}
+function postorder(node, answer) {
+  if (!node) return
+  postorder(node.left, answer); postorder(node.right, answer); answer.push(node.value)
+}
+```
+
+```cpp [C++]
+void inorder(TreeNode* node, std::vector<int>& answer) {
+    if (!node) return;
+    inorder(node->left, answer); answer.push_back(node->value); inorder(node->right, answer);
+}
+void postorder(TreeNode* node, std::vector<int>& answer) {
+    if (!node) return;
+    postorder(node->left, answer); postorder(node->right, answer); answer.push_back(node->value);
+}
+```
+
+```go [Go]
+func inorder(node *TreeNode, answer *[]int) {
+	if node == nil { return }
+	inorder(node.Left, answer); *answer = append(*answer, node.Value); inorder(node.Right, answer)
+}
+func postorder(node *TreeNode, answer *[]int) {
+	if node == nil { return }
+	postorder(node.Left, answer); postorder(node.Right, answer); *answer = append(*answer, node.Value)
+}
+```
+
+:::
+
 </ExerciseSolution>
 
 ### 2. 使用队列实现层序遍历
@@ -226,6 +286,93 @@ queue = [root]
 
 时间 `O(n)`；队列最宽时可能保存一整层，空间 `O(w)`，`w` 为最大层宽。
 
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static List<List<Integer>> levelOrder(TreeNode root) {
+    List<List<Integer>> answer = new ArrayList<>();
+    if (root == null) return answer;
+    Queue<TreeNode> queue = new ArrayDeque<>(); queue.offer(root);
+    while (!queue.isEmpty()) {
+        List<Integer> level = new ArrayList<>();
+        for (int count = queue.size(); count > 0; count--) {
+            TreeNode node = queue.poll(); level.add(node.value);
+            if (node.left != null) queue.offer(node.left); if (node.right != null) queue.offer(node.right);
+        }
+        answer.add(level);
+    }
+    return answer;
+}
+```
+
+```python [Python]
+from collections import deque
+def level_order(root):
+    if root is None: return []
+    queue, answer = deque([root]), []
+    while queue:
+        level = []
+        for _ in range(len(queue)):
+            node = queue.popleft(); level.append(node.value)
+            if node.left: queue.append(node.left)
+            if node.right: queue.append(node.right)
+        answer.append(level)
+    return answer
+```
+
+```javascript [JavaScript]
+function levelOrder(root) {
+  if (!root) return []
+  const queue = [root], answer = []
+  for (let head = 0; head < queue.length;) {
+    const end = queue.length, level = []
+    while (head < end) {
+      const node = queue[head++]; level.push(node.value)
+      if (node.left) queue.push(node.left); if (node.right) queue.push(node.right)
+    }
+    answer.push(level)
+  }
+  return answer
+}
+```
+
+```cpp [C++]
+std::vector<std::vector<int>> levelOrder(TreeNode* root) {
+    if (!root) return {};
+    std::queue<TreeNode*> queue; queue.push(root);
+    std::vector<std::vector<int>> answer;
+    while (!queue.empty()) {
+        std::vector<int> level;
+        for (int count = queue.size(); count > 0; --count) {
+            TreeNode* node = queue.front(); queue.pop(); level.push_back(node->value);
+            if (node->left) queue.push(node->left); if (node->right) queue.push(node->right);
+        }
+        answer.push_back(level);
+    }
+    return answer;
+}
+```
+
+```go [Go]
+func levelOrder(root *TreeNode) [][]int {
+	if root == nil { return nil }
+	queue, answer := []*TreeNode{root}, [][]int{}
+	for len(queue) > 0 {
+		size, level := len(queue), []int{}
+		for i := 0; i < size; i++ {
+			node := queue[0]; queue = queue[1:]; level = append(level, node.Value)
+			if node.Left != nil { queue = append(queue, node.Left) }; if node.Right != nil { queue = append(queue, node.Right) }
+		}
+		answer = append(answer, level)
+	}
+	return answer
+}
+```
+
+:::
+
 </ExerciseSolution>
 
 ### 3. 计算树的最大深度
@@ -241,6 +388,46 @@ depth(node):
 ```
 
 时间 `O(n)`，递归栈 `O(h)`。只有根节点时答案为 `1`。
+
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static int maxDepth(TreeNode node) {
+    if (node == null) return 0;
+    return 1 + Math.max(maxDepth(node.left), maxDepth(node.right));
+}
+```
+
+```python [Python]
+def max_depth(node):
+    if node is None: return 0
+    return 1 + max(max_depth(node.left), max_depth(node.right))
+```
+
+```javascript [JavaScript]
+function maxDepth(node) {
+  if (!node) return 0
+  return 1 + Math.max(maxDepth(node.left), maxDepth(node.right))
+}
+```
+
+```cpp [C++]
+int maxDepth(TreeNode* node) {
+    if (!node) return 0;
+    return 1 + std::max(maxDepth(node->left), maxDepth(node->right));
+}
+```
+
+```go [Go]
+func maxDepth(node *TreeNode) int {
+	if node == nil { return 0 }
+	return 1 + max(maxDepth(node.Left), maxDepth(node.Right))
+}
+```
+
+:::
 
 </ExerciseSolution>
 
@@ -258,6 +445,51 @@ same(a, b):
 ```
 
 最坏检查所有对应节点，时间 `O(n)`，递归空间 `O(h)`。
+
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static boolean sameTree(TreeNode first, TreeNode second) {
+    if (first == null || second == null) return first == second;
+    return first.value == second.value
+        && sameTree(first.left, second.left) && sameTree(first.right, second.right);
+}
+```
+
+```python [Python]
+def same_tree(first, second):
+    if first is None or second is None: return first is second
+    return (first.value == second.value
+            and same_tree(first.left, second.left)
+            and same_tree(first.right, second.right))
+```
+
+```javascript [JavaScript]
+function sameTree(first, second) {
+  if (!first || !second) return first === second
+  return first.value === second.value
+    && sameTree(first.left, second.left) && sameTree(first.right, second.right)
+}
+```
+
+```cpp [C++]
+bool sameTree(TreeNode* first, TreeNode* second) {
+    if (!first || !second) return first == second;
+    return first->value == second->value
+        && sameTree(first->left, second->left) && sameTree(first->right, second->right);
+}
+```
+
+```go [Go]
+func sameTree(first, second *TreeNode) bool {
+	if first == nil || second == nil { return first == second }
+	return first.Value == second.Value && sameTree(first.Left, second.Left) && sameTree(first.Right, second.Right)
+}
+```
+
+:::
 
 </ExerciseSolution>
 
@@ -278,6 +510,72 @@ height(node):
 
 时间 `O(n)`，空间 `O(h)`。不要为每个节点再次单独计算高度，否则会退化为 `O(n²)`。
 
+#### 五语言实现
+
+::: code-group
+
+```java [Java]
+static int diameter;
+static int height(TreeNode node) {
+    if (node == null) return 0;
+    int left = height(node.left), right = height(node.right);
+    diameter = Math.max(diameter, left + right);
+    return 1 + Math.max(left, right);
+}
+static int diameter(TreeNode root) { diameter = 0; height(root); return diameter; }
+```
+
+```python [Python]
+def diameter(root):
+    answer = 0
+    def height(node):
+        nonlocal answer
+        if node is None: return 0
+        left, right = height(node.left), height(node.right)
+        answer = max(answer, left + right)
+        return 1 + max(left, right)
+    height(root)
+    return answer
+```
+
+```javascript [JavaScript]
+function diameter(root) {
+  let answer = 0
+  function height(node) {
+    if (!node) return 0
+    const left = height(node.left), right = height(node.right)
+    answer = Math.max(answer, left + right)
+    return 1 + Math.max(left, right)
+  }
+  height(root); return answer
+}
+```
+
+```cpp [C++]
+int height(TreeNode* node, int& answer) {
+    if (!node) return 0;
+    int left = height(node->left, answer), right = height(node->right, answer);
+    answer = std::max(answer, left + right);
+    return 1 + std::max(left, right);
+}
+int diameter(TreeNode* root) { int answer = 0; height(root, answer); return answer; }
+```
+
+```go [Go]
+func diameter(root *TreeNode) int {
+	answer := 0
+	var height func(*TreeNode) int
+	height = func(node *TreeNode) int {
+		if node == nil { return 0 }
+		left, right := height(node.Left), height(node.Right); answer = max(answer, left+right)
+		return 1 + max(left, right)
+	}
+	height(root); return answer
+}
+```
+
+:::
+
 </ExerciseSolution>
 
 ### 6. 翻转二叉树
@@ -297,16 +595,51 @@ invert(node):
 
 时间 `O(n)`、递归空间 `O(h)`。翻转两次应恢复原树，这是很好用的测试性质。
 
-</ExerciseSolution>
+#### 五语言实现
 
-### 五语言迁移提示
+::: code-group
 
-<ExerciseSolution title="展开树题在五种语言中的实现对应" eyebrow="CODE">
+```java [Java]
+static TreeNode invert(TreeNode node) {
+    if (node == null) return null;
+    TreeNode left = invert(node.left);
+    node.left = invert(node.right); node.right = left;
+    return node;
+}
+```
 
-本文前面的五语言 `TreeNode` 和前序遍历已经给出完整节点定义。以上答案可以原样替换递归函数主体：Java/Python/JavaScript/C++/Go 中的空节点分别是 `null`、`None`、`null`、`nullptr`、`nil`。
+```python [Python]
+def invert(node):
+    if node is None: return None
+    node.left, node.right = invert(node.right), invert(node.left)
+    return node
+```
 
-层序遍历的队列分别推荐：Java `ArrayDeque<TreeNode>`、Python `collections.deque`、JavaScript 数组加头下标、C++ `std::queue<TreeNode*>`、Go `[]*TreeNode` 加头下标。不要在 JavaScript 或 Go 中反复删除数组第一个元素，否则可能引入额外移动成本。
+```javascript [JavaScript]
+function invert(node) {
+  if (!node) return null
+  ;[node.left, node.right] = [invert(node.right), invert(node.left)]
+  return node
+}
+```
 
-直径题的全局答案也可以改为让递归返回“高度与直径”二元结果，避免使用全局变量；核心后序顺序不变。
+```cpp [C++]
+TreeNode* invert(TreeNode* node) {
+    if (!node) return nullptr;
+    std::swap(node->left, node->right);
+    invert(node->left); invert(node->right);
+    return node;
+}
+```
+
+```go [Go]
+func invert(node *TreeNode) *TreeNode {
+	if node == nil { return nil }
+	node.Left, node.Right = invert(node.Right), invert(node.Left)
+	return node
+}
+```
+
+:::
 
 </ExerciseSolution>
