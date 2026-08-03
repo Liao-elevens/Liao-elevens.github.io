@@ -3,8 +3,9 @@
 一个面向算法零基础学习者的个人 GitHub Pages 博客：
 
 - 清爽杂志风视觉；
-- Java、Python、JavaScript、C++ 四语言对照；
+- Java、Python、JavaScript、C++、Go 五语言对照；
 - 从通俗实例、手工模拟和伪代码开始；
+- 84 道现有练习均提供默认收起的完整解析；
 - 覆盖基础、面试、竞赛、数学、理论与工程算法；
 - Markdown 作为唯一内容源；
 - 推送到 `ai_knowledge` 后自动构建 GitHub Pages。
@@ -35,6 +36,14 @@ npm run check
 | `docs/coverage.md` | 知识库完成度           |
 | `templates/`       | 新内容模板            |
 | `scripts/`         | 内容质量检查           |
+
+## 评论系统
+
+文章评论使用 giscus，内容保存在仓库的 GitHub Discussions 中。代码已经完成评论页筛选、稳定文章 ID、懒加载和明暗主题同步。
+
+仓库已启用 Discussions，并创建 Announcements 类型的“学习交流”分类。giscus 仅获准访问 `Liao-elevens/Liao-elevens.github.io`，公开的仓库与分类标识已写入 `docs/.vitepress/theme/components/giscus-comments/config.ts`。
+
+每篇开启评论的文章通过稳定的 `commentId` 映射到独立 Discussion；第一次有人发表评论时，giscus 会自动创建对应讨论，不需要预先逐篇建帖。
 
 
 ## GitHub Pages

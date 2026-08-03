@@ -1,6 +1,8 @@
 ---
 title: 从读题到调试
 description: 零基础算法解题方法：翻译题目、手工模拟、写暴力解、设计测试和定位错误
+comments: true
+commentId: algorithm-problem-solving-guide
 ---
 
 # 从读题到调试：小白解题说明书

@@ -7,6 +7,9 @@ const docsRoot = join(projectRoot, 'docs')
 const ignoredDirectories = new Set(['.vitepress', 'public'])
 const markdownFiles = []
 const problems = []
+const commentIds = new Map()
+let exerciseCount = 0
+let solutionCount = 0
 
 function collectMarkdown(directory) {
   for (const entry of readdirSync(directory)) {
@@ -70,6 +73,85 @@ for (const file of markdownFiles) {
       )
     }
   }
+
+  const frontmatter = content.match(/^---\n([\s\S]*?)\n---/u)?.[1] ?? ''
+  const commentsEnabled = /^comments:\s*true\s*$/mu.test(frontmatter)
+  const commentId = frontmatter.match(/^commentId:\s*(\S+)\s*$/mu)?.[1]
+
+  if (commentsEnabled && !commentId) {
+    problems.push(`${relative(projectRoot, file)} 已启用评论但缺少 commentId`)
+  }
+
+  if (commentId) {
+    const previousFile = commentIds.get(commentId)
+    if (previousFile) {
+      problems.push(
+        `${relative(projectRoot, file)} 与 ${previousFile} 使用了重复 commentId：${commentId}`
+      )
+    } else {
+      commentIds.set(commentId, relative(projectRoot, file))
+    }
+  }
+
+  const openingSolutions = content.match(/<ExerciseSolution(?:\s|>)/gu) ?? []
+  const closingSolutions = content.match(/<\/ExerciseSolution>/gu) ?? []
+  solutionCount += openingSolutions.length
+
+  if (openingSolutions.length !== closingSolutions.length) {
+    problems.push(
+      `${relative(projectRoot, file)} 的 ExerciseSolution 开始与结束标签数量不一致`
+    )
+  }
+
+  if (/<ExerciseSolution[^>]*\sopen(?:\s|=|>)/u.test(content)) {
+    problems.push(`${relative(projectRoot, file)} 存在默认展开的练习答案`)
+  }
+
+  const lines = content.split('\n')
+  for (let index = 0; index < lines.length; index++) {
+    if (!/^## (练习|自测|自测练习)$/u.test(lines[index])) continue
+
+    let sectionEnd = index + 1
+    while (sectionEnd < lines.length && !/^## /u.test(lines[sectionEnd])) {
+      sectionEnd++
+    }
+
+    const sectionLines = lines.slice(index + 1, sectionEnd)
+    const headingIndexes = []
+    for (let offset = 0; offset < sectionLines.length; offset++) {
+      if (/^### /u.test(sectionLines[offset])) headingIndexes.push(offset)
+    }
+
+    for (let headingIndex = 0; headingIndex < headingIndexes.length; headingIndex++) {
+      const start = headingIndexes[headingIndex]
+      const end = headingIndexes[headingIndex + 1] ?? sectionLines.length
+      const heading = sectionLines[start].replace(/^###\s+/u, '')
+      const answerBlock = sectionLines.slice(start + 1, end).join('\n')
+
+      if (/^\d+\./u.test(heading)) exerciseCount++
+
+      if (!answerBlock.includes('<ExerciseSolution')) {
+        problems.push(
+          `${relative(projectRoot, file)} 的“${heading}”缺少折叠解答`
+        )
+        continue
+      }
+
+      const readableAnswer = answerBlock
+        .replace(/<\/?ExerciseSolution[^>]*>/gu, '')
+        .replace(/[`#*:|>-]/gu, '')
+        .trim()
+      if (readableAnswer.length < 60) {
+        problems.push(
+          `${relative(projectRoot, file)} 的“${heading}”解答内容过少`
+        )
+      }
+    }
+  }
+}
+
+if (exerciseCount < 84) {
+  problems.push(`练习完整度下降：当前只识别到 ${exerciseCount} 道，基线为 84 道`)
 }
 
 const fiveLanguageArticles = [
@@ -146,5 +228,5 @@ if (problems.length > 0) {
 }
 
 console.log(
-  `内容检查通过：${markdownFiles.length} 篇 Markdown，内部链接与五语言核心示例均有效。`
+  `内容检查通过：${markdownFiles.length} 篇 Markdown，${exerciseCount} 道练习、${solutionCount} 个折叠解答，内部链接与五语言核心示例均有效。`
 )

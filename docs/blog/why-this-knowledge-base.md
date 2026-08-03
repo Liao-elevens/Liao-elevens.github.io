@@ -1,6 +1,8 @@
 ---
 title: 为什么建立这座知识库
 description: 同时学习五种语言时，为什么更需要一套语言无关的算法知识体系
+comments: true
+commentId: blog-why-this-knowledge-base
 date: 2026-07-24
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: 算法到底是什么
 description: 给零基础学习者的第一课：不用术语，从生活步骤、输入输出和状态变化理解算法
+comments: true
+commentId: algorithm-zero-to-algorithms
 ---
 
 # 算法到底是什么：零基础第一课

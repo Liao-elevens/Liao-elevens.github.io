@@ -1,6 +1,8 @@
 ---
 title: 前缀和
 description: 从收银小票累计金额理解前缀和、区间查询、边界设计与五语言实现
+comments: true
+commentId: algorithm-prefix-sum
 ---
 
 # 前缀和：提前算好累计结果
@@ -332,12 +334,65 @@ current - k
 
 使用数组 `[3, -2, 5, 1, -4, 6]`：
 
-1. 写出完整的 `prefix` 数组；
-2. 计算区间 `[0, 0]`；
-3. 计算区间 `[1, 4]`；
-4. 计算整个数组；
-5. 解释为什么空前缀必须是 `0`；
-6. 修改代码，让查询使用左闭右开区间 `[left, right)`。
+### 1. 写出完整的 `prefix` 数组
+
+<ExerciseSolution>
+
+从空前缀 `0` 开始逐项累计：
+
+| 已包含原数组元素 | 空 | `3` | `3,-2` | `3,-2,5` | 再加 `1` | 再加 `-4` | 再加 `6` |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 前缀和 | `0` | `3` | `1` | `6` | `7` | `3` | `9` |
+
+所以完整数组是 `[0, 3, 1, 6, 7, 3, 9]`，长度比原数组多一。
+
+</ExerciseSolution>
+
+### 2. 计算区间 `[0, 0]`
+
+<ExerciseSolution>
+
+闭区间公式是 `prefix[right + 1] - prefix[left]`，因此结果为 `prefix[1] - prefix[0] = 3 - 0 = 3`。这个例子也说明前面保留空前缀后，不必为 `left = 0` 写特殊分支。
+
+</ExerciseSolution>
+
+### 3. 计算区间 `[1, 4]`
+
+<ExerciseSolution>
+
+结果为 `prefix[5] - prefix[1] = 3 - 3 = 0`。手工相加验证：`-2 + 5 + 1 - 4 = 0`。
+
+</ExerciseSolution>
+
+### 4. 计算整个数组
+
+<ExerciseSolution>
+
+整个闭区间是 `[0, 5]`，结果为 `prefix[6] - prefix[0] = 9 - 0 = 9`。等价地，最后一个前缀和本来就代表整个数组总和。
+
+</ExerciseSolution>
+
+### 5. 为什么空前缀必须是 `0`？
+
+<ExerciseSolution>
+
+空集合的和是加法单位元 `0`。它让 `prefix[i]` 始终表示前 `i` 个元素之和，并让所有查询统一使用一次减法。如果没有这个位置，查询从下标 `0` 开始的区间就必须单独判断。
+
+</ExerciseSolution>
+
+### 6. 改成左闭右开区间 `[left, right)`
+
+<ExerciseSolution>
+
+`prefix[right]` 包含原数组下标 `0` 到 `right - 1`，`prefix[left]` 包含 `0` 到 `left - 1`，两者相减恰好留下 `[left, right)`：
+
+```text
+rangeSum(left, right) = prefix[right] - prefix[left]
+```
+
+五种语言都只需要把本文闭区间查询中的 `right + 1` 改成 `right`。空区间满足 `left == right`，结果自然为 `0`。构建时间 `O(n)`，单次查询 `O(1)`。
+
+</ExerciseSolution>
 
 ## 外部辅助
 

@@ -1,6 +1,8 @@
 ---
 title: 二叉树遍历
 description: 用家族关系和文件夹理解树的节点、子树与遍历顺序
+comments: true
+commentId: algorithm-binary-tree-traversal
 ---
 
 # 二叉树遍历：先看谁，后看谁
@@ -191,9 +193,120 @@ func preorder(root *TreeNode) []int {
 
 ## 练习
 
-- 实现中序和后序遍历；
-- 使用队列实现层序遍历；
-- 计算树的最大深度；
-- 判断两棵树是否相同；
-- 计算二叉树直径；
-- 翻转二叉树。
+### 1. 实现中序和后序遍历
+
+<ExerciseSolution>
+
+只需改变“处理当前节点”所在的位置：
+
+```text
+中序(node)：中序(node.left) → 记录 node → 中序(node.right)
+后序(node)：后序(node.left) → 后序(node.right) → 记录 node
+```
+
+每个节点访问一次，时间 `O(n)`；递归栈空间 `O(h)`。中序遍历二叉搜索树会得到升序序列，后序适合在处理父节点前先完成两个子树，例如删除整棵树。
+
+</ExerciseSolution>
+
+### 2. 使用队列实现层序遍历
+
+<ExerciseSolution>
+
+根节点先入队。每轮先记住当前队列长度 `levelSize`，只弹出这么多个节点，它们恰好属于同一层；弹出时把非空孩子加入队尾。
+
+```text
+queue = [root]
+当队列不空：
+    levelSize = queue.size
+    重复 levelSize 次：
+        node = 出队
+        记录 node
+        非空左右孩子入队
+```
+
+时间 `O(n)`；队列最宽时可能保存一整层，空间 `O(w)`，`w` 为最大层宽。
+
+</ExerciseSolution>
+
+### 3. 计算树的最大深度
+
+<ExerciseSolution>
+
+空节点深度为 `0`；非空节点的深度等于左右子树较大深度加一：
+
+```text
+depth(node):
+    node 为空：返回 0
+    返回 max(depth(node.left), depth(node.right)) + 1
+```
+
+时间 `O(n)`，递归栈 `O(h)`。只有根节点时答案为 `1`。
+
+</ExerciseSolution>
+
+### 4. 判断两棵树是否相同
+
+<ExerciseSolution>
+
+两个节点都空时相同；只有一个空时不同；值不同也不同。剩余情况要求左子树相同且右子树相同。
+
+```text
+same(a, b):
+    两者都空：true
+    只有一个空或值不同：false
+    返回 same(a.left,b.left) 并且 same(a.right,b.right)
+```
+
+最坏检查所有对应节点，时间 `O(n)`，递归空间 `O(h)`。
+
+</ExerciseSolution>
+
+### 5. 计算二叉树直径
+
+<ExerciseSolution>
+
+直径是任意两节点之间最长路径的边数。对每个节点，经过它的路径长度是“左子树高度 + 右子树高度”。后序计算高度的同时更新全局最大值。
+
+```text
+height(node):
+    node 为空：0
+    left = height(node.left)
+    right = height(node.right)
+    diameter = max(diameter, left + right)
+    返回 max(left, right) + 1
+```
+
+时间 `O(n)`，空间 `O(h)`。不要为每个节点再次单独计算高度，否则会退化为 `O(n²)`。
+
+</ExerciseSolution>
+
+### 6. 翻转二叉树
+
+<ExerciseSolution>
+
+对每个节点交换左右孩子，再递归翻转两棵子树。先交换还是递归返回后交换都可以，只要每个节点处理一次。
+
+```text
+invert(node):
+    node 为空：返回空
+    交换 node.left 与 node.right
+    invert(node.left)
+    invert(node.right)
+    返回 node
+```
+
+时间 `O(n)`、递归空间 `O(h)`。翻转两次应恢复原树，这是很好用的测试性质。
+
+</ExerciseSolution>
+
+### 五语言迁移提示
+
+<ExerciseSolution title="展开树题在五种语言中的实现对应" eyebrow="CODE">
+
+本文前面的五语言 `TreeNode` 和前序遍历已经给出完整节点定义。以上答案可以原样替换递归函数主体：Java/Python/JavaScript/C++/Go 中的空节点分别是 `null`、`None`、`null`、`nullptr`、`nil`。
+
+层序遍历的队列分别推荐：Java `ArrayDeque<TreeNode>`、Python `collections.deque`、JavaScript 数组加头下标、C++ `std::queue<TreeNode*>`、Go `[]*TreeNode` 加头下标。不要在 JavaScript 或 Go 中反复删除数组第一个元素，否则可能引入额外移动成本。
+
+直径题的全局答案也可以改为让递归返回“高度与直径”二元结果，避免使用全局变量；核心后序顺序不变。
+
+</ExerciseSolution>

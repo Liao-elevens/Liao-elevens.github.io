@@ -1,6 +1,8 @@
 ---
 title: 五语言算法基础
 description: 用 Java、Python、JavaScript、C++、Go 表达同一个数组查找算法
+comments: true
+commentId: algorithm-five-language-basics
 ---
 
 # 五语言算法基础
@@ -226,17 +228,300 @@ func main() {
 
 ## 自测
 
-1. 为什么循环从下标 `1` 开始？
-2. 如果数组只有一个元素，会返回什么？
-3. 为什么 Python 的简短写法 `max(numbers)` 没有改变算法需要查看所有元素的事实？
-4. JavaScript 使用 `Math.max(...numbers)` 处理超大数组可能有什么问题？
-5. C++ 参数如果不使用引用，会发生什么额外成本？
+### 1. 为什么循环从下标 `1` 开始？
+
+<ExerciseSolution>
+
+`currentMax` 已经用 `numbers[0]` 初始化，第一个元素等于已经检查过。循环从 `1` 开始可以避免一次没有意义的自我比较。若循环从 `0` 开始，答案仍然正确，但会多做一次比较。
+
+</ExerciseSolution>
+
+### 2. 如果数组只有一个元素，会返回什么？
+
+<ExerciseSolution>
+
+返回唯一的元素。初始化后循环条件立刻不成立，所以不再比较。需要先约定数组不能为空；如果允许空数组，就应该返回“没有结果”或抛出清晰异常，而不是访问 `numbers[0]`。
+
+</ExerciseSolution>
+
+### 3. `max(numbers)` 为什么仍是 `O(n)`？
+
+<ExerciseSolution>
+
+函数名虽然只有几个字符，内部仍必须逐个检查元素，因为最大值可能位于任何位置。简短语法减少的是我们书写的代码量，不是计算机需要完成的工作量。
+
+</ExerciseSolution>
+
+### 4. `Math.max(...numbers)` 为什么不适合超大数组？
+
+<ExerciseSolution>
+
+展开语法会把每个元素都变成一次函数参数。JavaScript 引擎对单次调用的参数数量存在限制，超大数组可能触发 `RangeError`，还会产生额外参数处理开销。循环或 `reduce` 更稳妥。
+
+</ExerciseSolution>
+
+### 5. C++ 参数不使用引用会发生什么？
+
+<ExerciseSolution>
+
+按值接收 `std::vector<int>` 会复制整个数组，额外付出 `O(n)` 时间和 `O(n)` 空间。使用 `const std::vector<int>&` 既避免复制，又保证函数不会修改原数组。
+
+</ExerciseSolution>
 
 ## 练习
 
-- 基础：同时返回最大值和它的下标；
-- 变形：找出第二大的不同元素；
-- 综合：只遍历一次，同时求最小值、最大值和总和；
-- 五语言：分别实现以上练习，并对照共同伪代码。
+### 1. 同时返回最大值和它的下标
+
+<ExerciseSolution>
+
+同时保存 `maxValue` 和 `maxIndex`。发现更大元素时必须一起更新，否则值和位置会不对应。若最大值重复，本实现返回第一次出现的位置。
+
+```text
+最大值 = 数组[0]
+最大值下标 = 0
+从下标 1 开始遍历：
+    如果 当前元素 > 最大值：
+        同时更新最大值和下标
+返回二者
+```
+
+时间复杂度 `O(n)`，额外空间 `O(1)`。
+
+</ExerciseSolution>
+
+### 2. 找出第二大的不同元素
+
+<ExerciseSolution>
+
+维护“第一大”和“第二大”两个不同值。遇到新的第一大时，旧第一大下移为第二大；否则，只有当前值小于第一大且大于第二大时才更新第二大。少于两个不同值时必须明确返回“无结果”。
+
+```text
+第一大 = 空
+第二大 = 空
+遍历每个数：
+    如果第一大为空或数 > 第一大：
+        第二大 = 第一大
+        第一大 = 数
+    否则如果数 != 第一大，并且第二大为空或数 > 第二大：
+        第二大 = 数
+返回第二大
+```
+
+时间复杂度 `O(n)`，额外空间 `O(1)`。
+
+</ExerciseSolution>
+
+### 3. 一次遍历求最小值、最大值和总和
+
+<ExerciseSolution>
+
+三个答案都只依赖“已经看过的元素”，因此可以放在同一个循环中维护。总和可能超出 32 位整数范围，Java 使用 `long`、C++ 使用 `long long`、Go 示例使用 `int64`。
+
+```text
+最小值 = 数组[0]
+最大值 = 数组[0]
+总和 = 0
+遍历每个数：
+    更新最小值
+    更新最大值
+    总和 += 当前数
+返回三者
+```
+
+时间复杂度 `O(n)`，额外空间 `O(1)`。
+
+</ExerciseSolution>
+
+### 五语言完整实现
+
+<ExerciseSolution title="展开三道练习的五语言代码" eyebrow="CODE">
+
+::: code-group
+
+```java [Java]
+static int[] maxWithIndex(int[] a) {
+    if (a.length == 0) throw new IllegalArgumentException("数组不能为空");
+    int value = a[0], index = 0;
+    for (int i = 1; i < a.length; i++) {
+        if (a[i] > value) { value = a[i]; index = i; }
+    }
+    return new int[]{value, index};
+}
+
+static Integer secondDistinctMax(int[] a) {
+    Integer first = null, second = null;
+    for (int value : a) {
+        if (first == null || value > first) {
+            second = first;
+            first = value;
+        } else if (value != first && (second == null || value > second)) {
+            second = value;
+        }
+    }
+    return second;
+}
+
+static long[] minMaxSum(int[] a) {
+    if (a.length == 0) throw new IllegalArgumentException("数组不能为空");
+    int min = a[0], max = a[0];
+    long sum = 0;
+    for (int value : a) {
+        min = Math.min(min, value);
+        max = Math.max(max, value);
+        sum += value;
+    }
+    return new long[]{min, max, sum};
+}
+```
+
+```python [Python]
+def max_with_index(a):
+    if not a:
+        raise ValueError("数组不能为空")
+    value, index = a[0], 0
+    for i in range(1, len(a)):
+        if a[i] > value:
+            value, index = a[i], i
+    return value, index
+
+def second_distinct_max(a):
+    first = second = None
+    for value in a:
+        if first is None or value > first:
+            second, first = first, value
+        elif value != first and (second is None or value > second):
+            second = value
+    return second
+
+def min_max_sum(a):
+    if not a:
+        raise ValueError("数组不能为空")
+    minimum = maximum = a[0]
+    total = 0
+    for value in a:
+        minimum = min(minimum, value)
+        maximum = max(maximum, value)
+        total += value
+    return minimum, maximum, total
+```
+
+```javascript [JavaScript]
+function maxWithIndex(a) {
+  if (a.length === 0) throw new Error('数组不能为空')
+  let value = a[0], index = 0
+  for (let i = 1; i < a.length; i++) {
+    if (a[i] > value) [value, index] = [a[i], i]
+  }
+  return { value, index }
+}
+
+function secondDistinctMax(a) {
+  let first = null, second = null
+  for (const value of a) {
+    if (first === null || value > first) {
+      second = first; first = value
+    } else if (value !== first && (second === null || value > second)) {
+      second = value
+    }
+  }
+  return second
+}
+
+function minMaxSum(a) {
+  if (a.length === 0) throw new Error('数组不能为空')
+  let minimum = a[0], maximum = a[0], sum = 0
+  for (const value of a) {
+    minimum = Math.min(minimum, value)
+    maximum = Math.max(maximum, value)
+    sum += value
+  }
+  return { minimum, maximum, sum }
+}
+```
+
+```cpp [C++]
+#include <algorithm>
+#include <optional>
+#include <stdexcept>
+#include <tuple>
+#include <utility>
+#include <vector>
+
+std::pair<int, int> maxWithIndex(const std::vector<int>& a) {
+    if (a.empty()) throw std::invalid_argument("数组不能为空");
+    int value = a[0], index = 0;
+    for (int i = 1; i < static_cast<int>(a.size()); ++i) {
+        if (a[i] > value) { value = a[i]; index = i; }
+    }
+    return {value, index};
+}
+
+std::optional<int> secondDistinctMax(const std::vector<int>& a) {
+    std::optional<int> first, second;
+    for (int value : a) {
+        if (!first || value > *first) {
+            second = first; first = value;
+        } else if (value != *first && (!second || value > *second)) {
+            second = value;
+        }
+    }
+    return second;
+}
+
+std::tuple<int, int, long long> minMaxSum(const std::vector<int>& a) {
+    if (a.empty()) throw std::invalid_argument("数组不能为空");
+    int minimum = a[0], maximum = a[0];
+    long long sum = 0;
+    for (int value : a) {
+        minimum = std::min(minimum, value);
+        maximum = std::max(maximum, value);
+        sum += value;
+    }
+    return {minimum, maximum, sum};
+}
+```
+
+```go [Go]
+func maxWithIndex(a []int) (int, int) {
+	if len(a) == 0 { panic("数组不能为空") }
+	value, index := a[0], 0
+	for i := 1; i < len(a); i++ {
+		if a[i] > value { value, index = a[i], i }
+	}
+	return value, index
+}
+
+func secondDistinctMax(a []int) (int, bool) {
+	var first, second int
+	hasFirst, hasSecond := false, false
+	for _, value := range a {
+		if !hasFirst || value > first {
+			second, hasSecond = first, hasFirst
+			first, hasFirst = value, true
+		} else if value != first && (!hasSecond || value > second) {
+			second, hasSecond = value, true
+		}
+	}
+	return second, hasSecond
+}
+
+func minMaxSum(a []int) (int, int, int64) {
+	if len(a) == 0 { panic("数组不能为空") }
+	minimum, maximum := a[0], a[0]
+	var sum int64
+	for _, value := range a {
+		if value < minimum { minimum = value }
+		if value > maximum { maximum = value }
+		sum += int64(value)
+	}
+	return minimum, maximum, sum
+}
+```
+
+:::
+
+建议至少测试：全负数、只有一个元素、最大值重复、所有元素相同，以及总和可能很大的数组。
+
+</ExerciseSolution>
 
 下一篇：[认识 Big O →](/algorithm/01-complexity/big-o)

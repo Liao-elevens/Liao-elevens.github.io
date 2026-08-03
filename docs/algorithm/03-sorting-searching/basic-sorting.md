@@ -1,6 +1,8 @@
 ---
 title: 基础排序
 description: 从整理扑克牌理解冒泡、选择、插入排序，以及五语言的插入排序实现
+comments: true
+commentId: algorithm-basic-sorting
 ---
 
 # 基础排序：像整理扑克牌一样安排数据
@@ -325,11 +327,160 @@ JavaScript 的 `sort()` 默认按字符串顺序比较。`[2, 10].sort()` 可能
 
 ## 自测练习
 
-1. 手工模拟 `[4, 3, 3, 1]` 的每一轮；
-2. 把代码改为降序；
-3. 统计插入排序移动了多少次；
-4. 对学生对象按分数排序，分数相同保持原顺序；
-5. 解释为什么外层循环从 `1` 而不是 `0` 开始。
+### 1. 手工模拟 `[4, 3, 3, 1]`
+
+<ExerciseSolution>
+
+使用本文的插入排序，每轮左侧都是已经排好的区间：
+
+| 轮次 | 待插入值 | 移动过程 | 本轮结束 |
+| ---: | ---: | --- | --- |
+| 初始 | — | 第一个元素自然有序 | `[4, 3, 3, 1]` |
+| 1 | `3` | `4` 右移，`3` 放到开头 | `[3, 4, 3, 1]` |
+| 2 | `3` | `4` 右移；前一个 `3` 不移动 | `[3, 3, 4, 1]` |
+| 3 | `1` | `4、3、3` 依次右移 | `[1, 3, 3, 4]` |
+
+相等元素不移动，是插入排序保持稳定的关键。
+
+</ExerciseSolution>
+
+### 2. 把插入排序改为降序
+
+<ExerciseSolution>
+
+升序时把“大于当前值”的元素右移；降序只需改为把“小于当前值”的元素右移。五种语言中都是同一处比较符号变化：
+
+```text
+当 j >= 0 并且 array[j] < current：
+    array[j + 1] = array[j]
+```
+
+其他循环边界完全不变，时间复杂度仍是最坏 `O(n²)`、最好 `O(n)`。
+
+</ExerciseSolution>
+
+### 3. 统计插入排序移动次数
+
+<ExerciseSolution>
+
+只有执行 `array[j + 1] = array[j]` 时才算一次“已有元素右移”。把计数器放在这行之后即可；最后把当前值写入空位通常称为一次插入，不计入移动次数，除非题目另有定义。
+
+```text
+moves = 0
+每当一个已有元素向右移动：
+    moves++
+返回 moves
+```
+
+对 `[4, 3, 3, 1]`，三轮移动次数分别为 `1、1、3`，总计 `5`。
+
+</ExerciseSolution>
+
+### 4. 按分数稳定排序学生
+
+<ExerciseSolution>
+
+比较时只在“前一位学生分数严格大于当前分数”时移动。分数相等时停止，因此原来排在前面的同分学生仍在前面。
+
+```text
+current = 当前学生
+当左侧学生.分数 > current.分数：
+    左侧学生右移
+把 current 插入空位
+```
+
+例如 `小林(90)、小周(80)、小陈(90)` 排序后是 `小周(80)、小林(90)、小陈(90)`，两个 90 分学生的先后没有改变。五种语言都应使用严格比较 `>`，不能写成 `>=`。
+
+</ExerciseSolution>
+
+### 5. 为什么外层循环从 `1` 开始？
+
+<ExerciseSolution>
+
+插入排序把左侧看成“已经有序的牌”。只有一个元素的区间天然有序，所以 `array[0]` 不需要插入；第一张真正需要判断位置的牌是 `array[1]`。从 `0` 开始不会带来新信息，反而要额外处理 `j = -1`。
+
+</ExerciseSolution>
+
+### 五语言关键修改
+
+<ExerciseSolution title="展开降序、移动计数和稳定性的代码改法" eyebrow="CODE">
+
+下面只展示相对本文五语言完整插入排序需要修改的核心函数；`moves` 统计已有元素被右移的次数。
+
+::: code-group
+
+```java [Java]
+static int insertionSortDescending(int[] a) {
+    int moves = 0;
+    for (int i = 1; i < a.length; i++) {
+        int current = a[i], j = i - 1;
+        while (j >= 0 && a[j] < current) {
+            a[j + 1] = a[j]; moves++; j--;
+        }
+        a[j + 1] = current;
+    }
+    return moves;
+}
+```
+
+```python [Python]
+def insertion_sort_descending(a):
+    moves = 0
+    for i in range(1, len(a)):
+        current, j = a[i], i - 1
+        while j >= 0 and a[j] < current:
+            a[j + 1] = a[j]
+            moves += 1
+            j -= 1
+        a[j + 1] = current
+    return moves
+```
+
+```javascript [JavaScript]
+function insertionSortDescending(a) {
+  let moves = 0
+  for (let i = 1; i < a.length; i++) {
+    const current = a[i]; let j = i - 1
+    while (j >= 0 && a[j] < current) {
+      a[j + 1] = a[j]; moves++; j--
+    }
+    a[j + 1] = current
+  }
+  return moves
+}
+```
+
+```cpp [C++]
+int insertionSortDescending(std::vector<int>& a) {
+    int moves = 0;
+    for (int i = 1; i < static_cast<int>(a.size()); ++i) {
+        int current = a[i], j = i - 1;
+        while (j >= 0 && a[j] < current) {
+            a[j + 1] = a[j]; ++moves; --j;
+        }
+        a[j + 1] = current;
+    }
+    return moves;
+}
+```
+
+```go [Go]
+func insertionSortDescending(a []int) int {
+	moves := 0
+	for i := 1; i < len(a); i++ {
+		current, j := a[i], i-1
+		for j >= 0 && a[j] < current {
+			a[j+1] = a[j]; moves++; j--
+		}
+		a[j+1] = current
+	}
+	return moves
+}
+```
+
+:::
+
+</ExerciseSolution>
 
 ## 外部辅助
 

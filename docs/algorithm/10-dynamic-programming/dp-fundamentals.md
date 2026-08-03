@@ -1,6 +1,8 @@
 ---
 title: 动态规划入门
 description: 用爬楼梯理解状态、转移、初始值和计算顺序
+comments: true
+commentId: algorithm-dp-fundamentals
 ---
 
 # 动态规划：把重复答案保存下来
@@ -174,9 +176,100 @@ ways(5)
 
 ## 练习
 
-- 最小花费爬楼梯；
-- 打家劫舍；
-- 不同路径；
-- 零钱兑换；
-- 0/1 背包；
-- 最长递增子序列。
+### 1. 最小花费爬楼梯
+
+<ExerciseSolution>
+
+令 `dp[i]` 表示到达第 `i` 级台阶顶部的最小花费。到达这里前可能踩在 `i-1` 或 `i-2`，并支付相应台阶费用：
+
+```text
+dp[0] = 0，dp[1] = 0
+dp[i] = min(dp[i-1] + cost[i-1], dp[i-2] + cost[i-2])
+```
+
+答案是 `dp[n]`。时间 `O(n)`，使用两个变量可把空间从 `O(n)` 优化到 `O(1)`。例如 `[10,15,20]` 的答案是直接从第 1 级开始再到顶部，花费 `15`。
+
+</ExerciseSolution>
+
+### 2. 打家劫舍
+
+<ExerciseSolution>
+
+令 `dp[i]` 表示考虑前 `i` 间房能取得的最大金额。第 `i` 间要么不偷，答案是 `dp[i-1]`；要么偷，就不能偷前一间，答案是 `dp[i-2] + nums[i-1]`。
+
+```text
+dp[i] = max(dp[i-1], dp[i-2] + nums[i-1])
+```
+
+时间 `O(n)`、可优化为空间 `O(1)`。`[2,7,9,3,1]` 的最优选择是 `2+9+1=12`。不要用“每次选当前最大房子”的贪心，它可能阻塞两个更优的邻近选择。
+
+</ExerciseSolution>
+
+### 3. 不同路径
+
+<ExerciseSolution>
+
+机器人只能从上方或左方进入当前格，因此 `dp[row][col] = dp[row-1][col] + dp[row][col-1]`。第一行和第一列都只有一种走法，初始化为 `1`。
+
+`m × n` 网格时间 `O(mn)`；逐行计算时只保留一维数组，空间可降为 `O(n)`。如果有障碍，障碍格的路径数设为 `0`。
+
+</ExerciseSolution>
+
+### 4. 零钱兑换
+
+<ExerciseSolution>
+
+令 `dp[amount]` 表示凑出该金额需要的最少硬币数。`dp[0]=0`，其他位置先设为不可达。对每个金额尝试最后使用哪一种硬币：
+
+```text
+dp[x] = min(dp[x], dp[x-coin] + 1)，前提是 x >= coin 且 x-coin 可达
+```
+
+硬币种类数为 `c`、目标金额为 `A` 时，时间 `O(cA)`、空间 `O(A)`。最终仍不可达时返回 `-1`。这题允许每种硬币使用多次，是完全背包模型。
+
+</ExerciseSolution>
+
+### 5. 0/1 背包
+
+<ExerciseSolution>
+
+每件物品只能选一次。令 `dp[c]` 表示容量不超过 `c` 时的最大价值。处理某件重量 `w`、价值 `v` 的物品时：
+
+```text
+容量 c 从 capacity 递减到 w：
+    dp[c] = max(dp[c], dp[c-w] + v)
+```
+
+容量必须倒序，否则本轮刚更新的状态会再次使用同一件物品，错误地变成“可以无限取”。`n` 件物品、容量 `C` 时，时间 `O(nC)`、空间 `O(C)`。
+
+</ExerciseSolution>
+
+### 6. 最长递增子序列
+
+<ExerciseSolution>
+
+基础动态规划令 `dp[i]` 表示“以 `nums[i]` 结尾”的最长严格递增子序列长度。枚举前面的 `j`，只有 `nums[j] < nums[i]` 才能接在前面：
+
+```text
+dp[i] = 1
+对所有 j < i：
+    如果 nums[j] < nums[i]：
+        dp[i] = max(dp[i], dp[j] + 1)
+答案 = max(dp)
+```
+
+时间 `O(n²)`、空间 `O(n)`。进一步可以用“维护不同长度子序列的最小结尾值 + 二分查找”优化到 `O(n log n)`；严格递增应查找第一个 `>= 当前值` 的位置。
+
+</ExerciseSolution>
+
+### 五语言迁移提示
+
+<ExerciseSolution title="展开动态规划练习的五语言对应" eyebrow="CODE">
+
+这些转移式在五种语言中完全相同，差别主要是数组初始化：Java `new int[n]`、Python `[0] * n`、JavaScript `Array(n).fill(0)`、C++ `vector<int>(n)`、Go `make([]int, n)`。
+
+最小值问题的“不可达”状态不要随便使用 `0`：可以用 `amount + 1`、一个足够大的整数或语言提供的无穷值。涉及路径数量、金额总和时要检查整数范围，Java 使用 `long`、C++ 使用 `long long`、Go 使用 `int64`。
+
+0/1 背包的容量倒序、完全背包的容量正序，是五种语言都必须保持的算法顺序，不是语法差异。
+
+</ExerciseSolution>

@@ -1,6 +1,8 @@
 ---
 title: Go 算法语法入门
 description: 面向算法初学者的 Go 变量、切片、映射、结构体、队列与常见陷阱
+comments: true
+commentId: algorithm-go-basics
 ---
 
 # Go 算法语法入门
@@ -196,10 +198,129 @@ for head < len(queue) {
 
 ## 自测练习
 
-1. 用 Go 写出数组求和；
-2. 返回最大值和它的下标；
-3. 使用 `map[int]int` 统计数字频率；
-4. 使用切片模拟栈并完成括号匹配；
-5. 定义二叉树节点并完成前序遍历。
+### 1. 用 Go 写出数组求和
+
+<ExerciseSolution>
+
+遍历切片并把每个值累加到 `int64`，可以降低大量整数相加时溢出的风险。
+
+```go
+func sum(numbers []int) int64 {
+	var total int64
+	for _, number := range numbers {
+		total += int64(number)
+	}
+	return total
+}
+```
+
+时间复杂度 `O(n)`，额外空间 `O(1)`；空切片自然返回 `0`。
+
+</ExerciseSolution>
+
+### 2. 返回最大值和它的下标
+
+<ExerciseSolution>
+
+使用第一个元素初始化，避免全负数时错误地返回 `0`。最大值重复时返回第一次出现的位置。
+
+```go
+func maxWithIndex(numbers []int) (int, int, bool) {
+	if len(numbers) == 0 {
+		return 0, -1, false
+	}
+	maximum, index := numbers[0], 0
+	for i := 1; i < len(numbers); i++ {
+		if numbers[i] > maximum {
+			maximum, index = numbers[i], i
+		}
+	}
+	return maximum, index, true
+}
+```
+
+第三个返回值表示是否存在答案。时间 `O(n)`，空间 `O(1)`。
+
+</ExerciseSolution>
+
+### 3. 使用 Map 统计数字频率
+
+<ExerciseSolution>
+
+`counts[number]++` 会先读取当前计数；key 不存在时得到 `int` 的零值 `0`，因此可以直接加一。
+
+```go
+func frequencies(numbers []int) map[int]int {
+	counts := make(map[int]int)
+	for _, number := range numbers {
+		counts[number]++
+	}
+	return counts
+}
+```
+
+平均时间 `O(n)`，空间 `O(k)`，其中 `k` 是不同数字的数量。
+
+</ExerciseSolution>
+
+### 4. 使用切片模拟栈并完成括号匹配
+
+<ExerciseSolution>
+
+遇到左括号就压栈；遇到右括号时，栈顶必须是对应的左括号。任何提前不匹配，或者最后栈不为空，都说明字符串无效。
+
+```go
+func isValidBrackets(text string) bool {
+	pairs := map[rune]rune{')': '(', ']': '[', '}': '{'}
+	stack := make([]rune, 0)
+	for _, char := range text {
+		if char == '(' || char == '[' || char == '{' {
+			stack = append(stack, char)
+			continue
+		}
+		expected, isClosing := pairs[char]
+		if !isClosing || len(stack) == 0 || stack[len(stack)-1] != expected {
+			return false
+		}
+		stack = stack[:len(stack)-1]
+	}
+	return len(stack) == 0
+}
+```
+
+时间 `O(n)`，最坏空间 `O(n)`。应测试空字符串、单个括号、错误嵌套和连续多组括号。
+
+</ExerciseSolution>
+
+### 5. 定义二叉树节点并完成前序遍历
+
+<ExerciseSolution>
+
+前序顺序是“当前节点 → 左子树 → 右子树”。`nil` 节点是递归终止条件。
+
+```go
+type TreeNode struct {
+	Value int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+func preorder(root *TreeNode) []int {
+	result := make([]int, 0)
+	var visit func(*TreeNode)
+	visit = func(node *TreeNode) {
+		if node == nil { return }
+		result = append(result, node.Value)
+		visit(node.Left)
+		visit(node.Right)
+	}
+	visit(root)
+	return result
+}
+```
+
+每个节点访问一次，时间 `O(n)`；递归栈空间是 `O(h)`，`h` 为树高。
+
+</ExerciseSolution>
 
 下一篇：[数据结构入门地图 →](/algorithm/02-linear-structures/data-structure-guide)

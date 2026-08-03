@@ -1,6 +1,8 @@
 ---
 title: 哈希表与集合
 description: 从储物柜和通讯录理解 Map、Set、哈希函数、冲突与五语言常用写法
+comments: true
+commentId: algorithm-hash-table
 ---
 
 # 哈希表与集合：给数据贴上快速查找的标签
@@ -358,13 +360,223 @@ key
 
 ## 自测练习
 
-先手工写伪代码，再选最熟悉的语言：
+### 1. 统计字符串中每个字符的次数
 
-1. 统计字符串中每个字符的次数；
-2. 找出数组中第一个重复的数字；
-3. 判断两个字符串是否由相同字符重新排列而成；
-4. 计算两个数组的公共元素；
-5. 返回数组中只出现一次的所有数字。
+<ExerciseSolution>
+
+逐个读取字符，以字符为 key、出现次数为 value。第一次遇到时从 `0` 加到 `1`，以后继续累加。时间平均为 `O(n)`，空间为 `O(k)`，`k` 是不同字符数。若要严格处理 emoji 等完整 Unicode 字符，Java/C++ 需要进一步使用码点而不是普通字符单元。
+
+</ExerciseSolution>
+
+### 2. 找出数组中第一个重复的数字
+
+<ExerciseSolution>
+
+“第一个重复”指按从左到右扫描，最先第二次出现的值。维护集合 `seen`：如果当前数已经存在就立刻返回，否则加入集合。`[2, 1, 3, 1, 2]` 返回 `1`，不是 `2`。
+
+平均时间 `O(n)`、空间 `O(n)`；没有重复时应返回清晰的空结果。
+
+</ExerciseSolution>
+
+### 3. 判断两个字符串是否为字符重排
+
+<ExerciseSolution>
+
+先比较长度，再用第一个字符串增加计数、第二个字符串减少计数。任何字符减到负数都表示第二个字符串使用了过多该字符；全部处理完且计数归零才成立。
+
+时间 `O(n+m)`、空间 `O(k)`。注意是否忽略大小写、空格和标点必须由题目明确，本实现全部区分。
+
+</ExerciseSolution>
+
+### 4. 计算两个数组的公共元素
+
+<ExerciseSolution>
+
+如果结果只保留不同值，先把第一个数组放入集合，再扫描第二个数组；命中时加入结果集合。若题目要求保留重复次数，应改用频率表，并在命中后把计数减一。
+
+平均时间 `O(n+m)`，空间 `O(n)`。
+
+</ExerciseSolution>
+
+### 5. 返回只出现一次的所有数字
+
+<ExerciseSolution>
+
+第一遍建立频率表，第二遍按原数组顺序筛选计数等于 `1` 的值。必须保留第二遍，直接遍历哈希表通常不能保证结果与原数组顺序一致。
+
+平均时间 `O(n)`，空间 `O(k)`。
+
+</ExerciseSolution>
+
+### 五语言完整实现
+
+<ExerciseSolution title="展开五道哈希练习的五语言代码" eyebrow="CODE">
+
+::: code-group
+
+```java [Java]
+import java.util.*;
+static Map<Character, Integer> charCounts(String text) {
+    Map<Character, Integer> counts = new HashMap<>();
+    for (char c : text.toCharArray()) counts.merge(c, 1, Integer::sum);
+    return counts;
+}
+static Integer firstDuplicate(int[] a) {
+    Set<Integer> seen = new HashSet<>();
+    for (int value : a) if (!seen.add(value)) return value;
+    return null;
+}
+static boolean isAnagram(String a, String b) {
+    if (a.length() != b.length()) return false;
+    Map<Character, Integer> counts = charCounts(a);
+    for (char c : b.toCharArray()) {
+        int next = counts.getOrDefault(c, 0) - 1;
+        if (next < 0) return false;
+        if (next == 0) counts.remove(c); else counts.put(c, next);
+    }
+    return counts.isEmpty();
+}
+static Set<Integer> intersection(int[] a, int[] b) {
+    Set<Integer> left = new HashSet<>(), result = new LinkedHashSet<>();
+    for (int value : a) left.add(value);
+    for (int value : b) if (left.contains(value)) result.add(value);
+    return result;
+}
+static List<Integer> singletons(int[] a) {
+    Map<Integer, Integer> counts = new HashMap<>();
+    for (int value : a) counts.merge(value, 1, Integer::sum);
+    List<Integer> result = new ArrayList<>();
+    for (int value : a) if (counts.get(value) == 1) result.add(value);
+    return result;
+}
+```
+
+```python [Python]
+from collections import Counter
+def char_counts(text): return dict(Counter(text))
+def first_duplicate(a):
+    seen = set()
+    for value in a:
+        if value in seen: return value
+        seen.add(value)
+    return None
+def is_anagram(a, b): return Counter(a) == Counter(b)
+def intersection(a, b):
+    left = set(a)
+    return list(dict.fromkeys(x for x in b if x in left))
+def singletons(a):
+    counts = Counter(a)
+    return [value for value in a if counts[value] == 1]
+```
+
+```javascript [JavaScript]
+function charCounts(text) {
+  const counts = new Map()
+  for (const char of text) counts.set(char, (counts.get(char) ?? 0) + 1)
+  return counts
+}
+function firstDuplicate(a) {
+  const seen = new Set()
+  for (const value of a) { if (seen.has(value)) return value; seen.add(value) }
+  return null
+}
+function isAnagram(a, b) {
+  if ([...a].length !== [...b].length) return false
+  const counts = charCounts(a)
+  for (const char of b) {
+    const next = (counts.get(char) ?? 0) - 1
+    if (next < 0) return false
+    if (next === 0) counts.delete(char); else counts.set(char, next)
+  }
+  return counts.size === 0
+}
+function intersection(a, b) {
+  const left = new Set(a), result = new Set()
+  for (const value of b) if (left.has(value)) result.add(value)
+  return [...result]
+}
+function singletons(a) {
+  const counts = new Map()
+  for (const value of a) counts.set(value, (counts.get(value) ?? 0) + 1)
+  return a.filter(value => counts.get(value) === 1)
+}
+```
+
+```cpp [C++]
+#include <optional>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
+std::unordered_map<char, int> charCounts(const std::string& text) {
+    std::unordered_map<char, int> counts;
+    for (char c : text) ++counts[c];
+    return counts;
+}
+std::optional<int> firstDuplicate(const std::vector<int>& a) {
+    std::unordered_set<int> seen;
+    for (int value : a) if (!seen.insert(value).second) return value;
+    return std::nullopt;
+}
+bool isAnagram(const std::string& a, const std::string& b) {
+    if (a.size() != b.size()) return false;
+    auto counts = charCounts(a);
+    for (char c : b) if (--counts[c] < 0) return false;
+    for (const auto& [_, count] : counts) if (count != 0) return false;
+    return true;
+}
+std::vector<int> intersection(const std::vector<int>& a, const std::vector<int>& b) {
+    std::unordered_set<int> left(a.begin(), a.end()), added;
+    std::vector<int> result;
+    for (int value : b) if (left.count(value) && added.insert(value).second) result.push_back(value);
+    return result;
+}
+std::vector<int> singletons(const std::vector<int>& a) {
+    std::unordered_map<int, int> counts;
+    for (int value : a) ++counts[value];
+    std::vector<int> result;
+    for (int value : a) if (counts[value] == 1) result.push_back(value);
+    return result;
+}
+```
+
+```go [Go]
+func charCounts(text string) map[rune]int {
+	counts := make(map[rune]int)
+	for _, char := range text { counts[char]++ }
+	return counts
+}
+func firstDuplicate(a []int) (int, bool) {
+	seen := make(map[int]bool)
+	for _, value := range a { if seen[value] { return value, true }; seen[value] = true }
+	return 0, false
+}
+func isAnagram(a, b string) bool {
+	left, right := []rune(a), []rune(b)
+	if len(left) != len(right) { return false }
+	counts := charCounts(a)
+	for _, char := range right { counts[char]--; if counts[char] < 0 { return false } }
+	return true
+}
+func intersection(a, b []int) []int {
+	left, added := make(map[int]bool), make(map[int]bool)
+	for _, value := range a { left[value] = true }
+	result := make([]int, 0)
+	for _, value := range b { if left[value] && !added[value] { result = append(result, value); added[value] = true } }
+	return result
+}
+func singletons(a []int) []int {
+	counts := make(map[int]int)
+	for _, value := range a { counts[value]++ }
+	result := make([]int, 0)
+	for _, value := range a { if counts[value] == 1 { result = append(result, value) } }
+	return result
+}
+```
+
+:::
+
+</ExerciseSolution>
 
 ## 外部辅助
 
